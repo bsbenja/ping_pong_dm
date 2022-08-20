@@ -1,0 +1,46 @@
+---
+title: "<i class=bi-arrow-repeat style=font-size:1em></i>&nbsp;Præmier & deltagere"
+subtitle: "DM i Ping Pong 2023<br><i class=small>Lørdag 17. juni i [Hørning Idrætscenter](https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034){target=_blank}</i>"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
+```
+
+`r tbl0_stat$k_sidst_opdateret`
+
+## Præmier
+
+```{r}
+kbl1_præmier_penge
+kbl1_præmier_yngst_ældst
+```
+
+## Deltagere
+
+`r paste0("<i style=font-size:80%>", tbl0_stat$k_billetantal_billettype, "<br>", tbl0_stat$k_klubantal, "<br>", tbl0_stat$k_deltagerantal_gentilmelding, "<br>", tbl0_stat$k_deltagerantal_køn, "<br>", tbl0_stat$k_deltagerantal_aldersgruppe, "<br>", tbl0_stat$k_alder, "</i>")`
+
+```{r}
+if(tbl0_input$k_foreløbig_endelig == 1) { kbl2_deltagere_foreløbig }
+if(tbl0_input$k_foreløbig_endelig == 2) { kbl2_deltagere_puljer }
+if(tbl0_input$k_foreløbig_endelig == 2) { kbl2_deltagere_fest }
+```
+
+## Grafer
+
+```{r}
+#| fig-height: 2
+#| layout-ncol: 2
+graf1_tilmeldingstype
+graf2_gentilmelding
+```
+
+```{r}
+#| layout-ncol: 2
+graf3_klubber
+graf4_DK
+```
+
+`r paste0("<i style=font-size:80%>", tbl0_stat$k_deltagerantal_landsdel, "<br>", tbl0_stat$k_deltagerantal_region, "<br>", tbl0_stat$k_deltagerantal_ingen_klub, "</i>")`

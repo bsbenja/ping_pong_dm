@@ -1,0 +1,38 @@
+---
+title: "<i class=bi-card-text style=font-size:1em></i>&nbsp;Ping Pong regler"
+subtitle: "Generelt om Ping Pong"
+editor_options: 
+  chunk_output_type: console
+---
+
+`r "![<i style=font-size:80%>Billede fra WCPP-finalen 2020</i>](Filer/WCPP-finale 2020.jpg){width=40em fig-align=left}"`
+
+*I Ping Pong tages det bedste fra fortidens- og nutidens bordtennis og kan sammenlignes med ordsproget "gammel vin på nye flasker". Ping Pong skal i denne sammenhæng ikke sammenlignes med det, hvor man spiller bolden ned i egen bordhalvdel, men derimod spilles der med samme type bat, som giver lige vilkår for alle deltagere. Nedenstående regler adskiller Ping Pong fra bordtennis.*
+
+## Generelle regler
+
+*Følgende regler gælder puljespil og A-/B-slutspil:*
+
+1.  **Sandpapirsbat**: Der spilles udelukkende med identiske bat, som er belagt med sandpapir. Alle deltagere får udleveret bat af stævnearrangøren til både opvarmning og kampe.\
+    *Identiske sandpapirsbat giver lige vilkår for alle deltagere, hvilket qua mindre skrue giver nogle anderledes og typisk længere dueller i forhold til almindelig bordtennis.*
+
+2.  **Pointsystem**: Der spilles bedst af 3 sæt til 15 point. Ved 14-14 spilles afgørende sætbold. "Det hurtige afviklingssystem" er ikke gældende (ingen tidsbegrænsning pr. sæt).\
+    *Der spilles til 15 point pr. sæt, da dette er imellem det gamle pointsystem til 21 point og nutidens 11 point, hvorfor der tages lidt fra begge verdener.*
+
+3.  **Batskift**: Når et sæt er færdigspillet, lægges battene på egne bordhalvdele. I efterfølgende sæt bytter spillerne ende, således der spilles med modstanderens bat. I et evt. afgørende sæt byttes bat og ende, når en af spillerne har 7 point.\
+    *Batskift ved sæt-/sideskift er med til at give lige vilkår for alle deltagere.*
+
+4.  **"Dobbeltpoint"**: Ved "dobbeltpoint" er der mulighed for at vinde 2 point i en duel. Hver spiller kan tage et "dobbeltpoint" én gang pr. kamp (ikke pr. sæt), og dette meddeles før bolden igangsættes. Hvis man tager et "dobbeltpoint" og vinder duellen, gives 2 point, og tabes duellen får modstanderen kun 1 point. "Dobbeltpoint" kan kun tages i egen serv, og man kan ikke vinde et sæt direkte på "dobbeltpoint", hvorfor det senest kan tages ved serverens 12. point (modstanderen må fx gerne have 13 eller 14 point). Serveskift og håndklædepause hver 6. point vil blive fremrykket med 1 point, såfremt serveren vinder sit "dobbeltpoint".\
+    *"Dobbeltpoint" er med til at give en ekstra spænding og nerve for både publikum og spillere. Når "dobbeltpoint" tages ved bl.a. VM på Center Court, trykker spilleren på "Golden Buzzer Power Play", hvorefter der kommer stort lysshow og musik, inden bolden igangsættes.*
+
+5.  **Timeout**: Der kan ikke tages timeout.
+
+## "Final 4"
+
+*Følgende ekstra regler gælder "Final 4" i A-slutspil, så det matcher spilformatet til WCPP-finale:*
+
+1.  **Bedst af 5 sæt.**
+2.  **To "dobbeltpoint" pr. spiller, men hver spiller må kun tage ét pr. sæt.**
+3.  **Én timeout pr. spiller.**
+
+*Til deltagerne i "Final 4" i A-slutspil udleveres 4 nye bat.*

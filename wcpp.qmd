@@ -1,0 +1,109 @@
+---
+title: "<i class=bi-globe2 style=font-size:1em></i>&nbsp;WCPP"
+subtitle: "Generelt om Ping Pong"
+editor_options: 
+  chunk_output_type: console
+---
+
+`r "![<i style=font-size:80%>Duel fra WCPP-finalen 2020. Kampen endte 15-14 i afgørende sæt til Andrew Baggaley, England mod Alexander Flemming, Tyskland. Hele kampen kan ses på Youtube [<b>HER</b>](https://www.youtube.com/watch?v=q2f9eDg8WHo){target=_blank}.</i>](Filer/WCPP-finale 2020.mp4){width=40em fig-align=left}"`
+
+***Her kan man få et indtryk af, hvad World Championship of Ping Pong (WCPP) sædvanligvis er for en størrelse**.*
+
+WCPP er en årlig begivenhed, der sædvanligvis afholdes sidste weekend i januar i *`r "[Alexandra Palace (Ally Pally) i London](https://www.google.dk/maps/place/Alexandra+Palace/@51.5941783,-0.132962,17z/data=!3m1!4b1!4m5!3m4!1s0x48761bd75310a7cd:0x9a38677b79460879!8m2!3d51.5941783!4d-0.1307733){target=_blank}"`* foran et par tusinde fremmødte tilskuere og eksponeres på bl.a. Viaplay Sport og Sky Sports, hvor millioner af seere følger med verden over. Der er vanligt 64 kvalificerede spillere med fra mere end 25 nationer, der konkurrerer om WCPP-titlen og en præmiesum på \$100.000, hvoraf \$20.000 går til vinderen. Første WCPP blev afholdt i Las Vegas i 2011.
+
+Puljespillet afvikles af 8 puljer med 8 spillere i hver efter "Double Elimination" princippet.\
+Lørdag færdigspilles puljekampene samt 1. runde af hovedturneringen (1/16-finalerne).\
+Søndag afvikles resten af turneringen med start fra 1/8-finalerne.
+
+Danske Mesterskaber i Ping Pong har haft 2 kvalifikationspadser til WCPP siden 2014.\
+Kvartfinalister fra foregående WCPP er direkte kvalificeret til efterfølgende WCPP.
+
+Tidligere kampe ved WCPP kan ses på *`r "[Matchroom Live](https://matchroom.live/sports/ping_pong){target=_blank}"`* (gratis bruger kan oprettes) eller YouTube-kanalen *`r "[Matchroom Multi Sport](https://www.youtube.com/channel/UCQ8cM7o5Gu9l9G3fDP5Xpsg){target=_blank}"`*.
+
+```{r}
+#| layout-ncol: 2
+library(kableExtra)
+data.frame(
+  " " = c(
+    "Total",
+    "1. plads",
+    "2. plads",
+    "3.-4. plads",
+    "5.-8. plads",
+    "9.-16. plads",
+    "17.-32. plads",
+    "Én puljesejr"),
+  "USD [$]" = c(
+    "$100.000",
+    "$20.000",
+    "$10.000",
+    "$5.000",
+    "$3.000",
+    "$2.000",
+    "$1.500",
+    "$500"),
+  "Pct." = c(
+    "100%",
+    "20%",
+    "10%",
+    "10%",
+    "12%",
+    "16%",
+    "24%",
+    "8%"),
+  check.names = F) %>%
+  kbl(col.names = NA, align = "lrr", escape = F,
+      caption = "Præmiepenge til WCPP") %>%
+  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
+  row_spec(1, bold = T, background = "#D5D8DC") %>%
+  column_spec(3, italic = T, color = "#5D6D7E")
+
+data.frame(
+  "År" = c(
+    "2020",
+    "2019",
+    "2018",
+    "2017",
+    "2016",
+    "2015",
+    "2014",
+    "2013",
+    "2011"),
+  "Land" = c(
+    "ENG ",
+    "ENG ",
+    "CHN ",
+    "CHN ",
+    "ENG ",
+    "ENG ",
+    "RUS ",
+    "RUS ",
+    "RUS "),
+  " " = "",
+  "Spiller" = c(
+    "Andrew Baggaley",
+    "Andrew Baggaley",
+    "Wang Shibo",
+    "Yan Weihao",
+    "Andrew Baggaley",
+    "Andrew Baggaley",
+    "Maxim Shmyrev",
+    "Maxim Shmyrev",
+    "Maxim Shmyrev"),
+  check.names = F) %>%
+  kbl(col.names = NA, align = "l", escape = F,
+      caption = "WCPP-vindere statistik") %>%
+  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
+  column_spec(3, image = spec_image(c(
+"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
+"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
+"https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png",
+"https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png",
+"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
+"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
+"https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png",
+"https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png",
+"https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png"), 50, 50))
+```
