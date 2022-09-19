@@ -17,7 +17,7 @@ tbl0_input <- data.frame(
   
   # 1 inputmulighed
   k_billetantal_ping_pong_maks = 72,           # Billetantal Ping Pong maks
-  k_præmiepenge                = 100,          # Præmiepenge pr. deltager i kr.
+  k_præmiepenge_pr_deltager    = 100,          # Præmiepenge pr. deltager i kr.
   k_præmie_A1                  = 0.375,        # Præmiepenge for A1 i pct.
   k_præmie_A2                  = 0.250,        # Præmiepenge for A2 i pct.
   k_præmie_A3                  = 0.150,        # Præmiepenge for A3 i pct.
@@ -32,5 +32,14 @@ tbl0_input <- data.frame(
   k_data                       = "Filer/Deltagere og tilmeldinger til DM i Ping Pong.xlsx",
   k_indbydelsesplakat          = "Filer/Indbydelsesplakat-DM-i-Ping-Pong-2023",
   k_eventordre_url_uuid        = "3e60537b3a1541a48e2e0871a6c520fa",
-  k_eventordre_token           = "Token 77df96dc37b92daa27c050b8f7f1aafa9b47b7b0")
+  k_eventordre_token           = "Token 77df96dc37b92daa27c050b8f7f1aafa9b47b7b0",
+  k_cta                        = paste0(
+    "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
+    "font-size:150%;width:20em;max-width:100%;line-height:20px;border-radius:20px;padding:10px;",
+    "text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>",
+    "&nbsp;Tilmeld<br><i style=font-weight:normal;font-size:50%>DM i Ping Pong 2023</i></a><br><br>"),
+  k_indbydelse_tilmelding      = paste0(
+    "<i class=bi-tags-fill></i>&nbsp;[<b>Indbydelse & tilmelding</b>](indbydelse_tilmelding.qmd)"),
+  k_præmier_deltagere          = paste0(
+    "<i class=bi-arrow-repeat></i>&nbsp;[<b>Præmier & deltagere</b>](præmier_deltagere.qmd)"))
 source(file = "bagvedliggende_kode.R")

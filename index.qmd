@@ -1,6 +1,6 @@
 ---
-title: "<i class=bi-tags-fill style=font-size:1em></i>&nbsp;Tilmelding"
-subtitle: "DM i Ping Pong 2023<br><i class=small>Lørdag 17. juni i [Hørning Idrætscenter](https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034){target=_blank}</i>"
+title: "<i class=bi-house-fill style=font-size:1em></i>&nbsp;Forside"
+subtitle: "<i class=small>Dette er den officielle hjemmeside for DM i Ping Pong.<br>Ping Pong er bordtennis på lige vilkår med sandpapirsbat, som er åben for ALLE til en overkommelig pris.<br>Se mere ved at navigere rundt her på hjemmesiden. Fra mobil gøres dette via topmenuen.</i>"
 editor_options: 
   chunk_output_type: console
 ---
@@ -9,15 +9,34 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-*Tilmelding/betaling foregår herunder med MobilePay eller kort👇\
-Yderligere info om eventet og Ping Pong generelt ses ved at navigere rundt her på hjemmesiden. Fra mobil gøres dette via topmenuen.*
+`r "![](Filer/Forside.jpg){width=40em fig-align=left}"`
 
-`r paste0("![[<i style=font-size:80%>[Download indbydelesplakat som PDF]</i>](", tbl0_input$k_indbydelsesplakat, ".pdf){target=_blank}](", tbl0_input$k_indbydelsesplakat, ".png){width=40em fig-align=left}")`
+`r tbl0_input$k_cta`
+
+### DM i Ping Pong 2023
+
+-   `r tbl0_input$k_indbydelse_tilmelding`
+-   `r tbl0_input$k_præmier_deltagere`
+
+### Generelt om Ping Pong
+
+-   `r "<i class=bi-card-text></i>&nbsp;[<b>Ping Pong regler</b>](regler.qmd):&nbsp;<i>Se hvilke regler der adskiller Ping Pong fra bordtennis.</i>"`
+-   `r "<i class=bi-globe2></i>&nbsp;[<b>WCPP</b>](wcpp.qmd):&nbsp;<i>Se hvad World Championship of Ping Pong (WCPP) sædvanligvis er for en størrelse.</i>"`
+-   `r "<i class=bi-bullseye></i>&nbsp;[<b>DM-koncept & historie</b>](koncept.qmd):&nbsp;<i>Se hvad DM i Ping Pong har at byde på, dets historie og tidligere vindere.</i>"`
+
+------------------------------------------------------------------------
+
+### Eksterne links
+
+*Er du en Ping Pong entusiast eller bare nysgerrig på konceptet? Så tjek én eller flere af nedenstående links ud.*
+
+-   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Facebook</b>](https://www.facebook.com/events/452302656395308){target=_blank}:&nbsp;<i>Del budskabet via Facebook-begivenheden ved at trykke deltager/interesseret og inviter folk. Like og følg også gerne den officielle Facebook-side Ping Pong DK (medarrangør), hvis du ikke allerede gør det, hvor bl.a. videoer fra tidligere DM kan ses.</i>"`
+-   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Køb bat hos BTEX</b>](https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html){target=_blank}:&nbsp;<i>De officielle Sanwei WCPP Sandpapirsbat kan købes hos Bordtennisexperterne (BTEX) til eget brug.</i>"`
+-   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Matchroom Live</b>](https://matchroom.live/sports/ping_pong){target=_blank}:&nbsp;<i>Tidligere videoer fra WCPP kan ses på Matchroom Live.</i>"`
+-   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>DM statistik</b>](https://bordtennisdanmark.dk/statistik/ping-pong-dm){target=_blank}:&nbsp;<i>DM i Ping Pong statistik fra 2014 kan ses på Bordtennis Danmarks hjemmeside (BTDK).</i>"`
+
+### Facebook
 
 ```{=html}
-<div class="ticketbutler-iframe" data-type="EVENT" data-domain="billetfix.dk" data-slug="dm-i-ping-pong-2023"></div><script type="text/javascript" src="https://unpkg.com/@ticketbutler/event-embedder@latest/dist/index.js"></script>
-
-<br>
-
 <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F100183334928231&tabs=timeline%2Cevents%2Cmessages&width=320" width="100%" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
 ```

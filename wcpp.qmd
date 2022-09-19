@@ -53,7 +53,7 @@ data.frame(
     "8%"),
   check.names = F) %>%
   kbl(col.names = NA, align = "lrr", escape = F,
-      caption = "Præmiepenge til WCPP") %>%
+      caption = "<i class=bi-cash-stack></i>&nbsp;Præmiepenge til WCPP") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
   row_spec(1, bold = T, background = "#D5D8DC") %>%
@@ -93,7 +93,7 @@ data.frame(
     "Maxim Shmyrev"),
   check.names = F) %>%
   kbl(col.names = NA, align = "l", escape = F,
-      caption = "WCPP-vindere statistik") %>%
+      caption = "<i class=bi-trophy></i>&nbsp;WCPP-vindere statistik") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
   column_spec(3, image = spec_image(c(

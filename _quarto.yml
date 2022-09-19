@@ -5,11 +5,12 @@ project:
   type: website
 
 website:
-  title: "DM i Ping Pong"
   favicon: "Filer/Ping Pong DK.png"
   google-analytics: "G-6903XX1GX6"
   page-navigation: true
   search: true
+# title: "DM i Ping Pong"
+  title: "<small>DM i Ping Pong</small><a style=display:inline-block;background:#398FCC;color:#FFFFFF;border-style:solid;border-width:medium;border-color:#FFFFFF;text-align:center;font-weight:bold;font-size:90%;border-radius:20px;padding-left:10px;padding-right:10px;padding-top:5px;padding-bottom:5px;text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>&nbsp;Tilmeld</a>"
   navbar:
     logo: "Filer/Ping Pong DK.png"
     background: "#398FCC"
@@ -19,9 +20,8 @@ website:
     contents:
       - section: "DM i Ping Pong 2023"
         contents:
-        - href: "index.qmd"
+        - href: "indbydelse_tilmelding.qmd"
         - href: "præmier_deltagere.qmd"
-        - href: "tidsplan_indbydelse.qmd"
       - text: "---"
       - section: "Generelt om Ping Pong"
         contents:
@@ -31,22 +31,16 @@ website:
       - text: "---"
       - section: "Eksterne links"
         contents:
+        - text: "<a class=bi-box-arrow-up-right href=https://www.facebook.com/events/452302656395308 target=_blank>&nbsp;Facebook</a>"
         - text: "<a class=bi-box-arrow-up-right href=https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html target=_blank>&nbsp;Køb bat hos BTEX</a>"
         - text: "<a class=bi-box-arrow-up-right href=https://matchroom.live/sports/ping_pong target=_blank>&nbsp;Matchroom Live</a>"
-        - text: "<a class=bi-box-arrow-up-right href=https://bordtennisdanmark.dk/statistik/ping-pong-dm target=_blank>&nbsp;BTDK</a>"
-    tools:
-      - href: "https://github.com/bsbenja/ping_pong_dm"
-        icon: "github"
-      - href: "https://www.facebook.com/events/452302656395308"
-        icon: "facebook"
-      - href: "https://m.me/100183334928231"
-        icon: "messenger"
+        - text: "<a class=bi-box-arrow-up-right href=https://bordtennisdanmark.dk/statistik/ping-pong-dm target=_blank>&nbsp;DM statistik</a>"
   page-footer:
     background: light
-    left:
-      - text: "<a href=https://www.facebook.com/100183334928231 target=_blank style=text-decoration:none>Ping Pong DK</a>"
-    right:
-      - text: "<a class=bi-github href=https://github.com/bsbenja/ping_pong_dm target=_blank></a>"
+    center:
+      - text: "<a href=http://hoerningbtk.dk target=_blank><img src=Filer/Arrangør.png style=height:15px></a>"
+      - text: "&emsp;<a href=https://bordtennisdanmark.dk/kalender/dm-i-ping-pong target=_blank><img src=Filer/BTDK.png style=height:15px></a>"
+      - text: "&emsp;<a class=bi-github href=https://github.com/bsbenja/ping_pong_dm target=_blank></a>"
       - text: "&emsp;<a class=bi-facebook href=https://www.facebook.com/events/452302656395308 target=_blank></a>"
       - text: "&emsp;<a class=bi-messenger href=https://m.me/100183334928231 target=_blank></a>"
 
@@ -57,7 +51,7 @@ format:
     mainfont: verdana
     css: styles.css
     df-print: kable
-    fontsize: "90%"
+    fontsize: "11pt"
     linkcolor: "#398FCC"
     section-title-footnotes: "Fodnoter"
     toc-title: "Indhold på side"

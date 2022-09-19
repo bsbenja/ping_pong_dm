@@ -1,11 +1,11 @@
 ---
-title: "<i class=bi-bullseye style=font-size:1em></i>&nbsp;Koncept"
+title: "<i class=bi-bullseye style=font-size:1em></i>&nbsp;DM-koncept & historie"
 subtitle: "Generelt om Ping Pong"
 editor_options: 
   chunk_output_type: console
 ---
 
-`r "![<i style=font-size:80%>Billede fra WCPP-finalen 2019</i>](Filer/WCPP-finale 2019.jpg){width=100%}"`
+`r "![<i style=font-size:80%>Billede fra WCPP-finalen 2019</i>](Filer/WCPP-finale 2019.jpg){width=40em fig-align=left}"`
 
 ## Indledning
 
@@ -14,11 +14,103 @@ DM i Ping Pong bestræbes efter at blive afholdt i juni, nærmere bestemt lørda
 
 DM i Ping Pong forsøger også at omfavne fællesskabet og mangfoldigheden ved at være en heldagsbegivenhed, hvor der traditionen tro vil være et socialt arrangement om aftenen/natten. Under turneringen vil der være stemningsmusik og mulighed for køb af øl, sodavand mv., så der skabes en festlig stemning. Ping Pong kampene bestræbes på at blive live-streamet.
 
+Ping Pong beskrives bedst med ordsproget "*gammel vin på nye flasker*" og har til formål at være en alternativ sportsgren til bordtennis, hvor ALLE kan deltage på lige vilkår til en overkommelig pris. DM-konceptet udgør følgende 3 hovedpunkter:
+
+1.  **ALLE kan deltage**: Der er ingen adgangsbarriere, dvs. ALLE har mulighed for at stille op uanset alder, køn, niveau eller licens. Man behøver derfor ikke nødvendigvis at have haft erfaring med bordtennis/Ping Pong tidligere.
+2.  **Heldagsbegivenhed**: Heldagsbegivenhed i form af DM-turnering samt socialt arrangement om aftenen/natten for at hylde fællesskabet og mangfoldigheden.
+3.  **Overkommelig pris**: Prisen for et Ping Pong bat og at spille i det hele taget er på et niveau, hvor langt de fleste kan være med.
+
 *Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren).*
+
+## Minimumskrav
+
+-   Der skal minimum være halkapacitet til, at der kan være 72 deltagere til turneringen (minimum 12 borde, dvs. 1 bord pr. pulje, gerne flere borde).
+-   Musikanlæg til brug under turnering og fest.
+-   Festrammer enten i den pågældende klub eller arrangeret andetsteds.
+
+## Turneringen
+
+### Afviklingsform
+
+```{mermaid}
+%%| fig-width: 3
+flowchart LR
+  A(6-mandspuljer) --> |Nr. 1-3| B(A-slutspil)
+  A --> |Nr. 4-6| C(B-slutspil)
+  B --> |1/4-finalevindere| D(Final-4)
+  
+  style A fill:#398FCC,stroke:#398FCC,color:#FFFFFF
+  style B fill:#398FCC,stroke:#398FCC,color:#FFFFFF
+  style C fill:#398FCC,stroke:#398FCC,color:#FFFFFF
+  style D fill:#398FCC,stroke:#398FCC,color:#FFFFFF
+```
+
+Turneringen afvikles som én åben singlerække på fair vis efter snake-system uden klubhensyn, hvor ALLE har mulighed for at stille op (uanset alder, køn, niveau eller licens). Der tages det bedste fra fortidens- og nutidens bordtennis, hvor der bl.a. spilles til 15 point i hvert sæt (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint" `r "(<i>se mere under fanen [Ping Pong regler](regler.qmd)</i>)."`
+
+Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutspil som beskrevet herunder:
+
+-   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil[^1].
+-   **A-/B-slutspil**:
+    -   **A-slutspil**: A-slutspil afvikles som cup frem til og med kvartfinalerne.
+        -   **"Final 4"**: Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^2].
+    -   **B-slutspil**: B-slutspil afvikles udelukkende som cup.
+
+[^1]: ***Puljeregnskab**: Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) `r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`:*
+
+    -   *Stk. 1. Vundet eller afbrudt kamp giver 2 matchpoint og en tabt kamp giver 1 matchpoint.*
+    -   *Stk. 2. Hvis to eller flere spillere ender på samme antal matchpoint, afgøres den indbyrdes placering ved at sammenregne indbyrdes matchpoint mellem disse spillere.*
+    -   *Stk. 3. Hvis det indbyrdes matchpointtal mellem berørte spillere stadig er lige, beregnes den indbyrdes sætkvotient (vundne sæt divideret med tabte sæt).*
+    -   *Stk. 4. Hvis den indbyrdes sætkvotient mellem de berørte spillere er lige, beregnes den indbyrdes boldkvotient (vundne bolde divideret med tabte bolde).*
+    -   *Stk. 5. Så snart en placering eller flere kan bestemmes ud fra punkt 2-4, fjernes den eller de spillere. De øvrige spilleres placering beregnes på ny fra punkt 2.*
+    -   *Stk. 6. Hvis den ovenstående beregning ikke kan afgøre to eller flere spilleres placering, trækkes der lod. Denne lodtrækning foretages automatisk af stævneafviklingsprogrammet TTC.*
+
+[^2]: ***Afviklingsform til "Final 4"**: "Final 4" kommer til at bestå af følgende 4 runder:*
+
+    -   *Seedet 1 mod 4 og seedet 2 mod 3 (afvikles på to borde).*
+    -   *Seedet 1 mod 3 og seedet 2 mod 4 (afvikles på to borde).*
+    -   *Seedet 3 mod 4 (afvikles på ét bord).*
+    -   *Seedet 1 mod 2 (afvikles på ét bord).*
+
+Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
+
+1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^3].
+2.  Seneste *`r "[ratingopdatering i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"`*.
+3.  Skøn og lodtrækning.
+
+[^3]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:*
+
+    -   *Nr. 1. Benjamin Sørensen, Hørning BTK*
+    -   *Nr. 2. Simon Larsen, BTK Viby*
+    -   *Nr. 3. Mads Larsen, Silkeborg BTK*
+    -   *Nr. 4. Emil Madsen, Hørning BTK*
+
+I det videre spil dannes seedningerne på baggrund af placeringerne fra puljespillet.
+
+### Bat og bold
+
+**Bat**: Der spilles med de officielle sandpapirsbat, hvilket typisk vil være samme slags som foregående World Championship of Ping Pong (WCPP), og disse udleveres af stævnearrangøren til både opvarmning og kampe.
+
+**Bold**: Der spilles med helt almindelige hvide bordtennisbolde. Tidligere har boldene været fx "DHS D40+ 3\*\*\* bolde", "Andro Speedball 3S \*\*\* bolde" eller "Inzone Dura \*\* bolde".
+
+### Pris og tilmelding
+
+Det bestræbes på, at det koster kr. 125 at stille op til DM i Ping Pong, og at der findes finansiering til, at alle får udleveret bat af stævnearrangøren til opvarmning og kampe til den pris. Da en del af Ping Pong konceptet er, at ALLE kan stille op (uanset alder, køn, niveau eller licens), foregår tilmelding og betaling her på siden og derfor udenom BordtennisPortalen.
+
+### Præmier
+
+For hver deltager går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren. Derudover er den en præmie til yngste- og ældste deltager for at hylde mangfoldigheden. Sponsorer mv. kan forøge pengepræmierne eller stævnearrangørens indtægtsmuligheder.
+
+Resultaterne fra DM danner grundlag for international udtagelse. Normalvis er der 2 kvalifikationspladser til næstkommende WCPP, der sædvanligvis afholdes i London med en præmiesum på \$100.000 `r "(<i>se mere under fanen [WCPP](wcpp.qmd)</i>)."`
+
+Der er også en gave til den **yngste**- og **ældste** Ping Pong deltager for at hylde mangfoldigheden. Diplomer uddeles til alle gave-/præmietagere.
 
 ## Historie
 
 Ping Pong er bordtennis i mere eller mindre sin oprindelige form og har rødder tilbage fra omkring 1900-tallet. Her blev der spillet med bat, som var belagt med sandpapir, så det kunne skrue en anelse mere end blot et battræ. Sidenhen er bordtennisbelægninger blevet udviklet massivt, og indtil 2011 har hele evolutionen været i kategorien "bordtennis". Siden 2011 har bordtennis og Ping Pong været separate sportsgrene, hvor bordtennis spilles af et selvvalgt bat med svamp og gummi, og Ping Pong spilles udelukkende af identiske bat belagt med sandpapir.
+
+Ping Pong har mange ligheder med bordtennis, men omvendt er det også meget anderledes at spille med et bat belagt med sandpapir i forhold til et bat belagt med svamp og gummi. Det kan sammenlignes lidt med fx tennis vs. padel samt snooker vs. pool.
+
+Den lidt mere nørdet forklaring er, at Ping Pong spilles med bat uden svamp, som kun er belagt med sandpapir, hvilket er medvirkende til lav friktion mellem bat og bold, hvorfor skrue i Ping Pong kun kan genereres i et begrænset omfang. Dette skaber en sport, der for det første spilles på lige vilkår for alle, og det giver et helt andet slags spil end almindelig bordtennis med bl.a. længere dueller, andre teknikker og taktikker samt er fysisk mere krævende. Der er nogle få regler, der adskiller Ping Pong fra bordtennis, bl.a. spilles der til 15 point i hvert sæt (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint" `r "(<i>se mere under fanen [Ping Pong regler](regler.qmd)</i>)."`
 
 Officielle Ping Pong bat anvendt ved WCPP gennem tiden:
 
@@ -26,54 +118,7 @@ Officielle Ping Pong bat anvendt ved WCPP gennem tiden:
 -   **2019**: "Carlton WCPP Sandpapirsbat" (grå sandpapir).
 -   **2014-2018**: "Dunlop WCPP Sandpapirsbat" (blå sandpapir).
 
-## Formål og koncept
-
-Ping Pong beskrives bedst med ordsproget "*gammel vin på nye flasker*" og har til formål at være en alternativ sportsgren til bordtennis, hvor ALLE kan deltage på lige vilkår til en overkommelig pris.
-
-Ping Pong har mange ligheder med bordtennis, men omvendt er det også meget anderledes at spille med et bat belagt med sandpapir i forhold til et bat belagt med svamp og gummi. Det kan sammenlignes lidt med fx tennis vs. padel samt snooker vs. pool. Den spillemæssige forskel på Ping Pong og bordtennis findes i den lavere friktion mellem bat og bold, hvorfor skrue i Ping Pong kun kan genereres i et begrænset omfang, hvilket giver nogle anderledes og typisk længere dueller i forhold til almindelig bordtennis. Der er nogle få regler, der adskiller Ping Pong fra bordtennis, bl.a. spilles der til 15 point i hvert sæt (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint".
-
-Ping Pong konceptet udgør følgende 3 hovedpunkter:
-
-1.  **ALLE kan deltage**: Der er ingen adgangsbarriere, dvs. ALLE kan stille op uanset alder, køn, niveau eller licens. Man behøver derfor ikke nødvendigvis at have haft erfaring med bordtennis/Ping Pong tidligere.
-2.  **Lige vilkår**: Alle spiller udelukkende med bat belagt med sandpapir, og disse udleveres af stævnearrangøren til opvarmning og kampe på selve stævnedagen.
-3.  **Overkommelig pris**: Prisen for et Ping Pong bat og at spille i det hele taget er på et niveau, hvor langt de fleste kan være med.
-
-## Afviklingsform
-
-Turneringen afvikles som én åben singlerække på fair vis efter snake-system uden klubhensyn, hvor ALLE har mulighed for at stille op (uanset alder, køn, niveau eller licens). Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutspil som beskrevet herunder:
-
--   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil. Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) *`r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`*.
--   **A-/B-slutspil**:
-    -   **A-slutspil**: A-slutspil afvikles som cup frem til og med kvartfinalerne. Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp. "Final 4" kommer til at bestå af følgende 4 runder:
-        -   Seedet 1 mod 4 og seedet 2 mod 3 (afvikles på to borde).
-        -   Seedet 1 mod 3 og seedet 2 mod 4 (afvikles på to borde).
-        -   Seedet 3 mod 4 (afvikles på ét bord).
-        -   Seedet 1 mod 2 (afvikles på ét bord).
-    -   **B-slutspil**: B-slutspil afvikles udelukkende som cup.
-
-Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
-
-1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM.
-2.  Seneste *`r "[ratingopdatering i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"`* pr. ??-??-2023.
-3.  Skøn og lodtrækning.
-
-I det videre spil dannes seedningerne på baggrund af placeringerne fra puljespillet.
-
-## Bat og bold
-
-**Bat**: Der spilles med de officielle sandpapirsbat, hvilket typisk vil være samme slags som foregående World Championship of Ping Pong (WCPP), og disse udleveres af stævnearrangøren til både opvarmning og kampe.
-
-**Bold**: Der spilles med helt almindelige hvide bordtennisbolde. Tidligere har boldene været fx "DHS D40+ 3\*\*\* bolde", "Andro Speedball 3S \*\*\* bolde" eller "Inzone Dura \*\* bolde".
-
-## Pris og tilmelding
-
-Det bestræbes på, at det koster kr. 125 at stille op til DM i Ping Pong, og at der findes finansiering til, at alle får udleveret bat af stævnearrangøren til opvarmning og kampe til den pris. Da en del af Ping Pong konceptet er, at ALLE kan stille op (uanset alder, køn, niveau eller licens), foregår tilmelding og betaling her på siden og derfor udenom BordtennisPortalen.
-
-## Præmier
-
-For hver deltager går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren. Derudover er den en præmie til yngste- og ældste deltager for at hylde mangfoldigheden. Sponsorer mv. kan forøge pengepræmierne eller stævnearrangørens indtægtsmuligheder.
-
-## DM-vindere statistik
+`r "(<i>se mere under fanen [WCPP](wcpp.qmd)</i>)."`
 
 ```{r}
 library(rvest)
@@ -94,7 +139,7 @@ tbl_webscraping_DM_resultater <- rbind(data.frame(), data.frame(
 
 kbl_webscraping_DM_resultater <- tbl_webscraping_DM_resultater %>%
   kbl(col.names = NA, align = "cl", escape = F,
-      caption = "DM-vindere statistik") %>%
+      caption = "<i class=bi-trophy></i>&nbsp;DM-vindere statistik") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
   row_spec(which(tbl_webscraping_DM_resultater$År == "2020"),
@@ -146,12 +191,3 @@ kbl_DM_resultater <- tbl_DM_resultater %>%
 
 kbl_DM_resultater
 ```
-
-## Diverse links
-
-*Er du en Ping Pong entusiast eller bare nysgerrig på konceptet? Så tjek én eller flere af nedenstående links ud.*
-
-1.  ***Facebook**: Like og følg den officielle Facebook-side "Ping Pong DK" `r "<b>[HER](https://www.facebook.com/100183334928231){target=_blank}</b>"`, hvor også videoer fra tidligere DM kan ses.*
-2.  ***BTEX**: De officielle "Sanwei WCPP Sandpapirsbat" kan købes hos Bordtennisexperterne (BTEX) til eget brug `r "<b>[HER](https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html){target=_blank}</b>"`.*
-3.  ***Matchroom Live**: Tidligere videoer fra WCPP kan ses på Matchroom Live `r "<b>[HER](https://matchroom.live/sports/ping_pong){target=_blank}</b>"` (gratis bruger kan oprettes).*
-4.  ***Statistik**: DM i Ping Pong statistik fra 2014 ses på Bordtennis Danmarks hjemmeside (BTDK) `r "<b>[HER](https://bordtennisdanmark.dk/statistik/ping-pong-dm){target=_blank}</b>"`*.

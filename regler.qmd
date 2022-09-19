@@ -29,10 +29,11 @@ editor_options:
 
 ## "Final 4"
 
-*Følgende ekstra regler gælder "Final 4" i A-slutspil, så det matcher spilformatet til WCPP-finale:*
+*Til deltagerne i "Final 4" i A-slutspil udleveres **4 nye bat**.\
+Følgende ekstra regler gælder "Final 4" i A-slutspil, så det matcher spilformatet til WCPP-finale:*
 
 1.  **Bedst af 5 sæt.**
-2.  **To "dobbeltpoint" pr. spiller, men hver spiller må kun tage ét pr. sæt.**
+2.  **To "dobbeltpoint" pr. spiller, men hver spiller kan kun tage ét pr. sæt.**
 3.  **Én timeout pr. spiller.**
 
-*Til deltagerne i "Final 4" i A-slutspil udleveres 4 nye bat.*
+*Reglerne i bordtennis kan ses på Bordtennis Danmarks hjemmeside (BTDK) `r "<b>[HER](https://bordtennisdanmark.dk/regler/ittfs-bordtennislove){target=_blank}</b>"`.*

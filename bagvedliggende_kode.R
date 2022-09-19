@@ -48,7 +48,6 @@ tbl0_join <- read_excel(
   ungroup() %>%
   filter(between(
     year(k_ordredato), substr(tbl0_input$k_ordredato, 1, 4), substr(tbl0_input$k_ordredato, 6, 9))) %>%
-  add_count(k_deltager_id, k_status, name = "k_billetantal") %>%
   mutate(k_status = case_when(
     grepl("Tilmeldt", k_status) ~ "✔️ Tilmeldt",
     grepl("Afbud",    k_status) ~ "❌ Afbud")) %>%
@@ -70,6 +69,9 @@ tbl0_join <- read_excel(
     !is.na(k_rang1)  ~ paste0("[", k_rang1, "] ", k_rating2),
     is.na(k_rating2) ~ "-",
                 TRUE ~ k_rating2)) %>%
+  mutate(k_ratinggruppe = case_when(
+    as.numeric(k_rating2) >= 2000 ~ "Elite",
+                      TRUE ~ "Amatør")) %>%
   mutate(k_født = as.Date(if_else(
     paste0(substring(k_spiller_id, 5, 6)) <= substr(year(Sys.time()), 3, 4),
     paste0(
@@ -119,13 +121,12 @@ tbl0_join <- read_excel(
     k_postnr <= 9999 ~ "Nordjylland")) %>%
   
   mutate_at(c(
-    "k_billetantal",
     "k_rang1",
     "k_rating2",
     "k_rang3",
     "k_alder",
     "k_postnr"), as.numeric) %>%
-  mutate(k_gentilmelding = as.factor(k_gentilmelding)) %>%
+  mutate(k_gentilmelding = factor(k_gentilmelding, ordered = T)) %>%
   mutate(
     k_køn = factor(k_køn, levels = c(
       "♂️ Herre",
@@ -134,6 +135,9 @@ tbl0_join <- read_excel(
       "Ungdom",
       "Senior",
       "Veteran"), ordered = T),
+    k_ratinggruppe = factor(k_ratinggruppe, levels = c(
+      "Elite",
+      "Amatør"), ordered = T),
     k_billettype  = factor(k_billettype, levels = c(
       "🏓 DM i Ping Pong",
       "🥳 Fest om aftenen"), ordered = T),
@@ -166,7 +170,7 @@ tbl0_stat <- data.frame(
   
   # Sidst opdateret
   k_sidst_opdateret = paste0(
-    "<i>Sidst opdateret ", format(
+    "<i class=bi-arrow-repeat>&nbsp;Sidst opdateret ", format(
       floor_date(Sys.time(), "30 minutes"),
       "%d.%m.%Y kl. %H:%M"), "</i>"),
   
@@ -290,6 +294,31 @@ tbl0_stat <- data.frame(
         !grepl("Ingen klub", k_klub)) %>%
       distinct(k_klub, .keep_all = T) %>%
       summarise(n()), " klubber"),
+  
+  # Deltagerantal ratinggruppe
+  k_deltagerantal_ratinggruppe = paste0(
+    tbl0_join %>% filter(
+      grepl("Tilmeldt", k_status) &
+        grepl("Ping Pong", k_billettype)) %>%
+      count(k_ratinggruppe) %>%
+      mutate(pct = percent(n/sum(n), digits = 0)) %>%
+      mutate(label = paste0("🏓 ", n, " ", k_ratinggruppe, " (", pct, ")")) %>%
+      summarise(label = str_c(label, collapse = " ∙ "))),
+  
+  # Rating
+  k_rating = paste0(
+    "🏓 Min. ", tbl0_join %>% filter(
+      grepl("Tilmeldt", k_status) &
+        grepl("Ping Pong", k_billettype)) %>%
+      summarise(min(k_rating2, na.rm = T)), " rating",
+    " ∙ 🏓 Gns. ", tbl0_join %>% filter(
+      grepl("Tilmeldt", k_status) &
+        grepl("Ping Pong", k_billettype)) %>%
+      summarise(round(mean(k_rating2, na.rm = T), 0)), " rating",
+    " ∙ 🏓 Maks. ", tbl0_join %>% filter(
+      grepl("Tilmeldt", k_status) &
+        grepl("Ping Pong", k_billettype)) %>%
+      summarise(max(k_rating2, na.rm = T)), " rating"),
 
   # Billetantal Ping Pong (numerisk)
   k_num_billetantal_ping_pong = as.numeric(
@@ -347,59 +376,59 @@ tbl1_præmier_penge <- data.frame(
     "2. plads"),
   "Foreløbig" = c(
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_stat$k_num_præmie_total, 0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_stat$k_num_præmie_A,     0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_input$k_præmie_A1,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_input$k_præmie_A2,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_input$k_præmie_A3,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_input$k_præmie_A4,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_stat$k_num_præmie_B,     0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_input$k_præmie_B1,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_stat$k_num_billetantal_ping_pong*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_stat$k_num_billetantal_ping_pong*
         tbl0_input$k_præmie_B2,       0), big.mark = "."))),
   "Potentiel" = c(
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_stat$k_num_præmie_total, 0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_stat$k_num_præmie_A,     0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_input$k_præmie_A1,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_input$k_præmie_A2,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_input$k_præmie_A3,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_input$k_præmie_A4,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_stat$k_num_præmie_B,     0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_input$k_præmie_B1,       0), big.mark = ".")),
     paste("kr.", format(round(
-      0.001+tbl0_input$k_præmiepenge*tbl0_input$k_billetantal_ping_pong_maks*
+      0.001+tbl0_input$k_præmiepenge_pr_deltager*tbl0_input$k_billetantal_ping_pong_maks*
         tbl0_input$k_præmie_B2,       0), big.mark = "."))),
   "Pct." = c(
     paste0(digits(0.001+100*tbl0_stat$k_num_præmie_total, 0), "%"),
@@ -413,12 +442,9 @@ tbl1_præmier_penge <- data.frame(
     paste0(digits(0.001+100*tbl0_input$k_præmie_B2,       0), "%")),
   check.names = F)
 kbl1_præmier_penge <- tbl1_præmier_penge %>%
-  kbl(col.names = NA, align = "lrrr", escape = F) %>%
+  kbl(col.names = NA, align = "lrrr", escape = F,
+      caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  add_header_above(
-    c("💰 <b>Præmiepenge</b> (afrundet)" = 4),
-    italic = T, align = "c", font_size = "small", escape = F,
-    extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
   pack_rows(start_row = 3, end_row = 6) %>%
   pack_rows(start_row = 8, end_row = 9) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
@@ -428,7 +454,7 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
   footnote(paste0(
     "<i style=font-size:80%>Foreløbig = ",
     tbl0_stat$k_num_billetantal_ping_pong, " deltagere x kr. ",
-    tbl0_input$k_præmiepenge, " (maks ",
+    tbl0_input$k_præmiepenge_pr_deltager, " (maks ",
     tbl0_input$k_billetantal_ping_pong_maks, " deltagere).<br>",
     "Diplomer uddeles til alle gave-/præmietagere.</i>"),
     general_title = "", escape = F)
@@ -448,12 +474,12 @@ tbl1_præmier_yngst_ældst <- tbl0_join %>% filter(
     "Navn"  = k_navn_klub_alder_status,
     "Født"  = k_født)
 kbl1_præmier_yngst_ældst <- tbl1_præmier_yngst_ældst %>%
-  kbl(col.names = NA, align = "lc", escape = F) %>%
+  kbl(col.names = NA, align = "lc", escape = F,
+      caption = paste0(
+      "<i class=bi-gift style=font-size:90%>&nbsp;",
+      "Gave til <b>yngste</b>- og <b>ældste</b> Ping Pong deltager<br>",
+      "for at hylde mangfoldigheden</i>")) %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  add_header_above(
-    c("🎁 Gave til <b>yngste</b>- og <b>ældste</b> Ping Pong deltager" = 2),
-    italic = T, align = "c", font_size = "small", escape = F,
-    extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
 kbl1_præmier_yngst_ældst
 
@@ -513,37 +539,36 @@ tbl2_deltagere_puljer <- tbl0_join %>%
   filter(!is.na(k_deltager_id)) %>%
   select(
     Nr.,
-    "Navn og klub" = k_navn_klub_alder_status,
-    "Alder"        = k_alder,
-    "Rating"       = k_rating,
+    "Navn"   = k_navn_klub_alder_status,
+    "Rating" = k_rating,
     Seedningslag)
 
 kbl2_deltagere_puljer <- tbl2_deltagere_puljer %>%
-  kbl(col.names = NA, align = "clcr", escape = F,
+  kbl(col.names = NA, align = "clr", escape = F,
       caption = paste0(tbl0_input$k_puljeantal, "-mandspuljer efter snake-system")) %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   add_header_above(
-    c("Bemærk: Puljerne kan ændre sig ved drive-in/afbud" = 5),
+    c("Bemærk: Puljerne kan ændre sig ved drive-in/afbud" = 4),
     italic = T, align = "c", font_size = "small", escape = F,
     extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
   row_spec(which(tbl2_deltagere_puljer$Seedningslag == "1"), bold = T,
            extra_css = "border:hidden;border-top:0.7px solid #111111") %>%
-  remove_column(5)
+  remove_column(4)
 kbl2_deltagere_puljer
 
 #' ## Kun til festen inkl. afbud
 #+ eval=F, warning=F, message=F
 
 tbl2_deltagere_fest <- tbl0_join %>%
+  add_count(k_deltager_id, k_status, name = "k_billetantal") %>%
   filter(grepl("Fest", k_billettype) &
            k_billetantal == 1 |
            grepl("Afbud", k_status)) %>%
   distinct(k_deltager_id, k_status, .keep_all = T) %>%
   arrange(
     k_status,
-    k_billetantal,
-    match(k_billettype, "Fest"),
+    desc(k_billetantal),
     desc(k_født),
     k_deltager_id) %>%
   mutate(Nr. = case_when(grepl("Tilmeldt", k_status) ~ row_number())) %>%

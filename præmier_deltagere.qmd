@@ -9,6 +9,8 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
+`r tbl0_input$k_cta`
+
 `r tbl0_stat$k_sidst_opdateret`
 
 ## Præmier
