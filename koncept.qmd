@@ -1,5 +1,5 @@
 ---
-title: "<i class=bi-bullseye style=font-size:1em></i>&nbsp;DM-koncept & historie"
+title: "<i class=bi-bullseye style=font-size:1em></i>&nbsp;DM-koncept"
 subtitle: "Generelt om Ping Pong"
 editor_options: 
   chunk_output_type: console
@@ -16,11 +16,11 @@ DM i Ping Pong forsøger også at omfavne fællesskabet og mangfoldigheden ved a
 
 Ping Pong beskrives bedst med ordsproget "*gammel vin på nye flasker*" og har til formål at være en alternativ sportsgren til bordtennis, hvor ALLE kan deltage på lige vilkår til en overkommelig pris. DM-konceptet udgør følgende 3 hovedpunkter:
 
-1.  **ALLE kan deltage**: Der er ingen adgangsbarriere, dvs. ALLE har mulighed for at stille op uanset alder, køn, niveau eller licens. Man behøver derfor ikke nødvendigvis at have haft erfaring med bordtennis/Ping Pong tidligere.
+1.  **ALLE kan deltage**[^1]: Der er ingen adgangsbarriere, dvs. ALLE har mulighed for at stille op uanset alder, køn, niveau eller licens. Man behøver derfor ikke nødvendigvis at have haft erfaring med bordtennis/Ping Pong tidligere.
 2.  **Heldagsbegivenhed**: Heldagsbegivenhed i form af DM-turnering samt socialt arrangement om aftenen/natten for at hylde fællesskabet og mangfoldigheden.
 3.  **Overkommelig pris**: Prisen for et Ping Pong bat og at spille i det hele taget er på et niveau, hvor langt de fleste kan være med.
 
-*Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren).*
+[^1]: ***ALLE kan deltage**: Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren). Er dette ikke opfyldt, vil det være muligt at deltage udelukkende i puljespillet, hvor ens resultater ikke tæller med i puljeregnskabet (tilmelding stadig påkrævet).*
 
 ## Minimumskrav
 
@@ -33,56 +33,53 @@ Ping Pong beskrives bedst med ordsproget "*gammel vin på nye flasker*" og har t
 ### Afviklingsform
 
 ```{mermaid}
-%%| fig-width: 3
-flowchart LR
+%%| fig-width: 2.5
+flowchart TD
   A(6-mandspuljer) --> |Nr. 1-3| B(A-slutspil)
   A --> |Nr. 4-6| C(B-slutspil)
-  B --> |1/4-finalevindere| D(Final-4)
+  B --> |&#x00BC-finalevindere| D(<q>Final-4</q>)
   
-  style A fill:#398FCC,stroke:#398FCC,color:#FFFFFF
-  style B fill:#398FCC,stroke:#398FCC,color:#FFFFFF
-  style C fill:#398FCC,stroke:#398FCC,color:#FFFFFF
-  style D fill:#398FCC,stroke:#398FCC,color:#FFFFFF
+  style A fill:#1C2833,stroke:#1C2833,color:#FFFFFF
+  style B fill:#1C2833,stroke:#1C2833,color:#FFFFFF
+  style C fill:#1C2833,stroke:#1C2833,color:#FFFFFF
+  style D fill:#1C2833,stroke:#1C2833,color:#FFFFFF
 ```
 
-Turneringen afvikles som én åben singlerække på fair vis efter snake-system uden klubhensyn, hvor ALLE har mulighed for at stille op (uanset alder, køn, niveau eller licens). Der tages det bedste fra fortidens- og nutidens bordtennis, hvor der bl.a. spilles til 15 point i hvert sæt (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint" `r "(<i>se mere under fanen [Ping Pong regler](regler.qmd)</i>)."`
+Turneringen afvikles som én åben singlerække på fair vis efter snake-system uden klubhensyn. Der tages det bedste fra fortidens- og nutidens bordtennis, hvor der bl.a. spilles til 15 point i hvert sæt (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint" `r "(<i>se mere under fanen [Ping Pong regler](regler.qmd)</i>)."`
 
 Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutspil som beskrevet herunder:
 
--   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil[^1].
+-   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil[^2].
 -   **A-/B-slutspil**:
     -   **A-slutspil**: A-slutspil afvikles som cup frem til og med kvartfinalerne.
-        -   **"Final 4"**: Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^2].
+        -   **"Final 4"**: Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^3].
     -   **B-slutspil**: B-slutspil afvikles udelukkende som cup.
 
-[^1]: ***Puljeregnskab**: Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) `r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`:*
+[^2]: ***Puljeregnskab**: Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) `r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`:\
+    Stk. 1. Vundet eller afbrudt kamp giver 2 matchpoint og en tabt kamp giver 1 matchpoint.\
+    Stk. 2. Hvis to eller flere spillere ender på samme antal matchpoint, afgøres den indbyrdes placering ved at sammenregne indbyrdes matchpoint mellem disse spillere.\
+    Stk. 3. Hvis det indbyrdes matchpointtal mellem berørte spillere stadig er lige, beregnes den indbyrdes sætkvotient (vundne sæt divideret med tabte sæt).\
+    Stk. 4. Hvis den indbyrdes sætkvotient mellem de berørte spillere er lige, beregnes den indbyrdes boldkvotient (vundne bolde divideret med tabte bolde).\
+    Stk. 5. Så snart en placering eller flere kan bestemmes ud fra punkt 2-4, fjernes den eller de spillere. De øvrige spilleres placering beregnes på ny fra punkt 2.\
+    Stk. 6. Hvis den ovenstående beregning ikke kan afgøre to eller flere spilleres placering, trækkes der lod. Denne lodtrækning foretages automatisk af stævneafviklingsprogrammet TTC.*
 
-    -   *Stk. 1. Vundet eller afbrudt kamp giver 2 matchpoint og en tabt kamp giver 1 matchpoint.*
-    -   *Stk. 2. Hvis to eller flere spillere ender på samme antal matchpoint, afgøres den indbyrdes placering ved at sammenregne indbyrdes matchpoint mellem disse spillere.*
-    -   *Stk. 3. Hvis det indbyrdes matchpointtal mellem berørte spillere stadig er lige, beregnes den indbyrdes sætkvotient (vundne sæt divideret med tabte sæt).*
-    -   *Stk. 4. Hvis den indbyrdes sætkvotient mellem de berørte spillere er lige, beregnes den indbyrdes boldkvotient (vundne bolde divideret med tabte bolde).*
-    -   *Stk. 5. Så snart en placering eller flere kan bestemmes ud fra punkt 2-4, fjernes den eller de spillere. De øvrige spilleres placering beregnes på ny fra punkt 2.*
-    -   *Stk. 6. Hvis den ovenstående beregning ikke kan afgøre to eller flere spilleres placering, trækkes der lod. Denne lodtrækning foretages automatisk af stævneafviklingsprogrammet TTC.*
-
-[^2]: ***Afviklingsform til "Final 4"**: "Final 4" kommer til at bestå af følgende 4 runder:*
-
-    -   *Seedet 1 mod 4 og seedet 2 mod 3 (afvikles på to borde).*
-    -   *Seedet 1 mod 3 og seedet 2 mod 4 (afvikles på to borde).*
-    -   *Seedet 3 mod 4 (afvikles på ét bord).*
-    -   *Seedet 1 mod 2 (afvikles på ét bord).*
+[^3]: ***Afviklingsform til "Final 4"**: "Final 4" kommer til at bestå af følgende 4 runder:\
+    Runde 1: Seedet 1 mod 4 og seedet 2 mod 3 (afvikles på to borde).\
+    Runde 2: Seedet 1 mod 3 og seedet 2 mod 4 (afvikles på to borde).\
+    Runde 3: Seedet 3 mod 4 (afvikles på ét bord).\
+    Runde 4: Seedet 1 mod 2 (afvikles på ét bord).*
 
 Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
 
-1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^3].
+1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^4].
 2.  Seneste *`r "[ratingopdatering i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"`*.
 3.  Skøn og lodtrækning.
 
-[^3]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:*
-
-    -   *Nr. 1. Benjamin Sørensen, Hørning BTK*
-    -   *Nr. 2. Simon Larsen, BTK Viby*
-    -   *Nr. 3. Mads Larsen, Silkeborg BTK*
-    -   *Nr. 4. Emil Madsen, Hørning BTK*
+[^4]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:\
+    Nr. 1. Benjamin Sørensen, Hørning BTK.\
+    Nr. 2. Simon Larsen, BTK Viby.\
+    Nr. 3. Mads Larsen, Silkeborg BTK.\
+    Nr. 4. Emil Madsen, Hørning BTK.*
 
 I det videre spil dannes seedningerne på baggrund af placeringerne fra puljespillet.
 

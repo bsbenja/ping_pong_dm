@@ -9,13 +9,36 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-`r tbl0_input$k_cta`
+`r cta_plakat_status`
 
-`r paste0("![[<i style=font-size:80%>[Download indbydelesplakat som PDF]</i>](", tbl0_input$k_indbydelsesplakat, ".pdf){target=_blank}](", tbl0_input$k_indbydelsesplakat, ".png){width=40em fig-align=left}")`
-
-*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG 2023 (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag 17. juni.\
+*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG 2023 (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag 17. juni. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1]*.\
 Eventet er før sommerferien og som noget af det sidste af indeværende bordtennissæson, da det ligger i uge 24.\
 Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen med stemningsmusik og/eller et brag af en fest om aftenen, som alt sammen fås til en overkommelig pris.*
+
+[^1]: ***ALLE kan deltage**: Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren). Er dette ikke opfyldt, vil det være muligt at deltage udelukkende i puljespillet, hvor ens resultater ikke tæller med i puljeregnskabet (tilmelding stadig påkrævet).*
+
+```{r}
+#| layout-ncol: 2
+library(kableExtra)
+data.frame(
+  " " = c(
+    "🏓 DM i Ping Pong 2023",
+    "🥳 Fest om aftenen"),
+  "<i class=bi-cash-stack></i>&nbsp;Pris" = c(
+    "kr. 125",
+    "kr. 150"),
+  "<i class=bi-person-fill></i>&nbsp;Maks." = c(
+    "96",
+    "200"),
+  check.names = F) %>%
+  kbl(col.names = NA, align = "lrr", escape = F, format = "html", 
+      caption = "<i class=bi-tags-fill></i>&nbsp;Billettyper") %>%
+  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  footnote(
+    "<i style=font-size:80%>Mikrogebyrer pålægges alle priser",
+    general_title = "", escape = F) %>%
+  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
+```
 
 ## Tidsplan
 
@@ -29,28 +52,22 @@ tbl_tidsplan <- data.frame(
     "Kl. 10:30-14:00",
     "Kl. 14:00-16:00",
     "Kl. 16:00-18:00",
-    "Fra kl. 19:00",
-    "Kl. 19:00-22:00",
-    "Fra kl. 22:00"),
+    "Fra kl. 19:00"),
   "Type" = c(
     "DM i Ping Pong 2023",
-    "Check-in for deltagere til DM i Ping Pong 2023",
-    "Puljespil (primært 6-mandspuljer)",
-    "A-slutspil frem til og med kvartfinalerne og B-slutspil færdigspilles",
+    "Check-in",
+    "Puljespil",
+    "A-/B-slutspil",
     '"Final 4" i A-slutspil',
-    "Fest om aftenen",
-    "Fest om aftenen med pizza og fri bar i 3 timer i Sisu/MBK's lokaler",
-    "Det aarhusianske byliv rammes for de festlystne (Sisu/MBK's lokaler lukkes kl. 22)"),
+    "Fest om aftenen"),
   check.names = F)
 
 kbl_tidsplan <- tbl_tidsplan %>%
   kbl(col.names = NA, align = "l", escape = F,
       caption = "<i class=bi-hourglass></i>&nbsp;Tidsplan") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  add_header_above(
-    c("Kan ændre sig en smule alt efter antal deltagere" = 2),
-    italic = T, align = "c", font_size = "small", escape = F,
-    extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
+  footnote(
+    "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere", general_title = "", escape = F) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
   row_spec(c(1, 6), bold = T, background = tbl0_input$k_farve2)
 
@@ -62,56 +79,53 @@ kbl_tidsplan
 ### Afviklingsform
 
 ```{mermaid}
-%%| fig-width: 3
-flowchart LR
+%%| fig-width: 2.5
+flowchart TD
   A(6-mandspuljer) --> |Nr. 1-3| B(A-slutspil)
   A --> |Nr. 4-6| C(B-slutspil)
-  B --> |1/4-finalevindere| D(Final-4)
+  B --> |&#x00BC-finalevindere| D(<q>Final-4</q>)
   
-  style A fill:#398FCC,stroke:#398FCC,color:#FFFFFF
-  style B fill:#398FCC,stroke:#398FCC,color:#FFFFFF
-  style C fill:#398FCC,stroke:#398FCC,color:#FFFFFF
-  style D fill:#398FCC,stroke:#398FCC,color:#FFFFFF
+  style A fill:#1C2833,stroke:#1C2833,color:#FFFFFF
+  style B fill:#1C2833,stroke:#1C2833,color:#FFFFFF
+  style C fill:#1C2833,stroke:#1C2833,color:#FFFFFF
+  style D fill:#1C2833,stroke:#1C2833,color:#FFFFFF
 ```
 
-Turneringen afvikles som én åben singlerække på fair vis efter snake-system uden klubhensyn, hvor ALLE har mulighed for at stille op (uanset alder, køn, niveau eller licens). Der tages det bedste fra fortidens- og nutidens bordtennis, hvor der bl.a. spilles til 15 point i hvert sæt (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint" `r "(<i>se mere under fanen [Ping Pong regler](regler.qmd)</i>)."`
+Turneringen afvikles som én åben singlerække på fair vis efter snake-system uden klubhensyn. Der tages det bedste fra fortidens- og nutidens bordtennis, hvor der bl.a. spilles til 15 point (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages "dobbeltpoint" `r "(<i>se mere under fanen [Ping Pong regler](regler.qmd)</i>)."`
 
 Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutspil som beskrevet herunder:
 
--   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil[^1].
+-   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil[^2].
 -   **A-/B-slutspil**:
     -   **A-slutspil**: A-slutspil afvikles som cup frem til og med kvartfinalerne.
-        -   **"Final 4"**: Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^2].
+        -   **"Final 4"**: Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^3].
     -   **B-slutspil**: B-slutspil afvikles udelukkende som cup.
 
-[^1]: ***Puljeregnskab**: Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) `r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`:*
+[^2]: ***Puljeregnskab**: Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) `r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`:\
+    Stk. 1. Vundet eller afbrudt kamp giver 2 matchpoint og en tabt kamp giver 1 matchpoint.\
+    Stk. 2. Hvis to eller flere spillere ender på samme antal matchpoint, afgøres den indbyrdes placering ved at sammenregne indbyrdes matchpoint mellem disse spillere.\
+    Stk. 3. Hvis det indbyrdes matchpointtal mellem berørte spillere stadig er lige, beregnes den indbyrdes sætkvotient (vundne sæt divideret med tabte sæt).\
+    Stk. 4. Hvis den indbyrdes sætkvotient mellem de berørte spillere er lige, beregnes den indbyrdes boldkvotient (vundne bolde divideret med tabte bolde).\
+    Stk. 5. Så snart en placering eller flere kan bestemmes ud fra punkt 2-4, fjernes den eller de spillere. De øvrige spilleres placering beregnes på ny fra punkt 2.\
+    Stk. 6. Hvis den ovenstående beregning ikke kan afgøre to eller flere spilleres placering, trækkes der lod. Denne lodtrækning foretages automatisk af stævneafviklingsprogrammet TTC.*
 
-    -   *Stk. 1. Vundet eller afbrudt kamp giver 2 matchpoint og en tabt kamp giver 1 matchpoint.*
-    -   *Stk. 2. Hvis to eller flere spillere ender på samme antal matchpoint, afgøres den indbyrdes placering ved at sammenregne indbyrdes matchpoint mellem disse spillere.*
-    -   *Stk. 3. Hvis det indbyrdes matchpointtal mellem berørte spillere stadig er lige, beregnes den indbyrdes sætkvotient (vundne sæt divideret med tabte sæt).*
-    -   *Stk. 4. Hvis den indbyrdes sætkvotient mellem de berørte spillere er lige, beregnes den indbyrdes boldkvotient (vundne bolde divideret med tabte bolde).*
-    -   *Stk. 5. Så snart en placering eller flere kan bestemmes ud fra punkt 2-4, fjernes den eller de spillere. De øvrige spilleres placering beregnes på ny fra punkt 2.*
-    -   *Stk. 6. Hvis den ovenstående beregning ikke kan afgøre to eller flere spilleres placering, trækkes der lod. Denne lodtrækning foretages automatisk af stævneafviklingsprogrammet TTC.*
-
-[^2]: ***Afviklingsform til "Final 4"**: "Final 4" kommer til at bestå af følgende 4 runder:*
-
-    -   *Seedet 1 mod 4 og seedet 2 mod 3 (afvikles på to borde).*
-    -   *Seedet 1 mod 3 og seedet 2 mod 4 (afvikles på to borde).*
-    -   *Seedet 3 mod 4 (afvikles på ét bord).*
-    -   *Seedet 1 mod 2 (afvikles på ét bord).*
+[^3]: ***Afviklingsform til "Final 4"**: "Final 4" kommer til at bestå af følgende 4 runder:\
+    Runde 1: Seedet 1 mod 4 og seedet 2 mod 3 (afvikles på to borde).\
+    Runde 2: Seedet 1 mod 3 og seedet 2 mod 4 (afvikles på to borde).\
+    Runde 3: Seedet 3 mod 4 (afvikles på ét bord).\
+    Runde 4: Seedet 1 mod 2 (afvikles på ét bord).*
 
 Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
 
-1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^3].
+1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^4].
 2.  Sidste `r "[ratingopdatering i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"` pr. 26.05.2023.
 3.  Skøn og lodtrækning.
 
-[^3]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:*
-
-    -   *Nr. 1. Benjamin Sørensen, Hørning BTK*
-    -   *Nr. 2. Simon Larsen, BTK Viby*
-    -   *Nr. 3. Mads Larsen, Silkeborg BTK*
-    -   *Nr. 4. Emil Madsen, Hørning BTK*
+[^4]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:\
+    Nr. 1. Benjamin Sørensen, Hørning BTK.\
+    Nr. 2. Simon Larsen, BTK Viby.\
+    Nr. 3. Mads Larsen, Silkeborg BTK.\
+    Nr. 4. Emil Madsen, Hørning BTK.*
 
 I det videre spil dannes seedningerne på baggrund af placeringerne fra puljespillet.
 
@@ -143,15 +157,15 @@ data.frame(
     "1. plads",
     "2. plads"),
   "Potentiel" = c(
-    "kr. 7.200",
-    "kr. 6.300",
-    "kr. 2.700",
-    "kr. 1.800",
-    "kr. 1.080",
+    "kr. 9.600",
+    "kr. 8.400",
+    "kr. 3.600",
+    "kr. 2.400",
+    "kr. 1.440",
+    "kr. 960",
+    "kr. 1.200",
     "kr. 720",
-    "kr. 900",
-    "kr. 540",
-    "kr. 360"),
+    "kr. 480"),
   "Pct." = c(
     "100%",
     "87,5%",
@@ -199,49 +213,49 @@ Hvis man er 16 eller 17 år, udleveres kun alkohol med en skriftlig tilladelse f
 
 -   **Badefaciliteter**: Der er mulighed for at tage bad i hallen efter endt spil.
 
--   **Refusion**: Refusion vil ske hurtigst muligt efter henvendelse til kontaktpersonen, såfremt alle billetter ønskes refunderet. Hvis der ønskes refusion af enkeltbilletter, vil refusion ske umiddelbart efter begivenheden. Mikrogebyrer refunderes ikke.
+-   **Refusion**: Tilmelding er ikke bindende, hvorfor evt. refusion er muligt ved henvendelse til kontaktpersonen. Ønskes alle billetter refunderet, vil refusion ske hurtigst muligt. Hvis der ønskes refusion af enkeltbilletter, vil refusion ske umiddelbart efter begivenheden. Mikrogebyrer refunderes ikke.
 
 ```{r}
 #| layout-ncol: 3
 library(kableExtra)
 data.frame(
-  "1" = "<img src=Filer/Stævneleder.png height=65>",
-  "2" = paste0(
-    "<i class=bi-person></i>&nbsp;Ole Munck Christensen<br>",
-    "<i class=bi-envelope></i>&nbsp;<a href=mailto:ole@compurevision.dk target=_blank>ole@compurevision.dk</a><br>",
-    "<i class=bi-telephone></i>&nbsp;<a href=tel:23674387 target=_blank>23674387</a>"),
-  check.names = F) %>%
-  kbl(col.names = NULL, align = "l", escape = F,
-      caption = "<b class=bi-person-lines-fill>&nbsp;Stævneleder</b>") %>%
-  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
-  column_spec(1, width = "5em")
-
-data.frame(
-  "1" = "<img src=Filer/Kontaktperson.png height=65>",
+  "1" = "<img src=Filer/Kontaktperson.png height=65 style=border-radius:10px>",
   "2" = paste0(
     "<i class=bi-person></i>&nbsp;Benjamin Sørensen<br>",
     "<i class=bi-envelope></i>&nbsp;<a href=mailto:bsbenja@gmail.com target=_blank>bsbenja@gmail.com</a><br>",
     "<i class=bi-telephone></i>&nbsp;<a href=tel:28722894 target=_blank>28722894</a>"),
   check.names = F) %>%
   kbl(col.names = NULL, align = "l", escape = F,
-      caption = "<b class=bi-person-lines-fill>&nbsp;Kontaktperson</b>") %>%
+      caption = "<b class=bi-person-lines-fill>&nbsp;Kontaktperson</b><br><i>Evt. spørgsmål til kontaktperson</i>") %>%
   kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
   column_spec(1, width = "5em")
 
 data.frame(
-  "1" = "<img src=Filer/Lokation.png height=65;margin-right=150px>",
+  "1" = "<img src=Filer/Stævneleder.png height=65 style=border-radius:10px>",
+  "2" = paste0(
+    "<i class=bi-person></i>&nbsp;Ole Munck Christensen<br>",
+    "<i class=bi-envelope></i>&nbsp;<a href=mailto:ole@compurevision.dk target=_blank>ole@compurevision.dk</a><br>",
+    "<i class=bi-telephone></i>&nbsp;<a href=tel:23674387 target=_blank>23674387</a>"),
+  check.names = F) %>%
+  kbl(col.names = NULL, align = "l", escape = F,
+      caption = "<b class=bi-person-lines-fill>&nbsp;Stævneleder</b><br><i>Ansvarlig på stævnedagen</i>") %>%
+  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
+  column_spec(1, width = "5em")
+
+data.frame(
+  "1" = "<img src=Filer/Lokation.png height=65 style=border-radius:10px>",
   "2" = "<a href=https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034 target=_blank>
   Hørning Idrætscenter<br>Toftevej 53<br>8362 Hørning</a>",
   check.names = F) %>%
   kbl(col.names = NULL, align = "l", escape = F,
-      caption = "<b class=bi-geo-alt-fill>&nbsp;Lokation</b>") %>%
+      caption = "<b class=bi-geo-alt-fill>&nbsp;Lokation</b><br><i>Geografisk placering</i>") %>%
   kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
   column_spec(1, width = "5em")
 ```
 
 ## Tilmelding
 
-*`r paste("<i class=bi-tags-fill>&nbsp;Tilmeldingsfristen er", sub('^0+', '', format(dmy(tbl0_input$k_tilmeldingsfrist), '%d. %B %Y.')), "Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail. Evt. refusion er muligt</i>")`*
+*`r paste("ALLE kan deltage. Tilmeldingsfristen er", sub('^0+', '', format(dmy(tbl0_input$k_tilmeldingsfrist), '%d. %B %Y.')), "Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt). Tilmelding foregår herunder <i class=bi-tags-fill></i>")`*
 
 ```{=html}
 <div class="ticketbutler-iframe" data-type="EVENT" data-domain="billetfix.dk" data-slug="dm-i-ping-pong-2023"></div><script type="text/javascript" src="https://unpkg.com/@ticketbutler/event-embedder@latest/dist/index.js"></script>

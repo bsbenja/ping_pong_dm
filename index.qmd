@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-house-fill style=font-size:1em></i>&nbsp;Forside"
-subtitle: "<i class=small>Dette er den officielle hjemmeside for DM i Ping Pong.<br>Ping Pong er bordtennis på lige vilkår med sandpapirsbat, som er åben for ALLE til en overkommelig pris.<br>Se mere ved at navigere rundt her på hjemmesiden. Fra mobil gøres dette via topmenuen.</i>"
+subtitle: "<i style=font-size:80%>Velkommen til den officielle hjemmeside for Danske Mesterskaber i Ping Pong. Ping Pong er bordtennis på lige vilkår med sandpapirsbat, som er åben for ALLE til en overkommelig pris. Se mere ved at navigere rundt her på hjemmesiden. Fra mobil gøres dette via topmenuen.</i>"
 editor_options: 
   chunk_output_type: console
 ---
@@ -9,34 +9,26 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-`r "![](Filer/Forside.jpg){width=40em fig-align=left}"`
+`r cta_plakat_status`
 
-`r tbl0_input$k_cta`
+`r forside_tekst_status`
 
-### DM i Ping Pong 2023
+**Generelt om Ping Pong**
 
--   `r tbl0_input$k_indbydelse_tilmelding`
--   `r tbl0_input$k_præmier_deltagere`
-
-### Generelt om Ping Pong
-
--   `r "<i class=bi-card-text></i>&nbsp;[<b>Ping Pong regler</b>](regler.qmd):&nbsp;<i>Se hvilke regler der adskiller Ping Pong fra bordtennis.</i>"`
--   `r "<i class=bi-globe2></i>&nbsp;[<b>WCPP</b>](wcpp.qmd):&nbsp;<i>Se hvad World Championship of Ping Pong (WCPP) sædvanligvis er for en størrelse.</i>"`
--   `r "<i class=bi-bullseye></i>&nbsp;[<b>DM-koncept & historie</b>](koncept.qmd):&nbsp;<i>Se hvad DM i Ping Pong har at byde på, dets historie og tidligere vindere.</i>"`
+-   `r "<i class=bi-card-text></i>&nbsp;[<b>Ping Pong regler</b>](regler.qmd):&nbsp;<i>Ping Pong reglerne tager det bedste fra fortidens- og nutidens bordtennis, hvor der bl.a. spilles til 15 point (14-14 er afgørende bold), der byttes bat mellem hvert sæt, og der kan tages dobbeltpoint.</i>"`
+-   `r "<i class=bi-globe2></i>&nbsp;[<b>WCPP</b>](wcpp.qmd):&nbsp;<i>World Championship of Ping Pong (WCPP) afholdes sædvanligvis i London med en præmiesum på $100.000 og eksponeres på bl.a. Viaplay Sport og Sky Sports.</i>"`
+-   `r "<i class=bi-bullseye></i>&nbsp;[<b>DM-koncept</b>](koncept.qmd):&nbsp;<i>Se hvad DM-konceptet har at byde på, dets historie og tidligere vindere.</i>"`
 
 ------------------------------------------------------------------------
 
-### Eksterne links
-
-*Er du en Ping Pong entusiast eller bare nysgerrig på konceptet? Så tjek én eller flere af nedenstående links ud.*
+**Eksterne links\
+***Er du en Ping Pong entusiast eller bare nysgerrig på konceptet? Så tjek én eller flere af nedenstående links ud.*
 
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Facebook</b>](https://www.facebook.com/events/452302656395308){target=_blank}:&nbsp;<i>Del budskabet via Facebook-begivenheden ved at trykke deltager/interesseret og inviter folk. Like og følg også gerne den officielle Facebook-side Ping Pong DK (medarrangør), hvis du ikke allerede gør det, hvor bl.a. videoer fra tidligere DM kan ses.</i>"`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Køb bat hos BTEX</b>](https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html){target=_blank}:&nbsp;<i>De officielle Sanwei WCPP Sandpapirsbat kan købes hos Bordtennisexperterne (BTEX) til eget brug.</i>"`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Matchroom Live</b>](https://matchroom.live/sports/ping_pong){target=_blank}:&nbsp;<i>Tidligere videoer fra WCPP kan ses på Matchroom Live.</i>"`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>DM statistik</b>](https://bordtennisdanmark.dk/statistik/ping-pong-dm){target=_blank}:&nbsp;<i>DM i Ping Pong statistik fra 2014 kan ses på Bordtennis Danmarks hjemmeside (BTDK).</i>"`
 
-### Facebook
-
 ```{=html}
-<iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F100183334928231&tabs=timeline%2Cevents%2Cmessages&width=320" width="100%" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+<a href=https://www.facebook.com/100183334928231 target=_blank><b>Facebook</b></a><br><iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F100183334928231&tabs=timeline%2Cevents%2Cmessages&width=320" width="100%" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
 ```

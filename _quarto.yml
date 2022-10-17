@@ -9,7 +9,7 @@ website:
   google-analytics: "G-6903XX1GX6"
   page-navigation: true
   search: true
-# title: "DM i Ping Pong"
+  # title: "DM i Ping Pong"
   title: "<small>DM i Ping Pong</small><a style=display:inline-block;background:#398FCC;color:#FFFFFF;border-style:solid;border-width:medium;border-color:#FFFFFF;text-align:center;font-weight:bold;font-size:90%;border-radius:20px;padding-left:10px;padding-right:10px;padding-top:5px;padding-bottom:5px;text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>&nbsp;Tilmeld</a>"
   navbar:
     logo: "Filer/Ping Pong DK.png"

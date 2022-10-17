@@ -9,7 +9,7 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-`r tbl0_input$k_cta`
+`r cta_plakat_status`
 
 `r tbl0_stat$k_sidst_opdateret`
 
@@ -25,9 +25,11 @@ kbl1_præmier_yngst_ældst
 `r paste0("<i style=font-size:80%>", tbl0_stat$k_billetantal_billettype, "<br>", tbl0_stat$k_klubantal, "<br>", tbl0_stat$k_deltagerantal_gentilmelding, "<br>", tbl0_stat$k_deltagerantal_køn, "<br>", tbl0_stat$k_deltagerantal_aldersgruppe, "<br>", tbl0_stat$k_alder, "</i>")`
 
 ```{r}
-if(tbl0_input$k_foreløbig_endelig == 1) { kbl2_deltagere_foreløbig }
-if(tbl0_input$k_foreløbig_endelig == 2) { kbl2_deltagere_puljer }
-if(tbl0_input$k_foreløbig_endelig == 2) { kbl2_deltagere_fest }
+if(tbl0_input$k_tilmelding_status == 3) { kbl2_deltagere_foreløbig }
+
+if(tbl0_input$k_tilmelding_status == 1 | tbl0_input$k_tilmelding_status == 2 | tbl0_input$k_tilmelding_status == 4) { kbl2_deltagere_puljer }
+
+if(tbl0_input$k_tilmelding_status == 1 | tbl0_input$k_tilmelding_status == 2 | tbl0_input$k_tilmelding_status == 4) { kbl2_deltagere_fest }
 ```
 
 ## Grafer

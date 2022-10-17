@@ -71,16 +71,15 @@ data.frame(
     "2013",
     "2011"),
   "Land" = c(
-    "ENG ",
-    "ENG ",
-    "CHN ",
-    "CHN ",
-    "ENG ",
-    "ENG ",
-    "RUS ",
-    "RUS ",
-    "RUS "),
-  " " = "",
+    "ENG <img src=https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg height=11>",
+    "ENG <img src=https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg height=11>",
+    "CHN <img src=https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png height=11>",
+    "CHN <img src=https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png height=11>",
+    "ENG <img src=https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg height=11>",
+    "ENG <img src=https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg height=11>",
+    "RUS <img src=https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png height=11>",
+    "RUS <img src=https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png height=11>",
+    "RUS <img src=https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png height=11>"),
   "Spiller" = c(
     "Andrew Baggaley",
     "Andrew Baggaley",
@@ -92,18 +91,8 @@ data.frame(
     "Maxim Shmyrev",
     "Maxim Shmyrev"),
   check.names = F) %>%
-  kbl(col.names = NA, align = "l", escape = F,
+  kbl(col.names = NA, align = "cll", escape = F,
       caption = "<i class=bi-trophy></i>&nbsp;WCPP-vindere statistik") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
-  column_spec(3, image = spec_image(c(
-"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
-"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
-"https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png",
-"https://www.countryflags.com/wp-content/uploads/china-flag-png-large.png",
-"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
-"https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg",
-"https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png",
-"https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png",
-"https://www.countryflags.com/wp-content/uploads/russia-flag-png-large.png"), 50, 50))
+  row_spec(0, background = "#1C2833", color = "#FFFFFF")
 ```
