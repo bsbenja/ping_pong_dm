@@ -9,7 +9,7 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-`r cta_plakat_status`
+`r tbl0_stat$k_status_cta_plakat`
 
 *`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG 2023 (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag 17. juni. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1]*.\
 Eventet er før sommerferien og som noget af det sidste af indeværende bordtennissæson, da det ligger i uge 24.\

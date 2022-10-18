@@ -9,9 +9,9 @@ editor_options:
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-`r cta_plakat_status`
+`r tbl0_stat$k_status_cta_plakat`
 
-`r forside_tekst_status`
+`r tbl0_stat$k_status_forside_dm`
 
 **Generelt om Ping Pong**
 
@@ -24,11 +24,9 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 **Eksterne links\
 ***Er du en Ping Pong entusiast eller bare nysgerrig på konceptet? Så tjek én eller flere af nedenstående links ud.*
 
--   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Facebook</b>](https://www.facebook.com/events/452302656395308){target=_blank}:&nbsp;<i>Del budskabet via Facebook-begivenheden ved at trykke deltager/interesseret og inviter folk. Like og følg også gerne den officielle Facebook-side Ping Pong DK (medarrangør), hvis du ikke allerede gør det, hvor bl.a. videoer fra tidligere DM kan ses.</i>"`
+-   `r tbl0_stat$k_status_forside_facebook`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Køb bat hos BTEX</b>](https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html){target=_blank}:&nbsp;<i>De officielle Sanwei WCPP Sandpapirsbat kan købes hos Bordtennisexperterne (BTEX) til eget brug.</i>"`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Matchroom Live</b>](https://matchroom.live/sports/ping_pong){target=_blank}:&nbsp;<i>Tidligere videoer fra WCPP kan ses på Matchroom Live.</i>"`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>DM statistik</b>](https://bordtennisdanmark.dk/statistik/ping-pong-dm){target=_blank}:&nbsp;<i>DM i Ping Pong statistik fra 2014 kan ses på Bordtennis Danmarks hjemmeside (BTDK).</i>"`
 
-```{=html}
-<a href=https://www.facebook.com/100183334928231 target=_blank><b>Facebook</b></a><br><iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F100183334928231&tabs=timeline%2Cevents%2Cmessages&width=320" width="100%" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-```
+`r paste0("<a href=", tbl0_input$k_url_facebook_side, " target=_blank><b>Facebook</b></a><br><iframe src=https://www.facebook.com/plugins/page.php?href=", tbl0_input$k_url_facebook_side, "&tabs=timeline,events,messages&width=320& width=100% height=500 style=border:none;overflow:hidden scrolling=no frameborder=0 allowfullscreen=true allow=autoplay;clipboard-write;encrypted-media;picture-in-picture;web-share></iframe>")`

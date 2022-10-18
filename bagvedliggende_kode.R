@@ -168,12 +168,6 @@ tbl0_join <- read_excel(
 
 tbl0_stat <- data.frame(
   
-  # Sidst opdateret
-  k_sidst_opdateret = paste0(
-    "<i class=bi-arrow-repeat>&nbsp;Sidst opdateret ", format(
-      floor_date(Sys.time(), "30 minutes"),
-      "%d.%m.%Y kl. %H:%M"), "</i>"),
-  
   # Billetantal total
   k_billetantal_total = paste0(
     tbl0_join %>%
@@ -354,6 +348,69 @@ tbl0_stat <- data.frame(
   
   # Præmiepenge for B-slutspil i pct.
   k_num_præmie_B = tbl0_input$k_præmie_B1+tbl0_input$k_præmie_B2,
+  
+  # Sidst opdateret
+  k_sidst_opdateret = paste0(
+    "<i class=bi-arrow-repeat>&nbsp;Sidst opdateret ", format(
+      floor_date(Sys.time(), "30 minutes"),
+      "%d.%m.%Y kl. %H:%M"), "</i>"),
+  
+  # Status CTA/plakat
+  k_status_cta_plakat = if(tbl0_input$k_status_1_2_3_4 == 1) {
+    "<img src=Filer/Forside.jpg style=width:30em;max-width:100%;border-radius:5px>"
+  } else if(tbl0_input$k_status_1_2_3_4 == 2) {
+    paste0(
+      "<img src=Filer/Teaserplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
+      ".png style=width:30em;max-width:100%;border-radius:5px><br>",
+      "<a href=Filer/Teaserplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
+      ".pdf target=_blank><i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i></a>")
+  } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
+    paste0(
+      "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
+      "font-size:150%;width:20em;max-width:100%;line-height:20px;border-radius:40px;padding:10px;",
+      "text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>",
+      "&nbsp;Tilmeld<br><i style=font-weight:normal;font-size:60%>ALLE kan deltage</i></a>",
+      "<br><br>",
+      "<img src=Filer/Indbydelsesplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
+      ".png style=width:30em;max-width:100%;border-radius:5px><br>",
+      "<a href=Filer/Indbydelsesplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
+      ".pdf target=_blank><i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i></a>")
+  },
+  
+  # Status forside DM
+  k_status_forside_dm = if(tbl0_input$k_status_1_2_3_4 == 1) {
+    paste("<i>Nærmere information om DM i Ping Pong", substr(tbl0_input$k_ordredato_år, 6, 9), "følger.</i>")
+  } else if(tbl0_input$k_status_1_2_3_4 == 2) {
+    paste(
+      "<i>Der åbnes for tilmelding", sub('^0+', '', format(dmy(tbl0_input$k_tilmelding_åbning), "%d. %B %Y,")), 
+      'hvor der vil komme en fane med hhv. "Indbydelse & tilmelding" samt "Præmier & deltagere",',
+      "som opdateres løbende.</i>")
+  } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
+    paste0(
+      "<p><b>DM i Ping Pong ", substr(tbl0_input$k_ordredato_år, 6, 9), "</b></p>",
+      "<ul>",
+      "<li><i class=bi-tags-fill></i>&nbsp;[<b>Indbydelse & tilmelding</b>](indbydelse_tilmelding.qmd)",
+      ":&nbsp;<i>Indbydelse, tidsplan, praktisk info samt tilmelding.</i></li>",
+      "<li><i class=bi-arrow-repeat></i>&nbsp;[<b>Præmier & deltagere</b>](præmier_deltagere.qmd)",
+      ":&nbsp;<i>Præmier og deltagere ses her og opdateres løbende.</i></li>",
+      "</ul><hr>")
+  },
+  
+  # Status forside Facebook
+  k_status_forside_facebook = if(tbl0_input$k_status_1_2_3_4 == 1) {
+    paste0(
+      "<i class=bi-box-arrow-up-right></i>&nbsp;",
+      "[<b>Facebook</b>](", tbl0_input$k_url_facebook_side, "){target=_blank}:&nbsp;",
+      "<i>Like og følg den officielle Facebook-side Ping Pong DK for at holde dig opdateret.</i>")
+  } else if(tbl0_input$k_status_1_2_3_4 == 2 | tbl0_input$k_status_1_2_3_4 == 3 |
+            tbl0_input$k_status_1_2_3_4 == 4) {
+    paste0(
+      "<i class=bi-box-arrow-up-right></i>&nbsp;",
+      "[<b>Facebook</b>](", tbl0_input$k_url_facebook_event, "){target=_blank}:&nbsp;",
+      "<i>Del budskabet via Facebook-begivenheden ved at trykke deltager/interesseret og inviter folk.&nbsp;",
+      "Like og følg også gerne den officielle Facebook-side Ping Pong DK (medarrangør),&nbsp;",
+      "hvis du ikke allerede gør det, hvor bl.a. videoer fra tidligere DM kan ses.</i>")
+  },
   
   check.names = F)
 
@@ -708,7 +765,7 @@ if(tbl0_input$k_eventordre_T_F == T) {
   # Hentning af eventordre
   list3_eventordre <- content(GET(
     url = paste0("https://billetfix.dk/api/v3/events/",
-                 tbl0_input$k_eventordre_url_uuid, "/orders"),
+                 tbl0_input$k_eventordre_uuid, "/orders"),
     config = c(
       add_headers(Authorization = tbl0_input$k_eventordre_token),
       content_type("application/json"))))
@@ -821,49 +878,6 @@ if(tbl0_input$k_webscraping_rating_T_F == T) {
   write_xlsx(tbl3_join_webscraping_rating, path = "Filer\\Webscraping join rating.xlsx")
   shell.exec(normalizePath("Filer\\Webscraping join rating.xlsx"))
 } else if(tbl0_input$k_webscraping_rating_T_F == F) {"tbl0_input$k_webscraping_rating_T_F = F"}
-
-#' ## Tilmelding lukket/åben
-#+ eval=F, warning=F, message=F
-
-if(tbl0_input$k_tilmelding_status == 1) {
-  cta_plakat_status <- "<img src=Filer/Forside.jpg style=width:30em;max-width:100%;border-radius:5px>"
-} else if(tbl0_input$k_tilmelding_status == 2) {
-  cta_plakat_status <- paste0(
-  "<img src=Filer/Teaserplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
-  ".png style=width:30em;max-width:100%;border-radius:5px><br>",
-  "<a href=Filer/Teaserplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
-  ".pdf target=_blank><i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i></a>")
-} else if(tbl0_input$k_tilmelding_status == 3 | tbl0_input$k_tilmelding_status == 4) {
-  cta_plakat_status <- paste0(
-    "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
-    "font-size:150%;width:20em;max-width:100%;line-height:20px;border-radius:40px;padding:10px;",
-    "text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>",
-    "&nbsp;Tilmeld<br><i style=font-weight:normal;font-size:60%>ALLE kan deltage</i></a>",
-    "<br><br>",
-    "<img src=Filer/Indbydelsesplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
-    ".png style=width:30em;max-width:100%;border-radius:5px><br>",
-    "<a href=Filer/Indbydelsesplakat-DM-i-Ping-Pong-", substr(tbl0_input$k_ordredato_år, 6, 9),
-    ".pdf target=_blank><i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i></a>")
-}
-
-if(tbl0_input$k_tilmelding_status == 1) {
-  forside_tekst_status <- paste(
-    "<i>Nærmere information om DM i Ping Pong", substr(tbl0_input$k_ordredato_år, 6, 9), "følger.</i>")
-} else if(tbl0_input$k_tilmelding_status == 2) {
-  forside_tekst_status <- paste(
-    "<i>Der åbnes for tilmelding", sub('^0+', '', format(dmy(tbl0_input$k_tilmelding_åbning), "%d. %B %Y,")), 
-    'hvor der vil komme en fane med hhv. "Indbydelse & tilmelding" samt "Præmier & deltagere",',
-    "som opdateres løbende.</i>")
-} else if(tbl0_input$k_tilmelding_status == 3 | tbl0_input$k_tilmelding_status == 4) {
-  forside_tekst_status <- paste0(
-    "<p><b>DM i Ping Pong ", substr(tbl0_input$k_ordredato_år, 6, 9), "</b></p>",
-    "<ul>",
-    "<li><i class=bi-tags-fill></i>&nbsp;[<b>Indbydelse & tilmelding</b>](indbydelse_tilmelding.qmd)",
-    ":&nbsp;<i>Indbydelse, tidsplan, praktiske informationer samt tilmelding.</i></li>",
-    "<li><i class=bi-arrow-repeat></i>&nbsp;[<b>Præmier & deltagere</b>](præmier_deltagere.qmd)",
-    ":&nbsp;<i>Præmier og deltagere ses her og opdateres løbende.</i></li>",
-    "</ul><hr>")
-}
 
 #' ## Webscraping af BTEX Ping Pong bat
 #+ eval=F, warning=F, message=F
