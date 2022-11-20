@@ -1,7 +1,7 @@
 ---
 title: "<i class=bi-arrow-repeat style=font-size:1em></i>&nbsp;Præmier & deltagere"
-subtitle: "DM i Ping Pong 2023<br><i class=small>Lørdag 17. juni i [Hørning Idrætscenter](https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034){target=_blank}</i>"
-editor_options: 
+subtitle: "DM i Ping Pong {{< var var.afholdelsesår >}}<br><i class=small> {{< var var.afholdelsesdag >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})</i>"
+editor_options:
   chunk_output_type: console
 ---
 
@@ -32,7 +32,7 @@ if(tbl0_input$k_status_1_2_3_4 == 1 | tbl0_input$k_status_1_2_3_4 == 2 | tbl0_in
 if(tbl0_input$k_status_1_2_3_4 == 1 | tbl0_input$k_status_1_2_3_4 == 2 | tbl0_input$k_status_1_2_3_4 == 4) { kbl2_deltagere_fest }
 ```
 
-## Grafer
+## Dashboards
 
 ```{r}
 #| fig-height: 2

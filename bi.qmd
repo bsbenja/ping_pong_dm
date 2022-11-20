@@ -1,0 +1,12 @@
+---
+title: "<i class=bi-graph-up style=font-size:1em></i>&nbsp;BI"
+subtitle: "Business Intelligence"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
+```
+
+`r tbl0_stat$k_sidst_opdateret`

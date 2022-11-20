@@ -3,14 +3,16 @@
 
 project:
   type: website
+  render: 
+    - "*.qmd"
 
 website:
-  favicon: "Filer/Ping Pong DK.png"
-  google-analytics: "G-6903XX1GX6"
-  page-navigation: true
-  search: true
   # title: "DM i Ping Pong"
   title: "<small>DM i Ping Pong</small><a style=display:inline-block;background:#398FCC;color:#FFFFFF;border-style:solid;border-width:medium;border-color:#FFFFFF;text-align:center;font-weight:bold;font-size:90%;border-radius:20px;padding-left:10px;padding-right:10px;padding-top:5px;padding-bottom:5px;text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>&nbsp;Tilmeld</a>"
+  favicon: "Filer/Ping Pong DK.png"
+  google-analytics: "G-6903XX1GX6"
+  search: true
+  page-navigation: true
   navbar:
     logo: "Filer/Ping Pong DK.png"
     background: "#398FCC"
@@ -18,7 +20,7 @@ website:
     style: docked
     background: light
     contents:
-      - section: "DM i Ping Pong 2023"
+      - section: "DM i Ping Pong {{< var var.afholdelsesår >}}"
         contents:
         - href: "indbydelse_tilmelding.qmd"
         - href: "præmier_deltagere.qmd"
@@ -31,18 +33,18 @@ website:
       - text: "---"
       - section: "Eksterne links"
         contents:
-        - text: "<a class=bi-box-arrow-up-right href=https://www.facebook.com/events/452302656395308 target=_blank>&nbsp;Facebook</a>"
+        - text: "<a class=bi-box-arrow-up-right href=https://www.facebook.com/events/{{< var var.facebook_event >}} target=_blank>&nbsp;Facebook</a>"
         - text: "<a class=bi-box-arrow-up-right href=https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html target=_blank>&nbsp;Køb bat hos BTEX</a>"
         - text: "<a class=bi-box-arrow-up-right href=https://matchroom.live/sports/ping_pong target=_blank>&nbsp;Matchroom Live</a>"
-        - text: "<a class=bi-box-arrow-up-right href=https://bordtennisdanmark.dk/statistik/ping-pong-dm target=_blank>&nbsp;DM statistik</a>"
+        - text: "<a class=bi-box-arrow-up-right href=https://classichardbat.com target=_blank>&nbsp;World Ping Pong</a>"
   page-footer:
     background: light
     center:
       - text: "<a href=http://hoerningbtk.dk target=_blank><img src=Filer/Arrangør.png style=height:15px></a>"
       - text: "&emsp;<a href=https://bordtennisdanmark.dk/kalender/dm-i-ping-pong target=_blank><img src=Filer/BTDK.png style=height:15px></a>"
       - text: "&emsp;<a class=bi-github href=https://github.com/bsbenja/ping_pong_dm target=_blank></a>"
-      - text: "&emsp;<a class=bi-facebook href=https://www.facebook.com/events/452302656395308 target=_blank></a>"
-      - text: "&emsp;<a class=bi-messenger href=https://m.me/100183334928231 target=_blank></a>"
+      - text: "&emsp;<a class=bi-facebook href=https://www.facebook.com/events/{{< var var.facebook_event >}} target=_blank></a>"
+      - text: "&emsp;<a class=bi-messenger href=https://m.me/{{< var var.facebook_side >}} target=_blank></a>"
 
 format:
   html:

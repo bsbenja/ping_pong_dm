@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-tags-fill style=font-size:1em></i>&nbsp;Indbydelse & tilmelding"
-subtitle: "DM i Ping Pong 2023<br><i class=small>Lørdag 17. juni i [Hørning Idrætscenter](https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034){target=_blank}</i>"
+subtitle: "DM i Ping Pong {{< var var.afholdelsesår >}}<br><i class=small> {{< var var.afholdelsesdag >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})</i>"
 editor_options: 
   chunk_output_type: console
 ---
@@ -11,9 +11,9 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 
 `r tbl0_stat$k_status_cta_plakat`
 
-*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG 2023 (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag 17. juni. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1]*.\
+*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG `r "{{< var var.afholdelsesår >}}"` (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag `r paste("{{< var var.afholdelsesdag >}}", "{{< var var.afholdelsesår >}}", "i", "[{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})")`. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1].\
 Eventet er før sommerferien og som noget af det sidste af indeværende bordtennissæson, da det ligger i uge 24.\
-Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen med stemningsmusik og/eller et brag af en fest om aftenen, som alt sammen fås til en overkommelig pris.*
+Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen med stemningsmusik og/eller et brag af en fest om aftenen, som alt sammen fås til en overkommelig pris.
 
 [^1]: ***ALLE kan deltage**: Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren). Er dette ikke opfyldt, vil det være muligt at deltage udelukkende i puljespillet, hvor ens resultater ikke tæller med i puljeregnskabet (tilmelding stadig påkrævet).*
 
@@ -35,7 +35,7 @@ data.frame(
       caption = "<i class=bi-tags-fill></i>&nbsp;Billettyper") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
-    "<i style=font-size:80%>Mikrogebyrer pålægges alle priser",
+    "<i style=font-size:80%>Mikrogebyrer pålægges alle priser.</i>",
     general_title = "", escape = F) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
 ```
@@ -54,12 +54,12 @@ tbl_tidsplan <- data.frame(
     "Kl. 16:00-18:00",
     "Fra kl. 19:00"),
   "Type" = c(
-    "DM i Ping Pong 2023",
+    "<a href=indbydelse_tilmelding.qmd#dm-i-ping-pong-2023 style=color:#000000>DM i Ping Pong 2023</a>",
     "Check-in",
     "Puljespil",
     "A-/B-slutspil",
     '"Final 4" i A-slutspil',
-    "Fest om aftenen"),
+    "<a href=indbydelse_tilmelding.qmd#fest-om-aftenen style=color:#000000>Fest om aftenen</a>"),
   check.names = F)
 
 kbl_tidsplan <- tbl_tidsplan %>%
@@ -67,7 +67,7 @@ kbl_tidsplan <- tbl_tidsplan %>%
       caption = "<i class=bi-hourglass></i>&nbsp;Tidsplan") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
-    "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere", general_title = "", escape = F) %>%
+    "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere.", general_title = "", escape = F) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
   row_spec(c(1, 6), bold = T, background = tbl0_input$k_farve2)
 
@@ -97,8 +97,8 @@ Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutsp
 
 -   **6-mandspuljer**: Indledende puljespil foregår i primært 6-mandspuljer, som sikrer mange kampe til alle deltagere. Nr. 1-3 går videre til A-slutspil, og de resterende går i B-slutspil[^2].
 -   **A-/B-slutspil**:
-    -   **A-slutspil**: A-slutspil afvikles som cup frem til og med kvartfinalerne.
-        -   **"Final 4"**: Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^3].
+    -   **A-slutspil**: A-slutspil afvikles som cup frem til og med kvartfinalerne.\
+        Afslutningsvist afvikles "Final 4" for de sidste 4 spillere i A-slutspil, hvilket består af en finalepulje, hvor alle spiller mod alle. Der spilles her bedst af 5 sæt, 2 "dobbeltpoints" og én timeout pr. spiller i hver kamp[^3].
     -   **B-slutspil**: B-slutspil afvikles udelukkende som cup.
 
 [^2]: ***Puljeregnskab**: Puljeregnskabet gøres op efter efter de almindeligt gældende regler jf. BTDK's Stævne/Ratingreglement under "§ 08: Puljeregnskab" (side 4) `r "<b>[HER](https://bordtennisdanmark.dk/wp-content/uploads/2021/08/staevne-rating_reglement_2019-2020_0.pdf){target=_blank}</b>"`:\
@@ -118,7 +118,7 @@ Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutsp
 Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
 
 1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^4].
-2.  Sidste `r "[ratingopdatering i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"` pr. 26.05.2023.
+2.  `r "[Ratingopdateringen i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"` pr. 09.06.2023.
 3.  Skøn og lodtrækning.
 
 [^4]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:\
@@ -141,41 +141,41 @@ Resultaterne fra DM danner grundlag for international udtagelse. Normalvis er de
 -   Der er også en gave til den **yngste**- og **ældste** Ping Pong deltager for at hylde mangfoldigheden.
 -   Diplomer uddeles til alle gave-/præmietagere.
 -   Af spillergebyret på kr. 125 går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren.
--   Potentiel præmiesum på kr. 7.200 fordeles på seks placeringer som følger:
+-   Potentiel præmiesum på `r tbl1_præmier_penge[1, 3]` fordeles på seks placeringer som følger:
 
 ```{r}
 library(kableExtra)
 data.frame(
   " " = c(
-    "Præmiesum",
-    "A-slutspil",
-    "1. plads",
-    "2. plads",
-    "3. plads",
-    "4. plads",
-    "B. slutspil",
-    "1. plads",
-    "2. plads"),
+    tbl1_præmier_penge[1, 1],
+    tbl1_præmier_penge[2, 1],
+    tbl1_præmier_penge[3, 1],
+    tbl1_præmier_penge[4, 1],
+    tbl1_præmier_penge[5, 1],
+    tbl1_præmier_penge[6, 1],
+    tbl1_præmier_penge[7, 1],
+    tbl1_præmier_penge[8, 1],
+    tbl1_præmier_penge[9, 1]),
   "Potentiel" = c(
-    "kr. 9.600",
-    "kr. 8.400",
-    "kr. 3.600",
-    "kr. 2.400",
-    "kr. 1.440",
-    "kr. 960",
-    "kr. 1.200",
-    "kr. 720",
-    "kr. 480"),
+    tbl1_præmier_penge[1, 3],
+    tbl1_præmier_penge[2, 3],
+    tbl1_præmier_penge[3, 3],
+    tbl1_præmier_penge[4, 3],
+    tbl1_præmier_penge[5, 3],
+    tbl1_præmier_penge[6, 3],
+    tbl1_præmier_penge[7, 3],
+    tbl1_præmier_penge[8, 3],
+    tbl1_præmier_penge[9, 3]),
   "Pct." = c(
-    "100%",
-    "87,5%",
-    "37,5%",
-    "25%",
-    "15%",
-    "10%",
-    "12,5%",
-    "7,5%",
-    "5%"),
+    tbl1_præmier_penge[1, 4],
+    tbl1_præmier_penge[2, 4],
+    tbl1_præmier_penge[3, 4],
+    tbl1_præmier_penge[4, 4],
+    tbl1_præmier_penge[5, 4],
+    tbl1_præmier_penge[6, 4],
+    tbl1_præmier_penge[7, 4],
+    tbl1_præmier_penge[8, 4],
+    tbl1_præmier_penge[9, 4]),
   check.names = F) %>%
   kbl(col.names = NA, align = "lrr", escape = F,
       caption = "<i class=bi-cash-stack></i>&nbsp;<b>Præmiepenge</b>") %>%
@@ -195,21 +195,20 @@ data.frame(
 
 ## Fest om aftenen
 
-`r "<i class=bi-music-note-beamed></i>"` Traditionen tro vil der være et socialt arrangement om aftenen/natten, da DM i Ping Pong også forsøger at omfavne fællesskabet og mangfoldigheden ved at være en heldagsbegivenhed.
+`r "<i class=bi-music-note-beamed></i>"` Traditionen tro vil der være fest om aftenen/natten, da DM i Ping Pong konceptet hylder fællesskabet og mangfoldigheden ved at være en heldagsbegivenhed.
 
--   Fra kl. 19 er der lagt op til en stor fest i Sisu/MBK's lokaler, hvor pizza og fri bar i 3 timer er inkluderet i prisen. Der vil være en masse forskellige øl, cider, sodavand mv. til fri konsumering, og der vil naturligvis også være musikanlæg til at sætte gang i en festlig stemning.
--   Fra kl. 22 kan de festlystne tage videre ind til det aarhusianske byliv, som er inden for gåafstand (Sisu/MBK's lokaler lukkes kl. 22). Den videre fest i byen varer lige så længe, man har lyst til eller kan holde ud, og det er for egen regning.
+-   Fra kl. 19 er der lagt op til en stor fest i `r "{{< var var.lokation_sted >}}"`, hvor burger og fri bar i 3 timer er inkluderet i prisen. Der vil være en masse forskellige øl, cider, sodavand, snacks mv. til fri konsumering, og der vil naturligvis også være musikanlæg til at sætte gang i en festlig stemning.
 
 *Aldersgrænsen for festen er 16 år (bytur 18 år).\
 Hvis man er 16 eller 17 år, udleveres kun alkohol med en skriftlig tilladelse fra forældre/værge, som enten kan sendes til kontaktpersonen eller medbringes på selve dagen.*
 
 ## Praktisk
 
--   **Offentlig transport**: Tog- og busstation kun 2 km fra hallen. Der er ligeledes gode bybus- og letbaneforbindelser til hallen.
+-   **Offentlig transport**: Der er gode tog- og busforbindelser til Hørning (10 min. med tog fra Aarhus Hovedbanegård). Hørning station ligger kun 1,5 km fra `r "{{< var var.lokation_sted >}}"`. Se muligheder for offentlig transport på Rejseplanen `r "<b>[HER](https://rejseplanen.dk){target=_blank}</b>"`.
 
--   **Parkering**: 1-dags parkeringskort kan købes i klubben for kr. 30, men vær opmærksom på, at der kun er et begrænset antal pladser. Alternativt kan Parkeringshus Nørreport Aarhus benyttes, som ligger inden for 700 meters afstand til hallen (der er dog ikke gratis parkeringsmuligheder i Aarhus C). Se parkeringsmuligheder i Aarhus `r "<b>[HER](https://www.parkeringsinfo.dk/parkering-aarhus/parkeringszoner-i-aarhus.asp){target=_blank}</b>"`, og ellers henvises der til offentlig transport.
+-   **Parkering**: Gratis parkering ved `r "{{< var var.lokation_sted >}}"`.
 
--   **Overnatning**: Gode muligheder for at booke overnatning, hvis man fx kommer langvejsfra. Man kan evt. gå sammen nogle stykker og booke på CABINN Hotel Aarhus, som nok er det bedste valg pris- og belliggenhedsmæssigt, da det ligger ned til åen i midten af Aarhus byliv (også tæt på Sisu/MBK's lokaler), hvilket kan bookes `r "<b>[HER](https://www.cabinn.com/hotel/cabinn-aarhus){target=_blank}</b>"`. Skal man være en del af festen, er det naturligvis også en mulighed at tage et morgentog eller lignende hjem søndag, hvis man kan holde sig i gang til et godt stykke ud på natten, hvilket tidligere er set (se muligheder på Rejseplanen `r "<b>[HER](https://rejseplanen.dk){target=_blank}</b>"`).
+-   **Overnatning**: Gode muligheder for at booke overnatning, hvis man fx kommer langvejsfra. Man kan evt. gå sammen nogle stykker og booke på CABINN Hotel Aarhus, som nok er det bedste valg pris- og belliggenhedsmæssigt, da det ligger ned til åen i midten af Aarhus byliv, hvilket kan bookes `r "<b>[HER](https://www.cabinn.com/hotel/cabinn-aarhus){target=_blank}</b>"`. Skal man være en del af festen, er det naturligvis også en mulighed at tage et morgentog eller lignende hjem søndag, hvis man kan holde sig i gang til et godt stykke ud på natten, hvilket tidligere er set.
 
 -   **Badefaciliteter**: Der er mulighed for at tage bad i hallen efter endt spil.
 
@@ -244,8 +243,8 @@ data.frame(
 
 data.frame(
   "1" = "<img src=Filer/Lokation.png height=65 style=border-radius:10px>",
-  "2" = "<a href=https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034 target=_blank>
-  Hørning Idrætscenter<br>Toftevej 53<br>8362 Hørning</a>",
+  "2" = '<a href=https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034 target=_blank>
+  Hørning Idrætscenter<br>Toftevej 53<br>8362 Hørning</a>',
   check.names = F) %>%
   kbl(col.names = NULL, align = "l", escape = F,
       caption = "<b class=bi-geo-alt-fill>&nbsp;Lokation</b><br><i>Geografisk placering</i>") %>%
