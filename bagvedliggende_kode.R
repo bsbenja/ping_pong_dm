@@ -14,10 +14,9 @@
 # Opsætning ========================================================================================
 #+ eval=F, warning=F, message=F
 
-# source(file = "input_dm_ping_pong.R")
 suppressPackageStartupMessages(lapply(c(
-  "formattable", "lubridate", "readxl", "cellranger", "openxlsx", "writexl", "dplyr", "tidyr",
-  "stringr", "kableExtra", "ggplot2",  "forcats", "plotDK", "httr", "rvest", "pdftools"),
+  "readxl", "cellranger", "openxlsx", "writexl", "dplyr", "tidyr", "stringr", "formattable",
+  "lubridate", "kableExtra", "ggplot2", "forcats", "plotDK", "httr", "rvest", "pdftools", "rmarkdown"),
   require, character.only = TRUE))
 Sys.setlocale("LC_TIME", "Danish")
 options(OutDec= ",")

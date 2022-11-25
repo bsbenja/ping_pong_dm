@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-tags-fill style=font-size:1em></i>&nbsp;Indbydelse & tilmelding"
-subtitle: "DM i Ping Pong {{< var var.afholdelsesår >}}<br><i class=small> {{< var var.afholdelsesdag >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})</i>"
+subtitle: "DM i Ping Pong {{< var var.afholdelsesår >}}<br><i class=small> {{< var var.afholdelsesdag >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
 editor_options: 
   chunk_output_type: console
 ---
@@ -54,7 +54,7 @@ tbl_tidsplan <- data.frame(
     "Kl. 16:00-18:00",
     "Fra kl. 19:00"),
   "Type" = c(
-    "<a href=indbydelse_tilmelding.qmd#dm-i-ping-pong-2023 style=color:#000000>DM i Ping Pong 2023</a>",
+    "<a href=indbydelse_tilmelding.qmd#dm-i-ping-pong style=color:#000000>DM i Ping Pong 2023</a>",
     "Check-in",
     "Puljespil",
     "A-/B-slutspil",
@@ -74,7 +74,7 @@ kbl_tidsplan <- tbl_tidsplan %>%
 kbl_tidsplan
 ```
 
-## DM i Ping Pong 2023
+## DM i Ping Pong
 
 ### Afviklingsform
 
@@ -243,13 +243,17 @@ data.frame(
 
 data.frame(
   "1" = "<img src=Filer/Lokation.png height=65 style=border-radius:10px>",
-  "2" = '<a href=https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034 target=_blank>
-  Hørning Idrætscenter<br>Toftevej 53<br>8362 Hørning</a>',
+  "2" = paste0(
+    "<a href=var_start_var.lokation_link_var_slut target=_blank>",
+    "var_start_var.lokation_sted_var_slut<br>",
+    "var_start_var.lokation_gade_var_slut<br>",
+    "var_start_var.lokation_postnr_by_var_slut</a>"),
   check.names = F) %>%
   kbl(col.names = NULL, align = "l", escape = F,
       caption = "<b class=bi-geo-alt-fill>&nbsp;Lokation</b><br><i>Geografisk placering</i>") %>%
-  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
-  column_spec(1, width = "5em")
+  kable_styling(position = "l", full_width = F, html_font = "verdana", ) %>%
+  column_spec(1, width = "5em") %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
 ## Tilmelding

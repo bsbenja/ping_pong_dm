@@ -5,9 +5,9 @@
 var:
   afholdelsesdag: "17. juni"
   afholdelsesår: "2023"
-  lokation_sted: "Hørning Idrætscenter" # opdateres manuelt i lokationstabel
-  lokation_gade: "Toftevej 53" # opdateres manuelt i lokationstabel
-  lokation_postnr_by: "8362 Hørning" # opdateres manuelt i lokationstabel
-  lokation_link: "https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034){target=_blank}"
+  lokation_sted: "Hørning Idrætscenter"
+  lokation_gade: "Toftevej 53"
+  lokation_postnr_by: "8362 Hørning"
+  lokation_link: "https://www.google.dk/maps/place/H%C3%B8rning+Idr%C3%A6tscenter/@56.09091,10.0318113,17z/data=!3m1!4b1!4m5!3m4!1s0x464c6b94628b4b3b:0x6bd220b0427a7b4d!8m2!3d56.09091!4d10.034"
   facebook_event: "452302656395308"
   facebook_side: "100183334928231"

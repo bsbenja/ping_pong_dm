@@ -3,8 +3,15 @@
 
 project:
   type: website
-  render: 
+  render:
     - "*.qmd"
+    - "index.qmd" # "!index.qmd"
+    - "indbydelse_tilmelding.qmd" # "!indbydelse_tilmelding.qmd"
+    - "præmier_deltagere.qmd" # "!præmier_deltagere.qmd"
+    - "regler.qmd" # "!regler.qmd"
+    - "wcpp.qmd" # "!wcpp.qmd"
+    - "koncept.qmd" # "!koncept.qmd"
+    - "bi.qmd" # "!bi.qmd"
 
 website:
   # title: "DM i Ping Pong"
