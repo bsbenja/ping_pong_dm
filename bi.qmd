@@ -19,7 +19,7 @@ plotOutput("distPlot")
 ```{r}
 #| context: server
 output$distPlot <- renderPlot({
-  x <- tbl0_join
+  x <- tbl0_join_alle
   bins <- seq(min(x), max(x), length.out = input$bins + 1)
   hist(x, breaks = bins, col = 'darkgray', border = 'white')
 })

@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-arrow-repeat style=font-size:1em></i>&nbsp;Præmier & deltagere"
-subtitle: "DM i Ping Pong {{< var var.afholdelsesår >}}<br><i class=small> {{< var var.afholdelsesdag >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
+subtitle: "DM i Ping Pong {{< var var.event_år >}}<br><i class=small> {{< var var.event_dag_måned >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
 editor_options:
   chunk_output_type: console
 ---

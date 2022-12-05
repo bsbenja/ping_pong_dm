@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-tags-fill style=font-size:1em></i>&nbsp;Indbydelse & tilmelding"
-subtitle: "DM i Ping Pong {{< var var.afholdelsesår >}}<br><i class=small> {{< var var.afholdelsesdag >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
+subtitle: "DM i Ping Pong {{< var var.event_år >}}<br><i class=small> {{< var var.event_dag_måned >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
 editor_options: 
   chunk_output_type: console
 ---
@@ -11,7 +11,7 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 
 `r tbl0_stat$k_status_cta_plakat`
 
-*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG `r "{{< var var.afholdelsesår >}}"` (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag `r paste("{{< var var.afholdelsesdag >}}", "{{< var var.afholdelsesår >}}", "i", "[{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})")`. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1].\
+*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG `r "{{< var var.event_år >}}"` (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag `r paste("{{< var var.event_dag_måned >}}", "{{< var var.event_år >}}", "i", "[{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})")`. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1].\
 Eventet er før sommerferien og som noget af det sidste af indeværende bordtennissæson, da det ligger i uge 24.\
 Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen med stemningsmusik og/eller et brag af en fest om aftenen, som alt sammen fås til en overkommelig pris.
 
@@ -20,24 +20,22 @@ Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen 
 ```{r}
 #| layout-ncol: 2
 library(kableExtra)
-data.frame(
-  " " = c(
-    "🏓 DM i Ping Pong 2023",
-    "🥳 Fest om aftenen"),
-  "<i class=bi-cash-stack></i>&nbsp;Pris" = c(
-    "kr. 125",
-    "kr. 150"),
-  "<i class=bi-person-fill></i>&nbsp;Maks." = c(
-    "96",
-    "200"),
-  check.names = F) %>%
+tbl0_join_aktuel %>%
+  arrange(k_billettype) %>%
+  distinct(k_billettype, .keep_all = T) %>%
+  mutate(k_billettype = case_when(
+    grepl("Ping Pong", k_billettype) ~ paste(k_billettype, "var_start_var.event_år_var_slut"), TRUE ~ as.character(k_billettype))) %>%
+  select(" "    = k_billettype,
+         "Pris"  = k_billetpris,
+         "Maks." = k_billetantal_maks) %>%
   kbl(col.names = NA, align = "lrr", escape = F, format = "html", 
       caption = "<i class=bi-tags-fill></i>&nbsp;Billettyper") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
     "<i style=font-size:80%>Mikrogebyrer pålægges alle priser.</i>",
     general_title = "", escape = F) %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
+  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
 ## Tidsplan
@@ -45,7 +43,7 @@ data.frame(
 ```{r}
 library(kableExtra)
 
-tbl_tidsplan <- data.frame(
+data.frame(
   "Tidspunkt" = c(
     "Kl. 10:00-18:00",
     "Kl. 10:00 senest",
@@ -54,24 +52,21 @@ tbl_tidsplan <- data.frame(
     "Kl. 16:00-18:00",
     "Fra kl. 19:00"),
   "Type" = c(
-    "<a href=indbydelse_tilmelding.qmd#dm-i-ping-pong style=color:#000000>DM i Ping Pong 2023</a>",
+    "<a href=indbydelse_tilmelding.qmd#dm-i-ping-pong style=color:#000000>DM i Ping Pong var_start_var.event_år_var_slut</a>",
     "Check-in",
     "Puljespil",
     "A-/B-slutspil",
     '"Final 4" i A-slutspil',
     "<a href=indbydelse_tilmelding.qmd#fest-om-aftenen style=color:#000000>Fest om aftenen</a>"),
-  check.names = F)
-
-kbl_tidsplan <- tbl_tidsplan %>%
+  check.names = F) %>%
   kbl(col.names = NA, align = "l", escape = F,
       caption = "<i class=bi-hourglass></i>&nbsp;Tidsplan") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
     "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere.", general_title = "", escape = F) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  row_spec(c(1, 6), bold = T, background = tbl0_input$k_farve2)
-
-kbl_tidsplan
+  row_spec(c(1, 6), bold = T, background = tbl0_input$k_farve2) %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
 ## DM i Ping Pong
@@ -118,7 +113,7 @@ Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutsp
 Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
 
 1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^4].
-2.  `r "[Ratingopdateringen i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank}"` pr. 09.06.2023.
+2.  `r "[Ratingopdateringen i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank} pr. {{< var var.rating_dato >}}."`
 3.  Skøn og lodtrækning.
 
 [^4]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:\
@@ -258,7 +253,7 @@ data.frame(
 
 ## Tilmelding
 
-*`r paste("ALLE kan deltage. Tilmeldingsfristen er", sub('^0+', '', format(dmy(tbl0_input$k_tilmeldingsfrist), '%d. %B %Y.')), "Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt). Tilmelding foregår herunder <i class=bi-tags-fill></i>")`*
+*`r paste("ALLE kan deltage. Tilmeldingsfristen er {{< var var.tilmeldingsfrist >}}. Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt). Tilmelding foregår herunder <i class=bi-tags-fill></i>")`*
 
 ```{=html}
 <div class="ticketbutler-iframe" data-type="EVENT" data-domain="billetfix.dk" data-slug="dm-i-ping-pong-2023"></div><script type="text/javascript" src="https://unpkg.com/@ticketbutler/event-embedder@latest/dist/index.js"></script>

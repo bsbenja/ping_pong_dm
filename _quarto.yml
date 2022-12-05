@@ -27,7 +27,7 @@ website:
     style: docked
     background: light
     contents:
-      - section: "DM i Ping Pong {{< var var.afholdelsesår >}}"
+      - section: "DM i Ping Pong {{< var var.event_år >}}"
         contents:
         - href: "indbydelse_tilmelding.qmd"
         - href: "præmier_deltagere.qmd"
