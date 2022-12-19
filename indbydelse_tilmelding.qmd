@@ -18,24 +18,25 @@ Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen 
 [^1]: ***ALLE kan deltage**: Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren). Er dette ikke opfyldt, vil det være muligt at deltage udelukkende i puljespillet, hvor ens resultater ikke tæller med i puljeregnskabet (tilmelding stadig påkrævet).*
 
 ```{r}
-#| layout-ncol: 2
 library(kableExtra)
 tbl0_join_aktuel %>%
   arrange(k_billettype) %>%
   distinct(k_billettype, .keep_all = T) %>%
   mutate(k_billettype = case_when(
-    grepl("Ping Pong", k_billettype) ~ paste(k_billettype, "var_start_var.event_år_var_slut"), TRUE ~ as.character(k_billettype))) %>%
+    grepl("Ping Pong", k_billettype) ~ paste(k_billettype, k_eventår),
+    TRUE ~ as.character(k_billettype))) %>%
+  mutate(k_billetpris = paste("kr.", format(round(
+    0.001+k_billetpris), big.mark = "."))) %>%
   select(" "    = k_billettype,
          "Pris"  = k_billetpris,
          "Maks." = k_billetantal_maks) %>%
-  kbl(col.names = NA, align = "lrr", escape = F, format = "html", 
+  kbl(col.names = NA, align = "lcc", escape = F, format = "html", 
       caption = "<i class=bi-tags-fill></i>&nbsp;Billettyper") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
     "<i style=font-size:80%>Mikrogebyrer pålægges alle priser.</i>",
     general_title = "", escape = F) %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
 ```
 
 ## Tidsplan
@@ -124,6 +125,10 @@ Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende 
 
 I det videre spil dannes seedningerne på baggrund af placeringerne fra puljespillet.
 
+```{r}
+kbl3_resultater_sidste_dm
+```
+
 ### Bat og bold
 
 -   **Bat**: Der spilles med "Sanwei WCPP Sandpapirsbat", som også blev benyttet ved sidste WCPP. Et stort tak skal lyde til Bordtennis Danmark (BTDK), da de støtter med 50 splinternye sandpapirsbat. Det er formentligt ikke alment kendt, men Ping Pong entusiaster vil kunne nikke genkendende til, at der er stor forskel på et nyt- og brugt sandpapirsbat, da et nyt sandpapirsbat qua sin ruhed kan genere mere skrue, hvilket er gavnligt i specielt det offensive spil. Evt. yderligere sandpapirsbat vil være lettere brugte. Til deltagerne i "Final 4" i A-slutspil udleveres 4 nye sandpapirsbat. Battet kan også købes hos BTEX til eget brug `r "<b>[HER](https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html){target=_blank}</b>"`, dog udleveres bat af stævnearrangøren til opvarmning og kampe på selve stævnedagen.
@@ -136,51 +141,25 @@ Resultaterne fra DM danner grundlag for international udtagelse. Normalvis er de
 -   Der er også en gave til den **yngste**- og **ældste** Ping Pong deltager for at hylde mangfoldigheden.
 -   Diplomer uddeles til alle gave-/præmietagere.
 -   Af spillergebyret på kr. 125 går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren.
--   Potentiel præmiesum på `r tbl1_præmier_penge[1, 3]` fordeles på seks placeringer som følger:
+-   Potentiel præmiesum på RETTES fordeles på seks placeringer som følger:
 
 ```{r}
 library(kableExtra)
 data.frame(
-  " " = c(
-    tbl1_præmier_penge[1, 1],
-    tbl1_præmier_penge[2, 1],
-    tbl1_præmier_penge[3, 1],
-    tbl1_præmier_penge[4, 1],
-    tbl1_præmier_penge[5, 1],
-    tbl1_præmier_penge[6, 1],
-    tbl1_præmier_penge[7, 1],
-    tbl1_præmier_penge[8, 1],
-    tbl1_præmier_penge[9, 1]),
-  "Potentiel" = c(
-    tbl1_præmier_penge[1, 3],
-    tbl1_præmier_penge[2, 3],
-    tbl1_præmier_penge[3, 3],
-    tbl1_præmier_penge[4, 3],
-    tbl1_præmier_penge[5, 3],
-    tbl1_præmier_penge[6, 3],
-    tbl1_præmier_penge[7, 3],
-    tbl1_præmier_penge[8, 3],
-    tbl1_præmier_penge[9, 3]),
-  "Pct." = c(
-    tbl1_præmier_penge[1, 4],
-    tbl1_præmier_penge[2, 4],
-    tbl1_præmier_penge[3, 4],
-    tbl1_præmier_penge[4, 4],
-    tbl1_præmier_penge[5, 4],
-    tbl1_præmier_penge[6, 4],
-    tbl1_præmier_penge[7, 4],
-    tbl1_præmier_penge[8, 4],
-    tbl1_præmier_penge[9, 4]),
+  tbl1_præmier_penge[, 1],
+  tbl1_præmier_penge[, 2],
+  tbl1_præmier_penge[, 3],
+  tbl1_præmier_penge[, 4],
+  tbl1_præmier_penge[, 5],
   check.names = F) %>%
-  kbl(col.names = NA, align = "lrr", escape = F,
-      caption = "<i class=bi-cash-stack></i>&nbsp;<b>Præmiepenge</b>") %>%
+  kbl(col.names = NA, align = "lrrrr", escape = F,
+      caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b></i>") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  pack_rows(start_row = 3, end_row = 6) %>%
-  pack_rows(start_row = 8, end_row = 9) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  row_spec(1, bold = T, background = tbl0_input$k_farve2) %>%
-  row_spec(c(2, 7), background = tbl0_input$k_farve2) %>%
-  column_spec(c(3), italic = T, color = tbl0_input$k_farve1)
+  row_spec(which(tbl1_præmier_penge$k_rank == "1"), bold = T, background = tbl0_input$k_farve2) %>%
+  row_spec(which(tbl1_præmier_penge$k_rank == "2"), background = tbl0_input$k_farve2) %>%
+  column_spec(c(4), italic = T, color = tbl0_input$k_farve1) %>%
+  remove_column(c(2, 5))
 ```
 
 ### Forplejning

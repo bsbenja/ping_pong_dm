@@ -1,43 +1,200 @@
 ---
 title: "<i class=bi-graph-up style=font-size:1em></i>&nbsp;BI"
 subtitle: "Business Intelligence"
-server: shiny
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r}
+#| eval: true
 source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 ```
 
-```{r}
-sliderInput("bins", "Number of bins:", 
-            min = 1, max = 50, value = 30)
-plotOutput("distPlot")
-```
+`r paste0("<i style=font-size:80%>", tbl0_stat$k_økonomi, "<br>", tbl0_stat$k_rating, "</i>")`
+
+# Test
+
+`r "[https://github.com/observablehq/plot](https://github.com/observablehq/plot){target=_blank}"`
 
 ```{r}
-#| context: server
-output$distPlot <- renderPlot({
-  x <- tbl0_join_alle
-  bins <- seq(min(x), max(x), length.out = input$bins + 1)
-  hist(x, breaks = bins, col = 'darkgray', border = 'white')
+tbl0_join_alle <- tbl0_join_alle %>%
+  filter(!is.na(k_status))
+ojs_define(tbl0_join_alle)
+```
+
+```{ojs}
+data_bi = transpose(tbl0_join_alle)
+```
+
+```{ojs}
+//| panel: input
+viewof k_event_år = Inputs.checkbox(
+  ["DM i Ping Pong 2022", "DM i Ping Pong 2021"], 
+  {value: ["DM i Ping Pong 2022"], label: "🎫 Event & år"}
+)
+
+viewof k_tilmeldingstype = Inputs.checkbox(
+  ["🎫 Ordinær", "🏃 Drive-in", "❌ Afbud"], 
+  {value: ["🎫 Ordinær", "🏃 Drive-in", "❌ Afbud"], label: " 🎫 Tilmeldingstype"}
+)
+
+viewof k_billettype = Inputs.checkbox(
+  ["🏓 DM i Ping Pong", "🥳 Fest om aftenen", "🍴 Restaurant Flammen", "🎉 The Old Irish Pub", "🥪 Frokost"], 
+  {value: ["🏓 DM i Ping Pong", "🥳 Fest om aftenen", "🍴 Restaurant Flammen", "🎉 The Old Irish Pub", "🥪 Frokost"], label: "🎫 Billettype"}
+)
+
+viewof k_billetsalg_pr_tilmelding = Inputs.checkbox(
+  ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg", "❌ Afbud"], 
+  {value: ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg", "❌ Afbud"], label: "🎫 Billetsalg pr. tilmelding"}
+)
+
+viewof k_gentilmelding = Inputs.checkbox(
+  ["Debutant", "Gentilmelding", "❌ Afbud"], 
+  {value: ["Debutant", "Gentilmelding", "❌ Afbud"], label: "🔃 Gentilmeldinger"}
+)
+
+viewof k_klokkeslætsinterval = Inputs.checkbox(
+  ["[>=18] Aften", "[>=00] Øvrig"], 
+  {value: ["[>=18] Aften", "[>=00] Øvrig"], label: "🎫 Klokkeslætsinterval"}
+)
+
+viewof k_køn = Inputs.checkbox(
+  ["♂️ Herre", "♀️ Dame"],
+  {value: ["♂️ Herre", "♀️ Dame"], label: "👤 Køn"}
+)
+
+viewof k_spillertype = Inputs.checkbox(
+  ["🏓 Bordtennisspiller", "👤 Ikke-bordtennisspiller"],
+  {value: ["🏓 Bordtennisspiller", "👤 Ikke-bordtennisspiller"], label: "👤 Spillertype"}
+)
+
+viewof k_aldersgruppe = Inputs.checkbox(
+  ["Ungdom", "Senior", "Veteran"], 
+  {value: ["Ungdom", "Senior", "Veteran"], label: "📅 Aldersgruppe"}
+)
+
+viewof k_ratinggruppe = Inputs.checkbox(
+  ["Elite", "Amatør"], 
+  {value: ["Elite", "Amatør"], label: "💪 Ratinggruppe"}
+)
+
+viewof k_landsdel = Inputs.checkbox(
+  ["Jylland", "Fyn", "Sjælland", "Bornholm", "(Ukendt landsdel)"], 
+  {value: ["Jylland", "Fyn", "Sjælland", "Bornholm", "(Ukendt landsdel)"], label: "🏛️ Landsdel"}
+)
+
+viewof k_region = Inputs.checkbox(
+  ["Nordjylland", "Midtjylland", "Syddanmark", "Sjælland", "Hovedstaden", "(Ukendt region)"], 
+  {value: ["Nordjylland", "Midtjylland", "Syddanmark", "Sjælland", "Hovedstaden", "(Ukendt region)"], label: "🏛️ Region"}
+)
+```
+
+```{ojs}
+filter_bi = data_bi.filter(function(data_bi) {
+  return k_event_år.includes(data_bi.k_event_år) &&
+         k_tilmeldingstype.includes(data_bi.k_tilmeldingstype) &&
+         k_billettype.includes(data_bi.k_billettype) &&
+         k_billetsalg_pr_tilmelding.includes(data_bi.k_billetsalg_pr_tilmelding) &&
+         k_gentilmelding.includes(data_bi.k_gentilmelding) &&
+         k_klokkeslætsinterval.includes(data_bi.k_klokkeslætsinterval) &&
+         k_køn.includes(data_bi.k_køn) &&
+         k_spillertype.includes(data_bi.k_spillertype) &&
+         k_aldersgruppe.includes(data_bi.k_aldersgruppe) &&
+         k_ratinggruppe.includes(data_bi.k_ratinggruppe) &&
+         k_landsdel.includes(data_bi.k_landsdel) &&
+         k_region.includes(data_bi.k_region)
 })
 ```
 
-```{r}
-radioButtons(
-  inputId = "radio_input",
-  label = "Are you a cat person or a dog person?",
-  choices = c(
-    "Cat person",
-    "Dog person",
-    "Don't make me choose!",
-    "Neither :("
-  ),
-  selected = "Don't make me choose!"
-)
+::: panel-tabset
+## Tilmeldingstype
+
+```{ojs}
+Plot.plot({
+  x: {
+    label: null
+  },
+  y: {
+    grid: false,
+    label: "Antal",
+    transform: d => d
+  },
+  color: {
+    legend: true
+  },
+  marks: [
+    Plot.barY(filter_bi, Plot.groupX({y: "count"}, {x: "k_billettype", fill: "k_tilmeldingstype"})),
+    Plot.ruleY([0])
+  ]
+})
 ```
+
+## Data
+
+```{ojs}
+Inputs.table(filter_bi)
+```
+:::
+
+::: panel-tabset
+## Gentilmeldinger siden 2021
+
+```{ojs}
+Plot.plot({
+  x: {
+    label: null
+  },
+  y: {
+    grid: false,
+    label: "Antal",
+    transform: d => d
+  },
+  color: {
+    legend: true
+  },
+  marks: [
+    Plot.barY(filter_bi, Plot.groupX({y: "count"}, {x: "k_billettype", fill: "k_antal_gentilmelding"})),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+## Data
+
+```{ojs}
+Inputs.table(filter_bi)
+```
+:::
+
+::: panel-tabset
+## Klubber
+
+```{ojs}
+Plot.plot({
+  x: {
+    label: null
+  },
+  y: {
+    grid: false,
+    label: "Antal",
+    transform: d => d
+  },
+  color: {
+    legend: true
+  },
+  marks: [
+    Plot.barY(filter_bi, Plot.groupX({y: "count"}, {x: "k_klub", fill: "k_billettype"})),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+## Data
+
+```{ojs}
+Inputs.table(filter_bi)
+```
+:::
 
 # Sisu/MBK 2022
 

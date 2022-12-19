@@ -28,99 +28,258 @@ options(knitr.kable.NA = "")
 #' ## Indlæsning og manipulation
 #+ eval=F, warning=F, message=F
 
-# Tilmeldinger
+# Importer tilmeldinger fra Excel
 tbl0_join_alle <- read_excel(
   tbl0_input$k_data,
-  col_names = c("k_deltager_id", "k_navn", "k_klub", "k_køn", "k_ordredato", "k_event_år_billettype",
-                "k_status", "k_rang1", "k_rating2", "k_rang3"),
-  range = cell_cols("A:J")) %>%
+  col_names = c("k_deltager_id", "k_navn", "k_klub", "k_køn", "k_ordredato",
+                "k_event_år_billettype", "k_status", "k_rang1", "k_rating2",
+                "k_rang3", "k_slutspil", "k_placering", "k_præmiepenge", "k_præmiepenge_pct"),
+  range = cell_cols("A:N")) %>%
   slice_tail(n = -5) %>%
   
-  # Bordtennisklub_d2
+  # Left join Bordtennisklub_d1 fra Excel
   left_join(
     y = read_excel(
       tbl0_input$k_data, col_names = c("k_klub", "k_postnr"),
-      range = cell_cols("M:N")), by = "k_klub") %>%
-  mutate(k_postnr = na_if(k_postnr, "(Ukendt postnr.)")) %>%
-  mutate(k_landsdel = case_when(
-    k_postnr <= 3699 ~ "Sjælland",
-    k_postnr <= 3799 ~ "Bornholm",
-    k_postnr <= 4999 ~ "Sjælland",
-    k_postnr <= 5999 ~ "Fyn",
-    k_postnr <= 9999 ~ "Jylland")) %>%
-  mutate(k_region = case_when(
-    k_postnr <= 3799 ~ "Hovedstaden",
-    k_postnr <= 4999 ~ "Sjælland",
-    k_postnr <= 6899 ~ "Syddanmark",
-    k_postnr <= 6999 ~ "Midtjylland",
-    k_postnr <= 7199 ~ "Syddanmark",
-    k_postnr <= 7699 ~ "Midtjylland",
-    k_postnr <= 7799 ~ "Nordjylland",
-    k_postnr <= 8999 ~ "Midtjylland",
-    k_postnr <= 9999 ~ "Nordjylland")) %>%
+      range = cell_cols("Q:R")), by = "k_klub") %>%
   
-  
-  # Billettype_d1
+  # Left join Event_år_billettype_d1 fra Excel
   left_join(
     y = read_excel(
       tbl0_input$k_data, col_names = c(
         "k_event_år", "k_billettype", "k_billettype_tilvalg", "k_billetpris",
         "k_arrangørpris", "k_billetantal_maks", "k_event_år_billettype"),
-      range = cell_cols("S:Y")), by = "k_event_år_billettype") %>%
-  select(-k_event_år_billettype) %>%
+      range = cell_cols("W:AC")), by = "k_event_år_billettype") %>%
   
-  # Event_d2
+  # Left join Event_år_d2 fra Excel
   left_join(
     y = read_excel(
       tbl0_input$k_data, col_names = c(
-        "k_event", "k_eventdato", "k_tilmeldingsfrist", "k_åbningsdato", "k_eventsted",
-        "k_eventadresse", "k_eventpostnr", "k_eventby", "k_event_år"),
-      range = cell_cols("S:AA")), by = "k_event_år") %>%
+        "k_eventnr", "k_event", "k_eventdato", "k_tilmeldingsfrist", "k_åbningsdato",
+        "k_ratingopdatering", "k_puljeantal", "k_eventsted", "k_eventadresse", "k_eventpostnr",
+        "k_eventby", "k_uuid", "k_token", "k_event_år"),
+      range = cell_cols("V:AI")), by = "k_event_år") %>%
   
-  mutate(k_ordredato        = convertToDateTime(k_ordredato),
-         k_eventdato        = convertToDateTime(k_eventdato),
-         k_tilmeldingsfrist = convertToDateTime(k_tilmeldingsfrist),
-         k_åbningsdato      = convertToDateTime(k_åbningsdato),
-         k_billettype = factor(k_billettype, levels = c(
-           "🏓 DM i Ping Pong",
-           "🥳 Fest om aftenen",
-           "🥪 Frokost",
-           "🍴 Restaurant Flammen",
-           "🎉 The Old Irish Pub"), ordered = T)) %>%
+  # k_deltager_id
+  mutate(across("k_deltager_id", as.character)) %>%
   
-  arrange(k_ordredato, k_billettype) %>%
-  group_by(k_deltager_id, k_billettype, k_status) %>%
-  mutate(k_antal_gentilmelding = case_when(
-    grepl("Tilmeldt", k_status) ~ paste0(cumsum(!duplicated(year(k_ordredato))), ". gang"))) %>%
-  ungroup() %>%
-  mutate(k_gentilmelding = case_when(
-    substr(k_antal_gentilmelding, 1, 1) == 1 ~ "Debutant",
-    substr(k_antal_gentilmelding, 1, 1) >= 2 ~ "Gentilmelding")) %>%
-  mutate(k_afholdelsesår = year(k_ordredato)) %>%
-  group_by(k_event_år, k_deltager_id) %>%
-  mutate(k_første_ordredato = min(k_ordredato)) %>%
-  ungroup() %>%
-  add_count(k_event_år, k_deltager_id, k_status, name = "k_billetsalg_pr_tilmelding") %>%
-  mutate(k_billetsalg_pr_tilmelding = paste(k_billetsalg_pr_tilmelding, "stk. billetsalg")) %>%
-  mutate(k_klokkeslætsinterval = case_when(hour(k_første_ordredato) >= 18 ~ "[>=18] Aften", TRUE ~ "[>=00] Øvrig")) %>%
+  # k_navn
+  mutate(across("k_navn", as.character)) %>%
+  
+  # k_klub
+  mutate(across("k_klub", .fns = factor, ordered = T)) %>%
+  
+  # k_køn
+  mutate(across("k_køn", .fns = factor, levels = c(
+    "♂️ Herre",
+    "♀️ Dame"), ordered = T)) %>%
+  
+  # k_ordredato
+  mutate(across("k_ordredato", convertToDateTime)) %>%
+  
+  # k_status
   mutate(k_status = case_when(
     grepl("Tilmeldt", k_status) ~ "✔️ Tilmeldt",
     grepl("Afbud",    k_status) ~ "❌ Afbud")) %>%
+  mutate(across("k_status", .fns = factor, levels = c(
+    "✔️ Tilmeldt",
+    "❌ Afbud"), ordered = T)) %>%
+  
+  # k_rang1
+  mutate(across("k_rang1", as.integer)) %>%
+  
+  # k_rating2
+  mutate(across("k_rating2", as.integer)) %>%
+  
+  # k_rang3
+  mutate(across("k_rang3", as.integer)) %>%
+  
+  # k_slutspil
+  mutate(across("k_slutspil", .fns = factor, ordered = T)) %>%
+  
+  # k_placering
+  mutate(across("k_placering", as.integer)) %>%
+  
+  # k_præmiepenge
+  mutate(across("k_præmiepenge", as.numeric)) %>%
+  
+  # k_præmiepenge_pct
+  mutate(across("k_præmiepenge_pct", as.numeric)) %>%
+  
+  # k_postnr
+  mutate(across("k_postnr", as.character)) %>%
+  
+  # k_event_år
+  mutate(across("k_event_år", .fns = factor, ordered = T)) %>%
+  
+  # k_billettype
+  mutate(across("k_billettype", .fns = factor, levels = c(
+    "🏓 DM i Ping Pong",
+    "🥳 Fest om aftenen",
+    "🍴 Restaurant Flammen",
+    "🎉 The Old Irish Pub",
+    "🥪 Frokost"), ordered = T)) %>%
+  
+  # k_billettype_tilvalg
+  mutate(across("k_billettype_tilvalg", .fns = factor, ordered = T)) %>%
+  
+  # k_billetpris
+  mutate(across("k_billetpris", as.numeric)) %>%
+  
+  # k_arrangørpris
+  mutate(across("k_arrangørpris", as.numeric)) %>%
+  
+  # k_billetantal_maks
+  mutate(across("k_billetantal_maks", as.integer)) %>%
+  
+  # k_eventnr
+  mutate(across("k_eventnr", as.integer)) %>%
+  
+  # k_event
+  mutate(across("k_event", .fns = factor, ordered = T)) %>%
+  
+  # k_eventdato
+  mutate(across("k_eventdato", convertToDateTime)) %>%
+  
+  # k_tilmeldingsfrist
+  mutate(across("k_tilmeldingsfrist", convertToDateTime)) %>%
+  
+  # k_åbningsdato
+  mutate(across("k_åbningsdato", convertToDateTime)) %>%
+  
+  # k_ratingopdatering
+  mutate(across("k_ratingopdatering", convertToDate)) %>%
+  
+  # k_puljeantal
+  mutate(across("k_puljeantal", as.integer)) %>%
+  
+  # k_eventsted
+  mutate(across("k_eventsted", .fns = factor, ordered = T)) %>%
+  
+  # k_eventadresse
+  mutate(across("k_eventadresse", .fns = factor, ordered = T)) %>%
+  
+  # k_eventpostnr
+  mutate(across("k_eventpostnr", as.integer)) %>%
+  
+  # k_eventby
+  mutate(across("k_eventby", .fns = factor, ordered = T)) %>%
+  
+  # k_uuid
+  mutate(across("k_uuid", as.character)) %>%
+  
+  # k_token
+  mutate(across("k_token", as.character)) %>%
+  
+  # k_eventår
+  mutate(k_eventår = year(k_eventdato)) %>%
+  mutate(across("k_eventår", .fns = factor, ordered = T)) %>%
+  
+  # k_første_ordredato
+  group_by(k_event_år, k_deltager_id) %>%
+  mutate(k_første_ordredato = min(k_ordredato)) %>%
+  ungroup() %>%
+  
+  # k_billetsalg_pr_tilmelding
+  add_count(k_event_år, k_deltager_id, k_status, name = "k_billetsalg_pr_tilmelding") %>%
+  mutate(k_billetsalg_pr_tilmelding = paste(k_billetsalg_pr_tilmelding, "stk. billetsalg")) %>%
+  mutate(across("k_billetsalg_pr_tilmelding", .fns = factor, ordered = T)) %>%
+  
+  # k_klokkeslætsinterval
+  mutate(k_klokkeslætsinterval = case_when(
+    hour(k_første_ordredato) >= 18 ~ "[>=18] Aften",
+                              TRUE ~ "[>=00] Øvrig")) %>%
+  mutate(across("k_klokkeslætsinterval", .fns = factor, levels = c(
+    "[>=18] Aften",
+    "[>=00] Øvrig"), ordered = T)) %>%
+  
+  # k_tilmeldingstype
   mutate(k_tilmeldingstype = case_when(
-    grepl("Tilmeldt", k_status) & as.Date(k_første_ordredato) <= k_tilmeldingsfrist ~ "🎫 Ordinær",
-    grepl("Tilmeldt", k_status) & as.Date(k_første_ordredato) >  k_tilmeldingsfrist ~ "🏃 Drive-in",
-    grepl("Afbud", k_status)                                                        ~ "❌ Afbud")) %>%
-
-  # Deltagere
-  mutate(k_klub = case_when(grepl("Ingen klub", k_klub) ~ "Ingen klub", TRUE ~ k_klub)) %>%
+    grepl("Tilmeldt", k_status) & as_date(k_første_ordredato) <= k_tilmeldingsfrist ~ "🎫 Ordinær",
+    grepl("Tilmeldt", k_status) & as_date(k_første_ordredato) >  k_tilmeldingsfrist ~ "🏃 Drive-in",
+    grepl("Afbud",    k_status)                                                     ~ "❌ Afbud")) %>%
+  mutate(across("k_tilmeldingstype", .fns = factor, levels = c(
+    "🎫 Ordinær",
+    "🏃 Drive-in",
+    "❌ Afbud"), ordered = T)) %>%
+  
+  # k_slutspil_placering
+  mutate(k_slutspil_placering = case_when(
+    is.na(k_slutspil) | is.na(k_placering) ~ NA_character_,
+    TRUE ~ paste0(substr(k_slutspil, 1, 1), k_placering))) %>%
+  mutate(across("k_slutspil_placering", .fns = factor, ordered = T)) %>%
+  
+  # Landsdel
+  mutate(k_landsdel = case_when(
+    suppressWarnings(as.integer(k_postnr)) <= 3699 ~ "Sjælland",
+    suppressWarnings(as.integer(k_postnr)) <= 3799 ~ "Bornholm",
+    suppressWarnings(as.integer(k_postnr)) <= 4999 ~ "Sjælland",
+    suppressWarnings(as.integer(k_postnr)) <= 5999 ~ "Fyn",
+    suppressWarnings(as.integer(k_postnr)) <= 9999 ~ "Jylland",
+    TRUE ~ "(Ukendt landsdel)")) %>%
+  mutate(across("k_landsdel", .fns = factor, levels = c(
+    "Jylland",
+    "Fyn",
+    "Sjælland",
+    "Bornholm",
+    "(Ukendt landsdel)"), ordered = T)) %>%
+  
+  # Region
+  mutate(k_region = case_when(
+    suppressWarnings(as.integer(k_postnr)) <= 3799 ~ "Hovedstaden",
+    suppressWarnings(as.integer(k_postnr)) <= 4999 ~ "Sjælland",
+    suppressWarnings(as.integer(k_postnr)) <= 6899 ~ "Syddanmark",
+    suppressWarnings(as.integer(k_postnr)) <= 6999 ~ "Midtjylland",
+    suppressWarnings(as.integer(k_postnr)) <= 7199 ~ "Syddanmark",
+    suppressWarnings(as.integer(k_postnr)) <= 7699 ~ "Midtjylland",
+    suppressWarnings(as.integer(k_postnr)) <= 7799 ~ "Nordjylland",
+    suppressWarnings(as.integer(k_postnr)) <= 8999 ~ "Midtjylland",
+    suppressWarnings(as.integer(k_postnr)) <= 9999 ~ "Nordjylland",
+    TRUE ~ "(Ukendt region)")) %>%
+  mutate(across("k_region", .fns = factor, levels = c(
+    "Nordjylland",
+    "Midtjylland",
+    "Syddanmark",
+    "Sjælland",
+    "Hovedstaden",
+    "(Ukendt region)"), ordered = T)) %>%
+  
+  # k_antal_gentilmelding
+  arrange(k_ordredato, k_billettype) %>%
+  group_by(k_deltager_id, k_billettype, k_status) %>%
+  mutate(k_antal_gentilmelding = case_when(
+    grepl("Tilmeldt", k_status) ~ paste0(cumsum(!duplicated(year(k_ordredato))), ". gang"),
+    TRUE ~ as.character(k_status))) %>%
+  ungroup() %>%
+  mutate(across("k_antal_gentilmelding", .fns = factor, ordered = T)) %>%
+  
+  # k_gentilmelding
+  mutate(k_gentilmelding = case_when(
+    substr(k_antal_gentilmelding, 1, 1) == 1 ~ "Debutant",
+    substr(k_antal_gentilmelding, 1, 1) >= 2 ~ "Gentilmelding",
+    TRUE ~ as.character(k_status))) %>%
+  mutate(across("k_gentilmelding", .fns = factor, levels = c(
+    "Debutant",
+    "Gentilmelding",
+    "❌ Afbud"), ordered = T)) %>%
+  
+  # k_rating
   mutate(k_rating = case_when(
     !is.na(k_rang1)  ~ paste0("[", k_rang1, "] ", k_rating2),
     is.na(k_rating2) ~ "-",
-                TRUE ~ k_rating2)) %>%
+                TRUE ~ as.character(k_rating2))) %>%
+  mutate(across("k_rating", as.character)) %>%
+  
+  # k_ratinggruppe
   mutate(k_ratinggruppe = case_when(
     as.numeric(k_rating2) >= 2000 ~ "Elite",
                              TRUE ~ "Amatør")) %>%
-  mutate(k_født = as.Date(if_else(
+  mutate(across("k_ratinggruppe", .fns = factor, levels = c(
+    "Elite",
+    "Amatør"), ordered = T)) %>%
+  
+  # k_født
+  mutate(k_født = as_date(if_else(
     substr(k_deltager_id, 5, 6) <= substr(year(Sys.time()), 3, 4),
     paste0(
       substr(year(Sys.time()), 1, 2), substr(k_deltager_id, 5, 6), "-",
@@ -130,76 +289,63 @@ tbl0_join_alle <- read_excel(
       as.numeric(substr(year(Sys.time()), 1, 2))-1, substr(k_deltager_id, 5, 6), "-",
       substr(k_deltager_id, 3, 4), "-",
       substr(k_deltager_id, 1, 2))))) %>%
+  
+  # k_alder
   mutate(k_alder = trunc((k_født %--% as_date(k_eventdato)) / years(1))) %>%
+  mutate(across("k_alder", as.integer)) %>%
+  
+  # k_aldersgruppe
   mutate(k_aldersgruppe = case_when(
     k_alder <= 17 ~ "Ungdom",
     k_alder <= 39 ~ "Senior",
     k_alder >= 40 ~ "Veteran")) %>%
+  mutate(across("k_aldersgruppe", .fns = factor, levels = c(
+    "Ungdom",
+    "Senior",
+    "Veteran"), ordered = T)) %>%
+  
+  # k_spillertype
+  mutate(k_spillertype = case_when(
+    suppressWarnings(as.integer(str_sub(k_deltager_id, -4))) >= 0 ~ "👤 Ikke-bordtennisspiller",
+    TRUE ~ "🏓 Bordtennisspiller")) %>%
+  mutate(across("k_spillertype", .fns = factor, levels = c(
+    "🏓 Bordtennisspiller",
+    "👤 Ikke-bordtennisspiller"), ordered = T)) %>%
+  
+  # k_billetantal_ping_pong
+  add_count(k_event_år_billettype, k_billettype, k_status,
+            name = "k_billetantal_billettype_status") %>%
+  
+  # k_navn_klub
+  mutate(k_navn_klub = case_when(
+    is.na(k_deltager_id) ~ NA_character_,
+    grepl("Ingen klub", k_klub) ~ paste0(k_navn),
+    TRUE ~ paste0(k_navn, ", ", k_klub))) %>%
+  mutate(across("k_navn_klub", as.character)) %>%
+  
+  # k_navn_billettype
   group_by(k_event_år, k_deltager_id, k_status) %>%
   arrange(k_billettype, desc(k_første_ordredato)) %>%
-  mutate(k_navn_klub_alder_status = case_when(
+  mutate(k_navn_billettype = case_when(
+    is.na(k_deltager_id) ~ NA_character_,
     grepl("Ingen klub", k_klub) ~ paste0(k_navn, " (", k_alder, " år) ", str_c(substr(
       k_billettype, 1, 1), collapse = "")),
     TRUE ~ paste0(k_navn, ", ", k_klub, " (", k_alder, " år) ", str_c(substr(
       k_billettype, 1, 1), collapse = "")))) %>%
   ungroup() %>%
-  select(-k_navn) %>%
+  mutate(across("k_navn_billettype", as.character)) %>%
   
-  mutate_at(c(
-    "k_billetpris",
-    "k_arrangørpris"), as.numeric) %>%
-  mutate_at(c(
-    "k_rang1",
-    "k_rating2",
-    "k_rang3",
-    "k_alder",
-    "k_postnr",
-    "k_billetantal_maks"), as.integer) %>%
-  mutate(k_antal_gentilmelding = factor(k_antal_gentilmelding, ordered = T),
-         k_billetsalg_pr_tilmelding = factor(k_billetsalg_pr_tilmelding, ordered = T),
-         k_gentilmelding = factor(k_gentilmelding, levels = c(
-           "Debutant",
-           "Gentilmelding"), ordered = T),
-         k_klokkeslætsinterval = factor(k_klokkeslætsinterval, levels = c(
-           "[>=18] Aften",
-           "[>=00] Øvrig"), ordered = T),
-         k_køn = factor(k_køn, levels = c(
-           "♂️ Herre",
-           "♀️ Dame"), ordered = T),
-         k_aldersgruppe = factor(k_aldersgruppe, levels = c(
-           "Ungdom",
-           "Senior",
-           "Veteran"), ordered = T),
-         k_ratinggruppe = factor(k_ratinggruppe, levels = c(
-           "Elite",
-           "Amatør"), ordered = T),
-         k_status = factor(k_status, levels = c(
-           "✔️ Tilmeldt",
-           "❌ Afbud"), ordered = T),
-         k_tilmeldingstype  = factor(k_tilmeldingstype, levels = c(
-           "🎫 Ordinær",
-           "🏃 Drive-in",
-           "❌ Afbud"), ordered = T),
-         k_landsdel = factor(k_landsdel, levels = c(
-           "Jylland",
-           "Fyn",
-           "Sjælland",
-           "Bornholm",
-           "Ingen klub"), ordered = T),
-         k_region = factor(k_region, levels = c(
-           "Nordjylland",
-           "Midtjylland",
-           "Syddanmark",
-           "Sjælland",
-           "Hovedstaden",
-           "Ingen klub"), ordered = T)) %>%
+  # Sorter efter (1) k_første_ordredato, (2) k_billettype
   arrange(desc(k_første_ordredato), k_billettype)
 
+# Aktuelle tilmeldinger
 tbl0_join_aktuel <- tbl0_join_alle %>% filter(
-  as.Date(tbl0_join_alle$k_eventdato) == dmy(tbl0_input$k_eventdato))
+  k_eventår == tbl0_input$k_eventår)
 
-#' ## Statistik
+#' # Statistik
+# Statistik ########################################################################################
 #+ eval=F, warning=F, message=F
+
 
 tbl0_stat <- data.frame(
   
@@ -310,7 +456,7 @@ tbl0_stat <- data.frame(
       distinct(k_deltager_id, .keep_all = T) %>%
       count(k_klub) %>%
       mutate(pct = percent(n/sum(n), digits = 0)) %>%
-      mutate(label = paste0("👤 ", n, " ", k_klub, " (", pct, ")")) %>%
+      mutate(label = paste0("👤 ", n, " Ingen klub (", pct, ")")) %>%
       filter(grepl("Ingen klub", k_klub)) %>%
       summarise(label = str_c(label, collapse = " ∙ "))),
   
@@ -348,19 +494,37 @@ tbl0_stat <- data.frame(
       summarise(max(k_rating2, na.rm = T)), " rating"),
   
   # Antal forskudte tilmeldinger
-  k_antal_forskudte_tilmeldinger = 1,
+  k_antal_forskudte_tilmeldinger = paste0(
+    "👤 ", tbl0_join_aktuel %>% filter(
+      grepl("Tilmeldt", k_status)) %>%
+      group_by(k_deltager_id) %>%
+      filter(n() > 1) %>%
+      count(k_ordredato) %>%
+      ungroup() %>%
+      distinct(k_deltager_id, .keep_all = T) %>%
+      summarise(sum(n == 1)), " Forskudt tilmelding"),
   
   # Billetantal gns.
-  k_billetantal_gns = 1,
+  k_billetantal_gns = paste(
+    "🎫 Billetantal gns.:",
+    tbl0_join_aktuel %>% filter(
+      grepl("Tilmeldt", k_status)) %>%
+      summarise(n())/
+    tbl0_join_aktuel %>% filter(
+      grepl("Tilmeldt", k_status)) %>%
+      summarise(n_distinct(k_deltager_id))),
   
-  # Omsætning
-  k_omsætning = 1,
-  
-  # Arrangørpris
-  k_arrangørpris = 1,
-  
-  # Over-/underskud arrangør
-  k_over_underskud_arrangør = 1,
+  # Økonomi
+  k_økonomi = paste0(
+    "💰 Omsætning kr. ", tbl0_join_aktuel %>% filter(
+      grepl("Tilmeldt", k_status)) %>%
+      summarise(format(round(sum(k_billetpris, na.rm = T), 0), big.mark = ".")),
+    " ∙ 💰 Arrangørpris kr. ", tbl0_join_aktuel %>% filter(
+      grepl("Tilmeldt", k_status)) %>%
+      summarise(format(round(sum(-k_arrangørpris, na.rm = T), 0), big.mark = ".")),
+    " ∙ 💰 Over-/underskud arrangør kr. ", tbl0_join_aktuel %>% filter(
+      grepl("Tilmeldt", k_status)) %>%
+      summarise(format(round(sum(k_billetpris, -k_arrangørpris, na.rm = T), 0), big.mark = "."))),
   
   # Billetantal Ping Ping maks. (heltal)
   k_int_billetantal_ping_pong_maks = as.integer(
@@ -382,24 +546,13 @@ tbl0_stat <- data.frame(
       grepl("Ping Pong", k_billettype)) %>%
       summarise(max(k_arrangørpris, na.rm = T))),
   
-  # Præmiepenge total i pct.
-  k_num_præmie_total = tbl0_input$k_præmie_A1+tbl0_input$k_præmie_A2+tbl0_input$k_præmie_A3+
-    tbl0_input$k_præmie_A4+tbl0_input$k_præmie_B1+tbl0_input$k_præmie_B2,
-  
-  # Præmiepenge for A-slutspil i pct.
-  k_num_præmie_A = tbl0_input$k_præmie_A1+tbl0_input$k_præmie_A2+
-    tbl0_input$k_præmie_A3+tbl0_input$k_præmie_A4,
-  
-  # Præmiepenge for B-slutspil i pct.
-  k_num_præmie_B = tbl0_input$k_præmie_B1+tbl0_input$k_præmie_B2,
-  
   # Antal puljer (heltal)
   k_int_antal_puljer = as.integer(
     tbl0_join_aktuel %>% filter(
       grepl("Tilmeldt", k_status) &
         grepl("Ping Pong", k_billettype)) %>%
       distinct(k_deltager_id, .keep_all = T) %>%
-      summarise(ceiling(n()/tbl0_input$k_puljeantal))),
+      summarise(ceiling(n()/unique(tbl0_join_aktuel$k_puljeantal)))),
   
   # Sidst opdateret
   k_sidst_opdateret = paste0(
@@ -412,10 +565,10 @@ tbl0_stat <- data.frame(
     "<img src=Filer/Forside.jpg style=width:30em;max-width:100%;border-radius:5px>"
   } else if(tbl0_input$k_status_1_2_3_4 == 2) {
     paste0(
-      "<img src=Filer/Teaserplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)),
-      ".png style=width:30em;max-width:100%;border-radius:5px><br>",
-      "<a href=Filer/Teaserplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)),
-      ".pdf target=_blank><i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i></a>")
+      "![[<i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i>]",
+      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}]",
+      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png)",
+      "{width=30em out-width=0.1 fig-align=left}")
   } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
     paste0(
       "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
@@ -423,10 +576,10 @@ tbl0_stat <- data.frame(
       "text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>",
       "&nbsp;Tilmeld<br><i style=font-weight:normal;font-size:60%>ALLE kan deltage</i></a>",
       "<br><br>",
-      "<img src=Filer/Indbydelsesplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)),
-      ".png style=width:30em;max-width:100%;border-radius:5px><br>",
-      "<a href=Filer/Indbydelsesplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)),
-      ".pdf target=_blank><i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i></a>")
+      "![[<i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i>]",
+      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}]",
+      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png)",
+      "{width=30em fig-align=left}")
   },
   
   # Status forside DM
@@ -472,93 +625,71 @@ tbl0_stat <- data.frame(
 #' ## Pengepræmier
 #+ eval=F, warning=F, message=F
 
-tbl1_præmier_penge <- data.frame(
-  " " = c(
-    "Præmiesum",
-    "A-slutspil",
-    "1. plads",
-    "2. plads",
-    "3. plads",
-    "4. plads",
-    "B. slutspil",
-    "1. plads",
-    "2. plads"),
-  "Foreløbig" = c(
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_stat$k_num_præmie_total, 0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_stat$k_num_præmie_A,     0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_input$k_præmie_A1,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_input$k_præmie_A2,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_input$k_præmie_A3,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_input$k_præmie_A4,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_stat$k_num_præmie_B,     0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_input$k_præmie_B1,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong*
-        tbl0_input$k_præmie_B2,       0), big.mark = "."))),
-  "Potentiel" = c(
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_stat$k_num_præmie_total, 0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_stat$k_num_præmie_A,     0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_input$k_præmie_A1,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_input$k_præmie_A2,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_input$k_præmie_A3,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_input$k_præmie_A4,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_stat$k_num_præmie_B,     0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_input$k_præmie_B1,       0), big.mark = ".")),
-    paste("kr.", format(round(
-      0.001+tbl0_stat$k_num_præmiepenge_pr_deltager*tbl0_stat$k_int_billetantal_ping_pong_maks*
-        tbl0_input$k_præmie_B2,       0), big.mark = "."))),
-  "Pct." = c(
-    paste0(digits(0.001+100*tbl0_stat$k_num_præmie_total, 0), "%"),
-    paste0(digits(0.001+100*tbl0_stat$k_num_præmie_A,     1), "%"),
-    paste0(digits(0.001+100*tbl0_input$k_præmie_A1,       1), "%"),
-    paste0(digits(0.001+100*tbl0_input$k_præmie_A2,       0), "%"),
-    paste0(digits(0.001+100*tbl0_input$k_præmie_A3,       0), "%"),
-    paste0(digits(0.001+100*tbl0_input$k_præmie_A4,       0), "%"),
-    paste0(digits(0.001+100*tbl0_stat$k_num_præmie_B,     1), "%"),
-    paste0(digits(0.001+100*tbl0_input$k_præmie_B1,       1), "%"),
-    paste0(digits(0.001+100*tbl0_input$k_præmie_B2,       0), "%")),
-  check.names = F)
+tbl1_præmier_penge <- tbl0_join_alle %>% filter(
+  grepl("Ping Pong", k_billettype) &
+  (!is.na(k_slutspil) | !is.na(k_placering) | !is.na(k_præmiepenge))) %>%
+  select(
+    k_event_år_billettype,
+    k_eventår,
+    k_slutspil,
+    k_placering,
+    k_slutspil_placering,
+    k_præmiepenge,
+    k_præmiepenge_pct,
+    k_billetantal_maks,
+    k_billetantal_billettype_status) %>%
+  
+  group_by(k_event_år_billettype) %>%
+  mutate(k_potentiel_præmiesum = sum(k_præmiepenge)) %>%
+  ungroup() %>%
+  mutate(k_aktuel_præmiepenge = k_potentiel_præmiesum*k_billetantal_billettype_status/
+           k_billetantal_maks*k_præmiepenge_pct) %>%
+  
+  mutate(k_rank = "3") %>%
+  group_by(k_event_år_billettype) %>%
+  bind_rows(summarise(., across(where(is.numeric), sum), .groups = "keep")) %>% ungroup() %>%
+  mutate(k_rank = ifelse(!is.na(k_rank), k_rank, "1")) %>%
+  
+  group_by(k_event_år_billettype, k_slutspil) %>%
+  bind_rows(summarise(., across(where(is.numeric), sum), .groups = "keep")) %>% ungroup() %>%
+  mutate(k_rank = ifelse(!is.na(k_rank), k_rank, "2")) %>%
+  group_by(k_event_år_billettype) %>%
+  fill(k_eventår, .direction = "updown") %>%
+  ungroup() %>%
+  
+  mutate(across("k_slutspil", as.character)) %>%
+  mutate(across("k_slutspil_placering", as.character)) %>%
+  mutate(k_slutspil = ifelse(!is.na(k_slutspil), k_slutspil, "1")) %>%
+  arrange(desc(k_eventår), k_slutspil, k_rank, k_placering) %>%
+  distinct(k_event_år_billettype, k_slutspil, k_placering, .keep_all = T) %>%
+  mutate(k_slutspil_placering = case_when(
+    k_rank == "1" ~ "Præmiesum",
+    k_rank == "2" ~ k_slutspil,
+    k_rank == "3" ~ k_slutspil_placering,
+    TRUE ~ NA_character_)) %>%
+  
+  mutate(k_aktuel_præmiepenge = paste("kr.", format(round(
+    0.001+k_aktuel_præmiepenge), big.mark = "."))) %>%
+  mutate(k_præmiepenge = paste("kr.", format(round(
+    0.001+k_præmiepenge), big.mark = "."))) %>%
+  mutate(k_præmiepenge_pct = paste0(signif(
+    0.001+100*k_præmiepenge_pct, 3), "%")) %>%
+  
+  filter(k_eventår == tbl0_input$k_eventår) %>%
+  select(
+    " "         = k_slutspil_placering,
+    "Aktuel"    = k_aktuel_præmiepenge,
+    "Potentiel" = k_præmiepenge,
+    "Pct."      = k_præmiepenge_pct,
+    "k_rank"    = k_rank)
+
 kbl1_præmier_penge <- tbl1_præmier_penge %>%
-  kbl(col.names = NA, align = "lrrr", escape = F,
+  kbl(col.names = NA, align = "lrrrr", escape = F,
       caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  pack_rows(start_row = 3, end_row = 6) %>%
-  pack_rows(start_row = 8, end_row = 9) %>%
   row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  row_spec(1, bold = T, background = tbl0_input$k_farve2) %>%
-  row_spec(c(2, 7), background = tbl0_input$k_farve2) %>%
+  row_spec(which(tbl1_præmier_penge$k_rank == "1"), bold = T, background = tbl0_input$k_farve2) %>%
+  row_spec(which(tbl1_præmier_penge$k_rank == "2"), background = tbl0_input$k_farve2) %>%
   column_spec(c(3, 4), italic = T, color = tbl0_input$k_farve1) %>%
   footnote(paste0(
     "<i style=font-size:80%>Foreløbig = ",
@@ -566,7 +697,8 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
     tbl0_stat$k_num_præmiepenge_pr_deltager, " (maks. ",
     tbl0_stat$k_int_billetantal_ping_pong_maks, " deltagere).<br>",
     "Diplomer uddeles til alle gave-/præmietagere.</i>"),
-    general_title = "", escape = F)
+    general_title = "", escape = F) %>%
+  remove_column(5)
 kbl1_præmier_penge
 
 #' ## Gaver
@@ -577,7 +709,7 @@ tbl1_præmier_yngst_ældst <- tbl0_join_aktuel %>% filter(
     filter(k_født == max(k_født) | k_født == min(k_født)) %>%
   mutate(k_født  = format(k_født, "%d.%m.%Y")) %>%
   select(
-    "Navn"  = k_navn_klub_alder_status,
+    "Navn"  = k_navn_billettype,
     "Født"  = k_født)
 kbl1_præmier_yngst_ældst <- tbl1_præmier_yngst_ældst %>%
   kbl(col.names = NA, align = "lc", escape = F,
@@ -603,7 +735,7 @@ tbl2_deltagere_foreløbig <- tbl0_join_aktuel %>%
   mutate(Nr. = case_when(grepl("Tilmeldt", k_status) ~ row_number())) %>%
   select(
     Nr.,
-    "Navn" = k_navn_klub_alder_status,
+    "Navn" = k_navn_billettype,
     k_status)
 kbl2_deltagere_foreløbig <- tbl2_deltagere_foreløbig %>%
   kbl(col.names = NA, align = "cl", escape = F, caption = "Foreløbige deltagere") %>%
@@ -631,7 +763,7 @@ tbl2_deltagere_puljer <- tbl0_join_aktuel %>%
     k_rang3,
     k_deltager_id) %>%
   add_row(k_deltager_id = rep(
-    NA, tbl0_stat$k_int_antal_puljer*tbl0_input$k_puljeantal-
+    NA, tbl0_stat$k_int_antal_puljer*unique(tbl0_join_aktuel$k_puljeantal)-
       tbl0_stat$k_int_billetantal_ping_pong+tbl0_stat$k_int_antal_puljer)) %>%
   mutate(Seedningslag = ceiling(row_number()/tbl0_stat$k_int_antal_puljer)) %>%
   group_by(Seedningslag) %>%
@@ -644,12 +776,12 @@ tbl2_deltagere_puljer <- tbl0_join_aktuel %>%
   filter(!is.na(k_deltager_id)) %>%
   select(
     Nr.,
-    "Navn"   = k_navn_klub_alder_status,
+    "Navn"   = k_navn_billettype,
     "Rating" = k_rating,
     Seedningslag)
 kbl2_deltagere_puljer <- tbl2_deltagere_puljer %>%
   kbl(col.names = NA, align = "clr", escape = F,
-      caption = paste0(tbl0_input$k_puljeantal, "-mandspuljer efter snake-system")) %>%
+      caption = paste0(unique(tbl0_join_aktuel$k_puljeantal), "-mandspuljer efter snake-system")) %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   add_header_above(
     c("Bemærk: Puljerne kan ændre sig ved drive-in/afbud" = 4),
@@ -665,7 +797,7 @@ kbl2_deltagere_puljer
 #+ eval=F, warning=F, message=F
 
 tbl2_deltagere_fest <- tbl0_join_aktuel %>%
-  filter(grepl("Fest", k_billettype) &
+  filter(!grepl("Ping Pong", k_billettype) &
            substr(k_billetsalg_pr_tilmelding, 1, 1) == 1 |
            grepl("Afbud", k_status)) %>%
   distinct(k_deltager_id, k_status, .keep_all = T) %>%
@@ -677,7 +809,7 @@ tbl2_deltagere_fest <- tbl0_join_aktuel %>%
   mutate(Nr. = case_when(grepl("Tilmeldt", k_status) ~ row_number())) %>%
   select(
     Nr.,
-    "Navn" = k_navn_klub_alder_status,
+    "Navn" = k_navn_billettype,
     k_status)
 kbl2_deltagere_fest <- tbl2_deltagere_fest %>%
   kbl(col.names = NA, align = "cl", escape = F, caption = "Kun med til festen") %>%
@@ -691,6 +823,52 @@ kbl2_deltagere_fest <- tbl2_deltagere_fest %>%
            strikeout = T, italic = T, color = tbl0_input$k_farve1) %>%
   remove_column(3)
 kbl2_deltagere_fest
+
+#' # Resultater
+# Resultater #######################################################################################
+
+#' ## DM-vindere statistik
+#+ eval=F, warning=F, message=F
+
+tbl3_dm_resultater <- tbl0_join_alle %>%
+  filter(k_placering == "1" & grepl("A-slutspil", k_slutspil) & !is.na(k_deltager_id)) %>%
+  add_row(k_eventår = "2020", k_navn_klub = "Aflyst pga. Covid-19") %>%
+  arrange(desc(k_eventår)) %>%
+  select(
+    "År"   = k_eventår,
+    "Navn" = k_navn_klub)
+
+kbl3_dm_resultater <- tbl3_dm_resultater %>%
+  kbl(col.names = NA, align = "cl", escape = F,
+      caption = "<i class=bi-trophy></i>&nbsp;DM-vindere statistik") %>%
+  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
+  row_spec(which(tbl3_dm_resultater$År == "2020"),
+           strikeout = T, italic = T, color = "#5D6D7E")
+kbl3_dm_resultater
+
+#' ## Resultater sidste DM
+#+ eval=F, warning=F, message=F
+
+tbl3_resultater_sidste_dm <- tbl0_join_alle %>%
+  filter(!is.na(k_deltager_id) & !is.na(k_slutspil)) %>%
+  filter(k_eventår < as.integer(tbl0_input$k_eventår)) %>%
+  filter(k_eventnr == min(k_eventnr)) %>%
+  arrange(k_eventnr, k_slutspil, k_placering) %>%
+  select(
+    "Placering"  = k_slutspil_placering,
+    "Navn"       = k_navn_klub,
+    "k_slutspil" = k_slutspil,
+    "k_eventår"  = k_eventår)
+
+kbl3_resultater_sidste_dm <- tbl3_resultater_sidste_dm %>%
+  kbl(col.names = NA, align = "cl", escape = F,
+      caption = paste("<i class=bi-trophy></i>&nbsp;Resultater sidste DM", unique(tbl3_resultater_sidste_dm$k_eventår))) %>%
+  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
+  remove_column(c(3, 4)) %>%
+  pack_rows(index = table(as.character(tbl3_resultater_sidste_dm$k_slutspil)))
+kbl3_resultater_sidste_dm
 
 #' # Dashboards
 # Dashboards #######################################################################################
@@ -783,7 +961,9 @@ graf3_klubber
 #+ eval=F, warning=F, message=F
 
 graf4_DK <- tbl0_join_aktuel %>% filter(
-  !is.na(k_postnr) & grepl("Tilmeldt", k_status)) %>%
+  grepl("Tilmeldt", k_status) &
+    !grepl("Ingen klub", k_klub)) %>%
+  mutate(across("k_postnr", as.integer)) %>%
   distinct(k_deltager_id, .keep_all = T) %>%
   mutate(k_region = case_when(
     k_region == "Nordjylland" ~ "nordjylland",
@@ -813,9 +993,9 @@ if(tbl0_input$k_eventordre_T_F == T) {
   # Hentning af eventordre
   list3_eventordre <- content(GET(
     url = paste0("https://billetfix.dk/api/v3/events/",
-                 tbl0_input$k_eventordre_uuid, "/orders"),
+                unique(tbl0_join_aktuel$k_uuid), "/orders"),
     config = c(
-      add_headers(Authorization = paste("Token", tbl0_input$k_eventordre_token)),
+      add_headers(Authorization = paste("Token", unique(tbl0_join_aktuel$k_token))),
       content_type("application/json"))))
   
   # Udtrækning af relevante listelementer indsættes i tabel
@@ -878,19 +1058,19 @@ if(tbl0_input$k_eventordre_T_F == T) {
 
 if(tbl0_input$k_plakat_png_T_F == T) {
   pdf_convert(
-    pdf       = paste0("Filer/Teaserplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)), ".pdf"),
-    filenames = paste0("Filer/Teaserplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)), ".png"),
+    pdf       = paste0("Filer/Teaserplakat-DM-i-Ping-Pong.pdf"),
+    filenames = paste0("Filer/Teaserplakat-DM-i-Ping-Pong.png"),
     verbose   = F,
     dpi       = 300)
   pdf_convert(
-    pdf       = paste0("Filer/Indbydelsesplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)), ".pdf"),
-    filenames = paste0("Filer/Indbydelsesplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)), ".png"),
+    pdf       = paste0("Filer/Indbydelsesplakat-DM-i-Ping-Pong.pdf"),
+    filenames = paste0("Filer/Indbydelsesplakat-DM-i-Ping-Pong.png"),
     verbose   = F,
     dpi       = 300)
   shell.exec(gsub("\\\\", "/", normalizePath(paste0(
-    "Filer/Teaserplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)), ".png"))))
+    "Filer/Teaserplakat-DM-i-Ping-Pong.png"))))
   shell.exec(gsub("\\\\", "/", normalizePath(paste0(
-    "Filer/Indbydelsesplakat-DM-i-Ping-Pong-", year(dmy(tbl0_input$k_eventdato)), ".png"))))
+    "Filer/Indbydelsesplakat-DM-i-Ping-Pong.png"))))
 } else if (tbl0_input$k_plakat_png_T_F == F) {"tbl0_input$k_plakat_png_T_F = F"}
 
 #' ## Webscraping af ratinglisten
@@ -930,10 +1110,10 @@ if(tbl0_input$k_webscraping_rating_T_F == T) {
 #' ## Webscraping af BTEX Ping Pong bat
 #+ eval=F, warning=F, message=F
 
-tbl3_webscraping_btex <- data.frame()
+tbl4_webscraping_btex <- data.frame()
 link <- paste0("https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html")
 
-tbl3_webscraping_btex <- rbind(tbl3_webscraping_btex, data.frame(
+tbl4_webscraping_btex <- rbind(tbl4_webscraping_btex, data.frame(
   "produkt"      = read_html(link) %>% html_nodes(".name")                        %>% html_text(),
   "pris"         = read_html(link) %>% html_nodes(".price")                       %>% html_text(),
   "lagerstatus"  = read_html(link) %>% html_nodes(".title span")                  %>% html_text(),

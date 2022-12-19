@@ -154,37 +154,5 @@ kbl_webscraping_DM_resultater
 #| include: false
 
 library(kableExtra)
-
-tbl_DM_resultater <- data.frame(
-  "År" = c(
-    "2022",
-    "2021",
-    "2020",
-    "2019",
-    "2018",
-    "2017",
-    "2016",
-    "2015",
-    "2014"),
-  "Spiller" = c(
-    "Benjamin Sørensen, Hørning BTK",
-    "Benjamin Sørensen, Hørning BTK",
-    "Aflyst pga. Covid-19",
-    "Benjamin Sørensen, Silkeborg BTK",
-    "Benjamin Sørensen, Silkeborg BTK",
-    "Benjamin Sørensen, Silkeborg BTK",
-    "Benjamin Sørensen, Silkeborg BTK",
-    "Jesper Nedergård, Silkeborg BTK",
-    "Istvan Moldovan, B 75"),
-  check.names = F)
-
-kbl_DM_resultater <- tbl_DM_resultater %>%
-  kbl(col.names = NA, align = "cl", escape = F,
-      caption = "DM-vindere statistik") %>%
-  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
-  row_spec(which(tbl_DM_resultater$År == "2020"),
-              strikeout = T, italic = T, color = "#5D6D7E")
-
-kbl_DM_resultater
+kbl3_dm_resultater
 ```
