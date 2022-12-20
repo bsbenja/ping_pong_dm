@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-`r "![<i style=font-size:80%>Duel fra WCPP-finalen 2020. Kampen endte 15-14 i afgørende sæt til Andrew Baggaley, England mod Alexander Flemming, Tyskland. Hele kampen kan ses på Youtube [<b>HER</b>](https://www.youtube.com/watch?v=q2f9eDg8WHo){target=_blank}.</i>](Filer/WCPP-finale 2020.mp4){width=40em fig-align=left}"`
+`r "![<i style=font-size:80%>Duel fra WCPP-finalen 2020. Kampen endte 15-14 i afgørende sæt til Andrew Baggaley, England mod Alexander Flemming, Tyskland. Hele kampen kan ses på Youtube [<b>HER</b>](https://www.youtube.com/watch?v=q2f9eDg8WHo){target=_blank}.</i>](Filer/WCPP-finale 2020.mp4){width=40em}"`
 
 ***Her kan man få et indtryk af, hvad World Championship of Ping Pong (WCPP) sædvanligvis er for en størrelse**.*
 

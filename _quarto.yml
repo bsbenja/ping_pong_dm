@@ -27,11 +27,11 @@ website:
     style: docked
     background: light
     contents:
-      - section: "DM i Ping Pong {{< var var.event_år >}}"
-        contents:
-        - href: "indbydelse_tilmelding.qmd"
-        - href: "præmier_deltagere.qmd"
-      - text: "---"
+      # - section: "DM i Ping Pong {{< var var.event_år >}}"
+        # contents:
+        # - href: "indbydelse_tilmelding.qmd"
+        # - href: "præmier_deltagere.qmd"
+      # - text: "---"
       - section: "Generelt om Ping Pong"
         contents:
         - href: "regler.qmd"
@@ -64,6 +64,7 @@ format:
     linkcolor: "#398FCC"
     section-title-footnotes: "Fodnoter"
     toc-title: "Indhold på side"
+    fig-align: left
     toc: true
     smooth-scroll: true
     toc-location: right

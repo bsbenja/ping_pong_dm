@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-`r "![<i style=font-size:80%>Billede fra WCPP-finalen 2019</i>](Filer/WCPP-finale 2019.jpg){width=40em fig-align=left}"`
+`r "![<i style=font-size:80%>Billede fra WCPP-finalen 2019</i>](Filer/WCPP-finale 2019.jpg){width=40em}"`
 
 ## Indledning
 
@@ -21,12 +21,6 @@ Ping Pong beskrives bedst med ordsproget "*gammel vin på nye flasker*" og har t
 3.  **Overkommelig pris**: Prisen for et Ping Pong bat og at spille i det hele taget er på et niveau, hvor langt de fleste kan være med.
 
 [^1]: ***ALLE kan deltage**: Da turneringen er et dansk mesterskab, skal man enten være (1) dansk statsborger eller (2) have boet i Danmark i minimum de seneste fem år (skal kunne dokumenteres af spilleren). Er dette ikke opfyldt, vil det være muligt at deltage udelukkende i puljespillet, hvor ens resultater ikke tæller med i puljeregnskabet (tilmelding stadig påkrævet).*
-
-## Minimumskrav
-
--   Der skal minimum være halkapacitet til, at der kan være 72 deltagere til turneringen (minimum 12 borde, dvs. 1 bord pr. pulje, gerne flere borde).
--   Musikanlæg til brug under turnering og fest.
--   Festrammer enten i den pågældende klub eller arrangeret andetsteds.
 
 ## Turneringen
 
@@ -95,7 +89,7 @@ Det bestræbes på, at det koster kr. 125 at stille op til DM i Ping Pong, og at
 
 ### Præmier
 
-For hver deltager går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren. Derudover er den en præmie til yngste- og ældste deltager for at hylde mangfoldigheden. Sponsorer mv. kan forøge pengepræmierne eller stævnearrangørens indtægtsmuligheder.
+For hver deltager går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren. Derudover er der en præmie til yngste- og ældste deltager for at hylde mangfoldigheden. Sponsorer mv. kan forøge pengepræmierne eller stævnearrangørens indtægtsmuligheder.
 
 Resultaterne fra DM danner grundlag for international udtagelse. Normalvis er der 2 kvalifikationspladser til næstkommende WCPP, der sædvanligvis afholdes i London med en præmiesum på \$100.000 `r "(<i>se mere under fanen [WCPP](wcpp.qmd)</i>)."`
 

@@ -175,6 +175,10 @@ tbl0_join_alle <- read_excel(
   mutate(k_eventår = year(k_eventdato)) %>%
   mutate(across("k_eventår", .fns = factor, ordered = T)) %>%
   
+  # k_event_ping_pong_år
+  mutate(k_event_ping_pong_år = paste(k_event, "i Ping Pong", k_eventår)) %>%
+  mutate(across("k_event_ping_pong_år", .fns = factor, ordered = T)) %>%
+  
   # k_første_ordredato
   group_by(k_event_år, k_deltager_id) %>%
   mutate(k_første_ordredato = min(k_ordredato)) %>%
@@ -556,9 +560,9 @@ tbl0_stat <- data.frame(
   
   # Sidst opdateret
   k_sidst_opdateret = paste0(
-    "<i class=bi-arrow-repeat>&nbsp;Sidst opdateret ", format(
-      floor_date(Sys.time(), "30 minutes"),
-      "%d.%m.%Y kl. %H:%M"), "</i>"),
+    "<i>Nedenstående vises for ", unique(tbl0_join_aktuel$k_event_ping_pong_år), ".</i><br>",
+    "<i class=bi-arrow-repeat>&nbsp;Sidst opdateret ",
+    format(floor_date(Sys.time(), "30 minutes"), "%d.%m.%Y kl. %H:%M."), "</i>"),
   
   # Status CTA/plakat
   k_status_cta_plakat = if(tbl0_input$k_status_1_2_3_4 == 1) {
@@ -568,7 +572,7 @@ tbl0_stat <- data.frame(
       "![[<i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i>]",
       "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}]",
       "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png)",
-      "{width=30em out-width=0.1 fig-align=left}")
+      "{width=30em}")
   } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
     paste0(
       "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
@@ -579,7 +583,7 @@ tbl0_stat <- data.frame(
       "![[<i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i>]",
       "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}]",
       "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png)",
-      "{width=30em fig-align=left}")
+      "{width=30em}")
   },
   
   # Status forside DM
@@ -587,7 +591,9 @@ tbl0_stat <- data.frame(
     paste("<i>Nærmere information om DM i Ping Pong {{< var var.event_år >}} følger.</i>")
   } else if(tbl0_input$k_status_1_2_3_4 == 2) {
     paste(
-      "<i>Der åbnes for tilmelding {{< var var.aabningsdato >}},", 
+      "<i>DM i Ping Pong {{< var var.event_år >}} afholdes {{< var var.event_dag_måned >}} i",
+      "[{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}.",
+      "Der åbnes for tilmelding {{< var var.event_åbning_dag_måned >}},", 
       'hvor der vil komme en fane med hhv. "Indbydelse & tilmelding" samt "Præmier & deltagere",',
       "som vil blive opdateret løbende.</i>")
   } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
@@ -687,10 +693,12 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
   kbl(col.names = NA, align = "lrrrr", escape = F,
       caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  row_spec(which(tbl1_præmier_penge$k_rank == "1"), bold = T, background = tbl0_input$k_farve2) %>%
-  row_spec(which(tbl1_præmier_penge$k_rank == "2"), background = tbl0_input$k_farve2) %>%
-  column_spec(c(3, 4), italic = T, color = tbl0_input$k_farve1) %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+  row_spec(which(tbl1_præmier_penge$k_rank == "1"),
+           bold = T, background = "var_start_var.farve_2_var_slut") %>%
+  row_spec(which(tbl1_præmier_penge$k_rank == "2"),
+           background = "var_start_var.farve_2_var_slut") %>%
+  column_spec(c(3, 4), italic = T, color = "var_start_var.farve_1_var_slut") %>%
   footnote(paste0(
     "<i style=font-size:80%>Foreløbig = ",
     tbl0_stat$k_int_billetantal_ping_pong, " deltagere x kr. ",
@@ -698,7 +706,8 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
     tbl0_stat$k_int_billetantal_ping_pong_maks, " deltagere).<br>",
     "Diplomer uddeles til alle gave-/præmietagere.</i>"),
     general_title = "", escape = F) %>%
-  remove_column(5)
+  remove_column(5) %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 kbl1_præmier_penge
 
 #' ## Gaver
@@ -718,7 +727,8 @@ kbl1_præmier_yngst_ældst <- tbl1_præmier_yngst_ældst %>%
       "Gave til <b>yngste</b>- og <b>ældste</b> Ping Pong deltager<br>",
       "for at hylde mangfoldigheden</i>")) %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 kbl1_præmier_yngst_ældst
 
 #' # Deltagere
@@ -744,10 +754,11 @@ kbl2_deltagere_foreløbig <- tbl2_deltagere_foreløbig %>%
     c("Sorteret efter ordredato" = 3),
     italic = T, align = "c", font_size = "small", escape = F,
     extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   row_spec(which(grepl("Afbud", tbl2_deltagere_foreløbig$k_status)),
-           strikeout = T, italic = T, color = tbl0_input$k_farve1) %>%
-  remove_column(3)
+           strikeout = T, italic = T, color = "var_start_var.farve_1_var_slut") %>%
+  remove_column(3) %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 kbl2_deltagere_foreløbig
 
 #' ## Puljer
@@ -787,10 +798,11 @@ kbl2_deltagere_puljer <- tbl2_deltagere_puljer %>%
     c("Bemærk: Puljerne kan ændre sig ved drive-in/afbud" = 4),
     italic = T, align = "c", font_size = "small", escape = F,
     extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   row_spec(which(tbl2_deltagere_puljer$Seedningslag == "1"), bold = T,
            extra_css = "border:hidden;border-top:0.7px solid #111111") %>%
-  remove_column(4)
+  remove_column(4) %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 kbl2_deltagere_puljer
 
 #' ## Kun til festen inkl. afbud
@@ -818,10 +830,11 @@ kbl2_deltagere_fest <- tbl2_deltagere_fest %>%
     c("Sorteret efter fødselsdato" = 3),
     italic = T, align = "c", font_size = "small", escape = F,
     extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   row_spec(which(grepl("Afbud", tbl2_deltagere_fest$k_status)),
-           strikeout = T, italic = T, color = tbl0_input$k_farve1) %>%
-  remove_column(3)
+           strikeout = T, italic = T, color = "var_start_var.farve_1_var_slut") %>%
+  remove_column(3) %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 kbl2_deltagere_fest
 
 #' # Resultater

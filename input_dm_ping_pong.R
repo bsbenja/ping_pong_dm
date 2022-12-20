@@ -9,15 +9,10 @@
 
 # setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 tbl0_input <- data.frame(
-  # Flere inputmuligheder
   k_status_1_2_3_4             = 2,            # 1/2/3/4 for tilmelding hhv. lukket, teaser, åben og endelig
   k_eventordre_T_F             = F,            # T/F for hentning af eventordre
   k_plakat_png_T_F             = F,            # T/F for plakater fra PDF til PNG
   k_webscraping_rating_T_F     = F,            # T/F for webscraping af rating
-  
-  # Én inputmulighed
   k_eventår                    = "2022",       # ÅÅÅÅ
-  k_farve1                     = "#3D88CB",    # Farve 1
-  k_farve2                     = "#D6EAF8",    # Farve 2
   k_data                       = "Filer/Deltagere og tilmeldinger til DM i Ping Pong.xlsx") # Sti til data
 source(file = "bagvedliggende_kode.R")

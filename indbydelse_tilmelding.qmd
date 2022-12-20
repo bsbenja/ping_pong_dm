@@ -19,31 +19,31 @@ Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen 
 
 ```{r}
 library(kableExtra)
-tbl0_join_aktuel %>%
-  arrange(k_billettype) %>%
-  distinct(k_billettype, .keep_all = T) %>%
-  mutate(k_billettype = case_when(
-    grepl("Ping Pong", k_billettype) ~ paste(k_billettype, k_eventår),
-    TRUE ~ as.character(k_billettype))) %>%
-  mutate(k_billetpris = paste("kr.", format(round(
-    0.001+k_billetpris), big.mark = "."))) %>%
-  select(" "    = k_billettype,
-         "Pris"  = k_billetpris,
-         "Maks." = k_billetantal_maks) %>%
+data.frame(
+  " " = c(
+    "🏓 DM i Ping Pong 2023",
+    "🥳 Fest om aftenen"),
+  "<i class=bi-cash-stack></i>&nbsp;Pris" = c(
+    "kr. 125",
+    "kr. 150"),
+  "<i class=bi-person-fill></i>&nbsp;Maks." = c(
+    "96",
+    "200"),
+  check.names = F) %>%
   kbl(col.names = NA, align = "lcc", escape = F, format = "html", 
       caption = "<i class=bi-tags-fill></i>&nbsp;Billettyper") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
     "<i style=font-size:80%>Mikrogebyrer pålægges alle priser.</i>",
     general_title = "", escape = F) %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF")
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
 ## Tidsplan
 
 ```{r}
 library(kableExtra)
-
 data.frame(
   "Tidspunkt" = c(
     "Kl. 10:00-18:00",
@@ -65,8 +65,8 @@ data.frame(
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   footnote(
     "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere.", general_title = "", escape = F) %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  row_spec(c(1, 6), bold = T, background = tbl0_input$k_farve2) %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+  row_spec(c(1, 6), bold = T, background = "var_start_var.farve_2_var_slut") %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
@@ -114,7 +114,7 @@ Der spilles 6-mandspuljer, A-/B-slutspil og afslutningsvist "Final 4" i A-slutsp
 Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende prioritering:
 
 1.  Nr. 1-4 seedes efter placeringerne i "Final 4" i A-slutspil ved sidst afholdte DM[^4].
-2.  `r "[Ratingopdateringen i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank} pr. {{< var var.rating_dato >}}."`
+2.  `r "[Ratingopdateringen i bordtennis](https://bordtennisportalen.dk/DBTU/Ranglister){target=_blank} pr. {{< var var.rating_dag_måned >}}."`
 3.  Skøn og lodtrækning.
 
 [^4]: ***Resultater sidste DM**: Ved sidste DM i 2022 i Sisu/MBK var "Final 4" deltagerne:\
@@ -124,10 +124,6 @@ Puljerne dannes på fair vis efter snake-system uden klubhensyn efter følgende 
     Nr. 4. Emil Madsen, Hørning BTK.*
 
 I det videre spil dannes seedningerne på baggrund af placeringerne fra puljespillet.
-
-```{r}
-kbl3_resultater_sidste_dm
-```
 
 ### Bat og bold
 
@@ -146,20 +142,50 @@ Resultaterne fra DM danner grundlag for international udtagelse. Normalvis er de
 ```{r}
 library(kableExtra)
 data.frame(
-  tbl1_præmier_penge[, 1],
-  tbl1_præmier_penge[, 2],
-  tbl1_præmier_penge[, 3],
-  tbl1_præmier_penge[, 4],
-  tbl1_præmier_penge[, 5],
+  " " = c(
+    "Præmiesum",
+    "A-slutspil",
+    "1. plads",
+    "2. plads",
+    "3. plads",
+    "4. plads",
+    "B. slutspil",
+    "1. plads",
+    "2. plads"),
+  "Potentiel" = c(
+    "kr. 9.600",
+    "kr. 8.400",
+    "kr. 3.600",
+    "kr. 2.400",
+    "kr. 1.440",
+    "kr. 960",
+    "kr. 1.200",
+    "kr. 720",
+    "kr. 480"),
+  "Pct." = c(
+    "100%",
+    "87,5%",
+    "37,5%",
+    "25%",
+    "15%",
+    "10%",
+    "12,5%",
+    "7,5%",
+    "5%"),
   check.names = F) %>%
-  kbl(col.names = NA, align = "lrrrr", escape = F,
-      caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b></i>") %>%
+  kbl(col.names = NA, align = "lrr", escape = F) %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  row_spec(0, background = tbl0_input$k_farve1, color = "#FFFFFF") %>%
-  row_spec(which(tbl1_præmier_penge$k_rank == "1"), bold = T, background = tbl0_input$k_farve2) %>%
-  row_spec(which(tbl1_præmier_penge$k_rank == "2"), background = tbl0_input$k_farve2) %>%
-  column_spec(c(4), italic = T, color = tbl0_input$k_farve1) %>%
-  remove_column(c(2, 5))
+  add_header_above(
+    c("💰 <b>Præmiepenge</b>" = 3),
+    italic = T, align = "c", font_size = "small", escape = F,
+    extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
+  pack_rows(start_row = 3, end_row = 6) %>%
+  pack_rows(start_row = 8, end_row = 9) %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+  row_spec(1, bold = T, background = "var_start_var.farve_2_var_slut") %>%
+  row_spec(c(2, 7), background = "var_start_var.farve_2_var_slut") %>%
+  column_spec(c(3), italic = T, color = "var_start_var.farve_1_var_slut") %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
 ### Forplejning
@@ -232,7 +258,7 @@ data.frame(
 
 ## Tilmelding
 
-*`r paste("ALLE kan deltage. Tilmeldingsfristen er {{< var var.tilmeldingsfrist >}}. Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt). Tilmelding foregår herunder <i class=bi-tags-fill></i>")`*
+*`r paste("ALLE kan deltage. Tilmeldingsfristen er {{< var var.event_frist_dag_måned >}}. Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt). Tilmelding foregår herunder <i class=bi-tags-fill></i>")`*
 
 ```{=html}
 <div class="ticketbutler-iframe" data-type="EVENT" data-domain="billetfix.dk" data-slug="dm-i-ping-pong-2023"></div><script type="text/javascript" src="https://unpkg.com/@ticketbutler/event-embedder@latest/dist/index.js"></script>
