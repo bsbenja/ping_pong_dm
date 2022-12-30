@@ -16,9 +16,9 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 
 `r "[https://github.com/observablehq/plot](https://github.com/observablehq/plot){target=_blank}"`
 
+`r "[https://observablehq.com/@d3/horizontal-bar-chart](https://observablehq.com/@d3/horizontal-bar-chart){target=_blank}"`
+
 ```{r}
-tbl0_join_alle <- tbl0_join_alle %>%
-  filter(!is.na(k_status))
 ojs_define(tbl0_join_alle)
 ```
 
@@ -28,14 +28,14 @@ data_bi = transpose(tbl0_join_alle)
 
 ```{ojs}
 //| panel: input
-viewof k_event_år = Inputs.checkbox(
+viewof k_event_ping_pong_år = Inputs.checkbox(
   ["DM i Ping Pong 2022", "DM i Ping Pong 2021"], 
   {value: ["DM i Ping Pong 2022"], label: "🎫 Event & år"}
 )
 
 viewof k_tilmeldingstype = Inputs.checkbox(
   ["🎫 Ordinær", "🏃 Drive-in", "❌ Afbud"], 
-  {value: ["🎫 Ordinær", "🏃 Drive-in", "❌ Afbud"], label: " 🎫 Tilmeldingstype"}
+  {value: ["🎫 Ordinær", "🏃 Drive-in"], label: " 🎫 Tilmeldingstype"}
 )
 
 viewof k_billettype = Inputs.checkbox(
@@ -45,12 +45,12 @@ viewof k_billettype = Inputs.checkbox(
 
 viewof k_billetsalg_pr_tilmelding = Inputs.checkbox(
   ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg", "❌ Afbud"], 
-  {value: ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg", "❌ Afbud"], label: "🎫 Billetsalg pr. tilmelding"}
+  {value: ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg"], label: "🎫 Billetsalg pr. tilmelding"}
 )
 
 viewof k_gentilmelding = Inputs.checkbox(
   ["Debutant", "Gentilmelding", "❌ Afbud"], 
-  {value: ["Debutant", "Gentilmelding", "❌ Afbud"], label: "🔃 Gentilmeldinger"}
+  {value: ["Debutant", "Gentilmelding"], label: "🔃 Gentilmeldinger"}
 )
 
 viewof k_klokkeslætsinterval = Inputs.checkbox(
@@ -90,8 +90,8 @@ viewof k_region = Inputs.checkbox(
 ```
 
 ```{ojs}
-filter_bi = data_bi.filter(function(data_bi) {
-  return k_event_år.includes(data_bi.k_event_år) &&
+data_filter = data_bi.filter(function(data_bi) {
+  return k_event_ping_pong_år.includes(data_bi.k_event_ping_pong_år) &&
          k_tilmeldingstype.includes(data_bi.k_tilmeldingstype) &&
          k_billettype.includes(data_bi.k_billettype) &&
          k_billetsalg_pr_tilmelding.includes(data_bi.k_billetsalg_pr_tilmelding) &&
@@ -107,12 +107,12 @@ filter_bi = data_bi.filter(function(data_bi) {
 ```
 
 ::: panel-tabset
-## Tilmeldingstype
+## Tilmeldinger pr. år
 
 ```{ojs}
 Plot.plot({
   x: {
-    label: null
+    label: "Eventår"
   },
   y: {
     grid: false,
@@ -123,8 +123,9 @@ Plot.plot({
     legend: true
   },
   marks: [
-    Plot.barY(filter_bi, Plot.groupX({y: "count"}, {x: "k_billettype", fill: "k_tilmeldingstype"})),
-    Plot.ruleY([0])
+    Plot.line(data_bi,
+    {x: "k_eventår", y: "count"}
+    )
   ]
 })
 ```
@@ -132,7 +133,41 @@ Plot.plot({
 ## Data
 
 ```{ojs}
-Inputs.table(filter_bi)
+Inputs.table(data_filter)
+```
+:::
+
+::: panel-tabset
+## Tilmeldingstype
+
+```{ojs}
+Plot.plot({
+  marginLeft: 100,
+  x: {
+    label: "Antal",
+    transform: d => d
+  },
+  y: {
+    grid: false,
+    label: ""
+  },
+  color: {
+    legend: true
+  },
+  marks: [
+    Plot.barX(data_filter,
+    Plot.groupY({x: "count"},
+    {y: "k_billettype", fill: "k_tilmeldingstype"}
+    )
+    )
+  ]
+})
+```
+
+## Data
+
+```{ojs}
+Inputs.table(data_filter)
 ```
 :::
 
@@ -141,20 +176,24 @@ Inputs.table(filter_bi)
 
 ```{ojs}
 Plot.plot({
+  marginLeft: 100,
   x: {
-    label: null
+    label: "Antal",
+    transform: d => d
   },
   y: {
     grid: false,
-    label: "Antal",
-    transform: d => d
+    label: ""
   },
   color: {
     legend: true
   },
   marks: [
-    Plot.barY(filter_bi, Plot.groupX({y: "count"}, {x: "k_billettype", fill: "k_antal_gentilmelding"})),
-    Plot.ruleY([0])
+    Plot.barX(data_filter,
+    Plot.groupY({x: "count"},
+    {y: "k_billettype", fill: "k_antal_gentilmelding"}
+    )
+    )
   ]
 })
 ```
@@ -162,7 +201,7 @@ Plot.plot({
 ## Data
 
 ```{ojs}
-Inputs.table(filter_bi)
+Inputs.table(data_filter)
 ```
 :::
 
@@ -171,20 +210,24 @@ Inputs.table(filter_bi)
 
 ```{ojs}
 Plot.plot({
+  marginLeft: 100,
   x: {
-    label: null
+    label: "Antal",
+    transform: d => d
   },
   y: {
     grid: false,
-    label: "Antal",
-    transform: d => d
+    label: ""
   },
   color: {
     legend: true
   },
   marks: [
-    Plot.barY(filter_bi, Plot.groupX({y: "count"}, {x: "k_klub", fill: "k_billettype"})),
-    Plot.ruleY([0])
+    Plot.barX(data_filter,
+    Plot.groupY({x: "count"},
+    {y: "k_klub", fill: "k_billettype"}
+    )
+    )
   ]
 })
 ```
@@ -192,7 +235,7 @@ Plot.plot({
 ## Data
 
 ```{ojs}
-Inputs.table(filter_bi)
+Inputs.table(data_filter)
 ```
 :::
 

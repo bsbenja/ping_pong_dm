@@ -29,7 +29,7 @@ if(tbl0_input$k_status_1_2_3_4 == 3) { kbl2_deltagere_foreløbig }
 
 if(tbl0_input$k_status_1_2_3_4 == 1 | tbl0_input$k_status_1_2_3_4 == 2 | tbl0_input$k_status_1_2_3_4 == 4) { kbl2_deltagere_puljer }
 
-if(tbl0_input$k_status_1_2_3_4 == 1 | tbl0_input$k_status_1_2_3_4 == 2 | tbl0_input$k_status_1_2_3_4 == 4) { kbl2_deltagere_fest }
+if(tbl0_input$k_status_1_2_3_4 == 1 | tbl0_input$k_status_1_2_3_4 == 2 | tbl0_input$k_status_1_2_3_4 == 4) { kbl2_deltagere_andet }
 ```
 
 ## Dashboards

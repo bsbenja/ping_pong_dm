@@ -14,10 +14,10 @@
 # Opsætning ========================================================================================
 #+ eval=F, warning=F, message=F
 
-suppressPackageStartupMessages(lapply(c(
+suppressWarnings(suppressPackageStartupMessages(lapply(c(
   "readxl", "cellranger", "openxlsx", "writexl", "dplyr", "tidyr", "stringr", "formattable",
   "lubridate", "kableExtra", "ggplot2", "forcats", "plotDK", "httr", "rvest", "pdftools", "rmarkdown"),
-  require, character.only = TRUE))
+  require, character.only = TRUE)))
 Sys.setlocale("LC_TIME", "Danish")
 options(OutDec= ",")
 options(knitr.kable.NA = "")
@@ -316,9 +316,16 @@ tbl0_join_alle <- read_excel(
     "🏓 Bordtennisspiller",
     "👤 Ikke-bordtennisspiller"), ordered = T)) %>%
   
-  # k_billetantal_ping_pong
+  # k_billetantal_billettype_status
   add_count(k_event_år_billettype, k_billettype, k_status,
             name = "k_billetantal_billettype_status") %>%
+  group_by(k_event_år_billettype, k_billettype, k_status) %>%
+  mutate(k_billetantal_billettype_status = case_when(
+    !is.na(k_deltager_id) ~ k_billetantal_billettype_status)) %>%
+  ungroup() %>%
+  group_by(k_event_år_billettype) %>%
+  fill(k_billetantal_billettype_status, .direction = "updown") %>%
+  ungroup() %>%
   
   # k_navn_klub
   mutate(k_navn_klub = case_when(
@@ -350,7 +357,6 @@ tbl0_join_aktuel <- tbl0_join_alle %>% filter(
 # Statistik ########################################################################################
 #+ eval=F, warning=F, message=F
 
-
 tbl0_stat <- data.frame(
   
   # Billetantal total
@@ -375,7 +381,7 @@ tbl0_stat <- data.frame(
     tbl0_join_aktuel %>%
       distinct(k_deltager_id, k_status, .keep_all = T) %>%
       add_count(k_deltager_id) %>%
-      filter(grepl("Tilmeldt", k_status) | n == 1) %>%
+      filter((grepl("Tilmeldt", k_status) | n == 1) & !is.na(k_status)) %>%
       count(k_status) %>%
       mutate(k_status = case_when(
         grepl("Tilmeldt", k_status) ~ "Tilmeldt",
@@ -808,7 +814,7 @@ kbl2_deltagere_puljer
 #' ## Kun til festen inkl. afbud
 #+ eval=F, warning=F, message=F
 
-tbl2_deltagere_fest <- tbl0_join_aktuel %>%
+tbl2_deltagere_andet <- tbl0_join_aktuel %>%
   filter(!grepl("Ping Pong", k_billettype) &
            substr(k_billetsalg_pr_tilmelding, 1, 1) == 1 |
            grepl("Afbud", k_status)) %>%
@@ -823,19 +829,24 @@ tbl2_deltagere_fest <- tbl0_join_aktuel %>%
     Nr.,
     "Navn" = k_navn_billettype,
     k_status)
-kbl2_deltagere_fest <- tbl2_deltagere_fest %>%
-  kbl(col.names = NA, align = "cl", escape = F, caption = "Kun med til festen") %>%
+
+if(nrow(tbl2_deltagere_andet) == 0) {
+  kbl2_deltagere_andet <- data.frame() %>% kbl()
+} else if(nrow(tbl2_deltagere_andet) != 0) {
+kbl2_deltagere_andet <- tbl2_deltagere_andet %>%
+  kbl(col.names = NA, align = "cl", escape = F, caption = "Andet end Ping Pong + evt. afbud") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   add_header_above(
     c("Sorteret efter fødselsdato" = 3),
     italic = T, align = "c", font_size = "small", escape = F,
     extra_css = "border:hidden;border-bottom:1.5px solid #111111") %>%
   row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
-  row_spec(which(grepl("Afbud", tbl2_deltagere_fest$k_status)),
+  row_spec(which(grepl("Afbud", tbl2_deltagere_andet$k_status)),
            strikeout = T, italic = T, color = "var_start_var.farve_1_var_slut") %>%
   remove_column(3) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
-kbl2_deltagere_fest
+kbl2_deltagere_andet
+}
 
 #' # Resultater
 # Resultater #######################################################################################
@@ -890,6 +901,7 @@ kbl3_resultater_sidste_dm
 #+ eval=F, warning=F, message=F
 
 graf1_tilmeldingstype <- tbl0_join_aktuel %>%
+  filter(!is.na(k_deltager_id)) %>%
   ggplot(mapping = aes(y = fct_rev(k_billettype), fill = k_tilmeldingstype)) +
   geom_bar(position = position_stack(reverse = T)) +
   geom_text(aes(label = ..count..), stat = "count", position = position_stack(reverse = T),
@@ -1089,44 +1101,47 @@ if(tbl0_input$k_plakat_png_T_F == T) {
 #' ## Webscraping af ratinglisten
 #+ eval=F, warning=F, message=F
 
-if(tbl0_input$k_webscraping_rating_T_F == T) {
-  tbl3_webscraping_rating <- data.frame()
+if(tbl0_input$k_webscraping_rating_dato_F == F) {
+  "tbl0_input$k_webscraping_rating_dato_F = F"
+} else if(tbl0_input$k_webscraping_rating_dato_F != F) {
+  tbl4_webscraping_rating <- data.frame()
   for (side in seq(from = 1, to = 50, by = 1)) {
-    link <- paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,42022,,,,,True,,,,,", 
-                   side-1, ",,,0,,,,,")
+    link <- paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,4",
+                   format(dmy(tbl0_input$k_webscraping_rating_dato_F), "%Y"), ",",
+                   format(dmy(tbl0_input$k_webscraping_rating_dato_F), "%m/%d/%Y"),
+                   ",,,,True,,,,,", side-1, ",,,0,,,,,")
     
-    tbl3_webscraping_rating <- rbind(tbl3_webscraping_rating, data.frame(
-      "Plac"       = read_html(link) %>% html_nodes(".rank")                        %>% html_text(),
-      "Spiller_Id" = read_html(link) %>% html_nodes(".playerid")                    %>% html_text(),
-      "Navn"       = read_html(link) %>% html_nodes(".name")                        %>% html_text(),
-      "Rating"     = read_html(link) %>% html_nodes(".name+ .pointsw")              %>% html_text(),
-      "Plus_minus" = read_html(link) %>% html_nodes(".pointsw:nth-child(5)")        %>% html_text(),
-      "Kampe"      = read_html(link) %>% html_nodes(".pointsw~ .pointsw+ .pointsw") %>% html_text(),
-      stringsAsFactors = FALSE)) %>% filter(Spiller_Id != "Spiller-Id") %>%
+    tbl4_webscraping_rating <- rbind(tbl4_webscraping_rating, data.frame(
+      "Plac"          = read_html(link) %>% html_nodes(".rank")                        %>% html_text(),
+      "k_deltager_id" = read_html(link) %>% html_nodes(".playerid")                    %>% html_text(),
+      "Navn"          = read_html(link) %>% html_nodes(".name")                        %>% html_text(),
+      "Rating"        = read_html(link) %>% html_nodes(".name+ .pointsw")              %>% html_text(),
+      "Plus_minus"    = read_html(link) %>% html_nodes(".pointsw:nth-child(5)")        %>% html_text(),
+      "Kampe"         = read_html(link) %>% html_nodes(".pointsw~ .pointsw+ .pointsw") %>% html_text(),
+      stringsAsFactors = FALSE)) %>% filter(k_deltager_id != "Spiller-Id") %>%
       mutate_at(c("Plac", "Rating", "Plus_minus", "Kampe"), as.numeric)
-    print(paste("Side:", side))
+    print(paste("Side", side))
   }
-  tbl3_webscraping_rating <- tbl3_webscraping_rating %>%
-    separate(Navn, into = c("Navn", "Klub"), sep=",.", extra = "merge")
-  tbl3_join_webscraping_rating <- read_excel(
-    tbl0_input$k_data, col_names = c("Spiller_Id"), range = cell_cols("F:F")) %>%
-    slice_tail(n = -3) %>%
+  tbl4_webscraping_rating <- tbl4_webscraping_rating %>%
+    separate(Navn, into = c("Navn", "Klub"), sep = ",.", extra = "merge")
+  tbl4_join_webscraping_rating <- tbl0_join_alle %>%
+    arrange(desc(k_ordredato)) %>%
     left_join(
-      y = tbl3_webscraping_rating,
-      by = "Spiller_Id") %>%
-    select(Plac, Spiller_Id, Navn, Klub, Rating, Plus_minus, Kampe)
-  write_xlsx(tbl3_webscraping_rating, path = "Filer\\Webscraping rating.xlsx")
-  write_xlsx(tbl3_join_webscraping_rating, path = "Filer\\Webscraping join rating.xlsx")
+      y = tbl4_webscraping_rating,
+      by = "k_deltager_id") %>%
+    select(Plac, k_deltager_id, Navn, Klub, Rating, Plus_minus, Kampe)
+  write_xlsx(tbl4_webscraping_rating, path = "Filer\\Webscraping rating.xlsx")
+  write_xlsx(tbl4_join_webscraping_rating, path = "Filer\\Webscraping join rating.xlsx")
   shell.exec(normalizePath("Filer\\Webscraping join rating.xlsx"))
-} else if(tbl0_input$k_webscraping_rating_T_F == F) {"tbl0_input$k_webscraping_rating_T_F = F"}
+}
 
 #' ## Webscraping af BTEX Ping Pong bat
 #+ eval=F, warning=F, message=F
 
-tbl4_webscraping_btex <- data.frame()
+tbl5_webscraping_btex <- data.frame()
 link <- paste0("https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html")
 
-tbl4_webscraping_btex <- rbind(tbl4_webscraping_btex, data.frame(
+tbl5_webscraping_btex <- rbind(tbl5_webscraping_btex, data.frame(
   "produkt"      = read_html(link) %>% html_nodes(".name")                        %>% html_text(),
   "pris"         = read_html(link) %>% html_nodes(".price")                       %>% html_text(),
   "lagerstatus"  = read_html(link) %>% html_nodes(".title span")                  %>% html_text(),
