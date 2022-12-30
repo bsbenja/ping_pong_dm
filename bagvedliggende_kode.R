@@ -475,8 +475,9 @@ tbl0_stat <- data.frame(
     "🛖 ", tbl0_join_aktuel %>% filter(
       grepl("Tilmeldt", k_status) &
         !grepl("Ingen klub", k_klub)) %>%
-      distinct(k_klub, .keep_all = T) %>%
-      summarise(n()), " klubber"),
+      distinct(k_klub) %>%
+      summarise(n = n()) %>%
+      mutate(n = ifelse(n == 1, paste(n, "klub"), paste(n, "klubber")))),
   
   # Deltagerantal ratinggruppe
   k_deltagerantal_ratinggruppe = paste0(
@@ -832,7 +833,7 @@ tbl2_deltagere_andet <- tbl0_join_aktuel %>%
 
 if(nrow(tbl2_deltagere_andet) == 0) {
   kbl2_deltagere_andet <- data.frame() %>% kbl()
-} else if(nrow(tbl2_deltagere_andet) != 0) {
+} else {
 kbl2_deltagere_andet <- tbl2_deltagere_andet %>%
   kbl(col.names = NA, align = "cl", escape = F, caption = "Andet end Ping Pong + evt. afbud") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
@@ -885,6 +886,9 @@ tbl3_resultater_sidste_dm <- tbl0_join_alle %>%
     "k_slutspil" = k_slutspil,
     "k_eventår"  = k_eventår)
 
+if(nrow(tbl3_resultater_sidste_dm) == 0) {
+  kbl3_resultater_sidste_dm <- data.frame() %>% kbl()
+} else {
 kbl3_resultater_sidste_dm <- tbl3_resultater_sidste_dm %>%
   kbl(col.names = NA, align = "cl", escape = F,
       caption = paste("<i class=bi-trophy></i>&nbsp;Resultater sidste DM", unique(tbl3_resultater_sidste_dm$k_eventår))) %>%
@@ -893,6 +897,7 @@ kbl3_resultater_sidste_dm <- tbl3_resultater_sidste_dm %>%
   remove_column(c(3, 4)) %>%
   pack_rows(index = table(as.character(tbl3_resultater_sidste_dm$k_slutspil)))
 kbl3_resultater_sidste_dm
+}
 
 #' # Dashboards
 # Dashboards #######################################################################################
@@ -904,7 +909,7 @@ graf1_tilmeldingstype <- tbl0_join_aktuel %>%
   filter(!is.na(k_deltager_id)) %>%
   ggplot(mapping = aes(y = fct_rev(k_billettype), fill = k_tilmeldingstype)) +
   geom_bar(position = position_stack(reverse = T)) +
-  geom_text(aes(label = ..count..), stat = "count", position = position_stack(reverse = T),
+  geom_text(aes(label = after_stat(count)), stat = "count", position = position_stack(reverse = T),
             vjust = 0.4, hjust = 1, size = 5, color = "#FFFFFF") +
   scale_fill_manual(values = c(
     "🎫 Ordinær"  = "#635994",
@@ -934,7 +939,7 @@ graf2_gentilmelding <- tbl0_join_aktuel %>%
   filter(grepl("Tilmeldt", k_status)) %>%
   ggplot(mapping = aes(y = fct_rev(k_billettype), fill = k_antal_gentilmelding)) +
   geom_bar(position = position_stack(reverse = T)) +
-  geom_text(aes(label = ..count..), stat = "count", position = position_stack(reverse = T),
+  geom_text(aes(label = after_stat(count)), stat = "count", position = position_stack(reverse = T),
             vjust = 0.4, hjust = 1, size = 5, color = "#FFFFFF") +
   labs(title = "Gentilmeldinger siden 2021",
        subtitle = paste0(tbl0_stat$k_deltagerantal_gentilmelding)) +
@@ -960,7 +965,7 @@ graf3_klubber <- tbl0_join_aktuel %>%
   filter(grepl("Tilmeldt", k_status) & grepl("Ping Pong|Fest", k_billettype)) %>%
   ggplot(mapping = aes(y = fct_rev(fct_infreq(k_klub)), fill = k_billettype)) +
   geom_bar(position = position_stack(reverse = T)) +
-  geom_text(aes(label = ..count..), stat = "count", position = position_stack(reverse = T),
+  geom_text(aes(label = after_stat(count)), stat = "count", position = position_stack(reverse = T),
             vjust = 0.4, hjust = 1, size = 5, color = "#FFFFFF") +
   scale_fill_manual(values = c(
     "🏓 DM i Ping Pong" = "#398FCC",
@@ -1101,30 +1106,41 @@ if(tbl0_input$k_plakat_png_T_F == T) {
 #' ## Webscraping af ratinglisten
 #+ eval=F, warning=F, message=F
 
-if(tbl0_input$k_webscraping_rating_dato_F == F) {
-  "tbl0_input$k_webscraping_rating_dato_F = F"
-} else if(tbl0_input$k_webscraping_rating_dato_F != F) {
+if(tbl0_input$k_webscraping_rating_T_F == T) {
   tbl4_webscraping_rating <- data.frame()
+  url_1 <- ifelse(
+    nrow(rbind(tbl4_webscraping_rating, data.frame(
+      "k_deltager_id" = read_html(
+        paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,4",
+               as.numeric(format(unique(tbl0_join_aktuel$k_ratingopdatering), "%Y")), ",",
+               format(unique(tbl0_join_aktuel$k_ratingopdatering), "%m/%d/%Y"),
+               ",,,,True,,,,,", "0", ",,,0,,,,,")) %>% html_nodes(".playerid") %>% html_text(),
+      stringsAsFactors = FALSE)) %>% filter(k_deltager_id != "Spiller-Id")) > 0,
+    paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,4",
+           as.numeric(format(unique(tbl0_join_aktuel$k_ratingopdatering), "%Y")), ",",
+           format(unique(tbl0_join_aktuel$k_ratingopdatering), "%m/%d/%Y")),
+    paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,4",
+           as.numeric(format(unique(tbl0_join_aktuel$k_ratingopdatering), "%Y"))-1, ",",
+           format(unique(tbl0_join_aktuel$k_ratingopdatering), "%m/%d/%Y")))
+  
   for (side in seq(from = 1, to = 50, by = 1)) {
-    link <- paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,4",
-                   format(dmy(tbl0_input$k_webscraping_rating_dato_F), "%Y"), ",",
-                   format(dmy(tbl0_input$k_webscraping_rating_dato_F), "%m/%d/%Y"),
-                   ",,,,True,,,,,", side-1, ",,,0,,,,,")
-    
-    tbl4_webscraping_rating <- rbind(tbl4_webscraping_rating, data.frame(
-      "Plac"          = read_html(link) %>% html_nodes(".rank")                        %>% html_text(),
-      "k_deltager_id" = read_html(link) %>% html_nodes(".playerid")                    %>% html_text(),
-      "Navn"          = read_html(link) %>% html_nodes(".name")                        %>% html_text(),
-      "Rating"        = read_html(link) %>% html_nodes(".name+ .pointsw")              %>% html_text(),
-      "Plus_minus"    = read_html(link) %>% html_nodes(".pointsw:nth-child(5)")        %>% html_text(),
-      "Kampe"         = read_html(link) %>% html_nodes(".pointsw~ .pointsw+ .pointsw") %>% html_text(),
-      stringsAsFactors = FALSE)) %>% filter(k_deltager_id != "Spiller-Id") %>%
-      mutate_at(c("Plac", "Rating", "Plus_minus", "Kampe"), as.numeric)
-    print(paste("Side", side))
+  url_2 <- paste0(url_1, ",,,,True,,,,,", side-1, ",,,0,,,,,")
+  
+  tbl4_webscraping_rating <- rbind(tbl4_webscraping_rating, data.frame(
+    "Plac"          = read_html(url_2) %>% html_nodes(".rank")                        %>% html_text(),
+    "k_deltager_id" = read_html(url_2) %>% html_nodes(".playerid")                    %>% html_text(),
+    "Navn"          = read_html(url_2) %>% html_nodes(".name")                        %>% html_text(),
+    "Rating"        = read_html(url_2) %>% html_nodes(".name+ .pointsw")              %>% html_text(),
+    "Plus_minus"    = read_html(url_2) %>% html_nodes(".pointsw:nth-child(5)")        %>% html_text(),
+    "Kampe"         = read_html(url_2) %>% html_nodes(".pointsw~ .pointsw+ .pointsw") %>% html_text(),
+    stringsAsFactors = FALSE)) %>% filter(k_deltager_id != "Spiller-Id") %>%
+    mutate_at(c("Plac", "Rating", "Plus_minus", "Kampe"), as.numeric)
+  print(paste("Side", side))
   }
+  
   tbl4_webscraping_rating <- tbl4_webscraping_rating %>%
     separate(Navn, into = c("Navn", "Klub"), sep = ",.", extra = "merge")
-  tbl4_join_webscraping_rating <- tbl0_join_alle %>%
+  tbl4_join_webscraping_rating <- tbl0_join_aktuel %>%
     arrange(desc(k_ordredato)) %>%
     left_join(
       y = tbl4_webscraping_rating,
@@ -1133,7 +1149,7 @@ if(tbl0_input$k_webscraping_rating_dato_F == F) {
   write_xlsx(tbl4_webscraping_rating, path = "Filer\\Webscraping rating.xlsx")
   write_xlsx(tbl4_join_webscraping_rating, path = "Filer\\Webscraping join rating.xlsx")
   shell.exec(normalizePath("Filer\\Webscraping join rating.xlsx"))
-}
+} else if(tbl0_input$k_webscraping_rating_T_F == F) {"tbl0_input$k_webscraping_rating_T_F = F"}
 
 #' ## Webscraping af BTEX Ping Pong bat
 #+ eval=F, warning=F, message=F

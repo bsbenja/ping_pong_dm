@@ -145,8 +145,6 @@ kbl_webscraping_DM_resultater
 
 ```{r}
 #| eval: false
-#| include: false
-
 library(kableExtra)
 kbl3_dm_resultater
 ```
