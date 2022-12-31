@@ -98,7 +98,7 @@ tbl0_join_alle <- read_excel(
   mutate(across("k_slutspil", .fns = factor, ordered = T)) %>%
   
   # k_placering
-  mutate(across("k_placering", as.integer)) %>%
+  mutate(across("k_placering", .fns = factor, ordered = T)) %>%
   
   # k_præmiepenge
   mutate(across("k_præmiepenge", as.numeric)) %>%
@@ -173,7 +173,7 @@ tbl0_join_alle <- read_excel(
   
   # k_eventår
   mutate(k_eventår = year(k_eventdato)) %>%
-  mutate(across("k_eventår", .fns = factor, ordered = T)) %>%
+  mutate(across("k_eventår", as.integer)) %>%
   
   # k_event_ping_pong_år
   mutate(k_event_ping_pong_år = paste(k_event, "i Ping Pong", k_eventår)) %>%
@@ -206,12 +206,6 @@ tbl0_join_alle <- read_excel(
     "🎫 Ordinær",
     "🏃 Drive-in",
     "❌ Afbud"), ordered = T)) %>%
-  
-  # k_slutspil_placering
-  mutate(k_slutspil_placering = case_when(
-    is.na(k_slutspil) | is.na(k_placering) ~ NA_character_,
-    TRUE ~ paste0(substr(k_slutspil, 1, 1), k_placering))) %>%
-  mutate(across("k_slutspil_placering", .fns = factor, ordered = T)) %>%
   
   # Landsdel
   mutate(k_landsdel = case_when(
@@ -248,13 +242,18 @@ tbl0_join_alle <- read_excel(
     "Hovedstaden",
     "(Ukendt region)"), ordered = T)) %>%
   
+  # k_2021_eller_senere
+  mutate(k_2021_eller_senere = ifelse(k_eventår >= 2021, T, F)) %>%
+  
   # k_antal_gentilmelding
   arrange(k_ordredato, k_billettype) %>%
-  group_by(k_deltager_id, k_billettype, k_status) %>%
+  group_by(k_deltager_id, k_billettype, k_status, k_2021_eller_senere) %>%
   mutate(k_antal_gentilmelding = case_when(
     grepl("Tilmeldt", k_status) ~ paste0(cumsum(!duplicated(year(k_ordredato))), ". gang"),
     TRUE ~ as.character(k_status))) %>%
   ungroup() %>%
+  mutate(k_antal_gentilmelding = ifelse(
+    k_2021_eller_senere == T, k_antal_gentilmelding, NA_character_)) %>%
   mutate(across("k_antal_gentilmelding", .fns = factor, ordered = T)) %>%
   
   # k_gentilmelding
@@ -646,7 +645,6 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
     k_eventår,
     k_slutspil,
     k_placering,
-    k_slutspil_placering,
     k_præmiepenge,
     k_præmiepenge_pct,
     k_billetantal_maks,
@@ -658,6 +656,7 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
   mutate(k_aktuel_præmiepenge = k_potentiel_præmiesum*k_billetantal_billettype_status/
            k_billetantal_maks*k_præmiepenge_pct) %>%
   
+  mutate(across("k_eventår", .fns = factor, ordered = T)) %>%
   mutate(k_rank = "3") %>%
   group_by(k_event_år_billettype) %>%
   bind_rows(summarise(., across(where(is.numeric), sum), .groups = "keep")) %>% ungroup() %>%
@@ -671,14 +670,15 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
   ungroup() %>%
   
   mutate(across("k_slutspil", as.character)) %>%
-  mutate(across("k_slutspil_placering", as.character)) %>%
+  mutate(across("k_placering", as.character)) %>%
+  mutate(across("k_rank", as.integer)) %>%
   mutate(k_slutspil = ifelse(!is.na(k_slutspil), k_slutspil, "1")) %>%
   arrange(desc(k_eventår), k_slutspil, k_rank, k_placering) %>%
   distinct(k_event_år_billettype, k_slutspil, k_placering, .keep_all = T) %>%
-  mutate(k_slutspil_placering = case_when(
+  mutate(k_placering = case_when(
     k_rank == "1" ~ "Præmiesum",
     k_rank == "2" ~ k_slutspil,
-    k_rank == "3" ~ k_slutspil_placering,
+    k_rank == "3" ~ k_placering,
     TRUE ~ NA_character_)) %>%
   
   mutate(k_aktuel_præmiepenge = paste("kr.", format(round(
@@ -690,7 +690,7 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
   
   filter(k_eventår == tbl0_input$k_eventår) %>%
   select(
-    " "         = k_slutspil_placering,
+    " "         = k_placering,
     "Aktuel"    = k_aktuel_præmiepenge,
     "Potentiel" = k_præmiepenge,
     "Pct."      = k_præmiepenge_pct,
@@ -700,6 +700,7 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
   kbl(col.names = NA, align = "lrrrr", escape = F,
       caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  add_indent(which(tbl1_præmier_penge$k_rank == "3")) %>%
   row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   row_spec(which(tbl1_præmier_penge$k_rank == "1"),
            bold = T, background = "var_start_var.farve_2_var_slut") %>%
@@ -857,7 +858,7 @@ kbl2_deltagere_andet
 
 tbl3_dm_resultater <- tbl0_join_alle %>%
   filter(k_placering == "1" & grepl("A-slutspil", k_slutspil) & !is.na(k_deltager_id)) %>%
-  add_row(k_eventår = "2020", k_navn_klub = "Aflyst pga. Covid-19") %>%
+  add_row(k_eventår = 2020, k_navn_klub = "Aflyst pga. Covid-19") %>%
   arrange(desc(k_eventår)) %>%
   select(
     "År"   = k_eventår,
@@ -881,7 +882,7 @@ tbl3_resultater_sidste_dm <- tbl0_join_alle %>%
   filter(k_eventnr == min(k_eventnr)) %>%
   arrange(k_eventnr, k_slutspil, k_placering) %>%
   select(
-    "Placering"  = k_slutspil_placering,
+    "Placering"  = k_placering,
     "Navn"       = k_navn_klub,
     "k_slutspil" = k_slutspil,
     "k_eventår"  = k_eventår)
