@@ -857,7 +857,7 @@ kbl2_deltagere_andet
 #+ eval=F, warning=F, message=F
 
 tbl3_dm_resultater <- tbl0_join_alle %>%
-  filter(k_placering == "1" & grepl("A-slutspil", k_slutspil) & !is.na(k_deltager_id)) %>%
+  filter(grepl("1", k_placering) & grepl("A-slutspil", k_slutspil) & grepl("Tilmeldt", k_status)) %>%
   add_row(k_eventår = 2020, k_navn_klub = "Aflyst pga. Covid-19") %>%
   arrange(desc(k_eventår)) %>%
   select(
@@ -877,7 +877,7 @@ kbl3_dm_resultater
 #+ eval=F, warning=F, message=F
 
 tbl3_resultater_sidste_dm <- tbl0_join_alle %>%
-  filter(!is.na(k_deltager_id) & !is.na(k_slutspil)) %>%
+  filter(grepl("Tilmeldt", k_status) & !is.na(k_slutspil)) %>%
   filter(k_eventår < as.integer(tbl0_input$k_eventår)) %>%
   filter(k_eventnr == min(k_eventnr)) %>%
   arrange(k_eventnr, k_slutspil, k_placering) %>%
