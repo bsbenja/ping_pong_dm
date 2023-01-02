@@ -320,7 +320,7 @@ tbl0_join_alle <- read_excel(
             name = "k_billetantal_billettype_status") %>%
   group_by(k_event_år_billettype, k_billettype, k_status) %>%
   mutate(k_billetantal_billettype_status = case_when(
-    !is.na(k_deltager_id) ~ k_billetantal_billettype_status)) %>%
+    !is.na(k_status) ~ k_billetantal_billettype_status)) %>%
   ungroup() %>%
   group_by(k_event_år_billettype) %>%
   fill(k_billetantal_billettype_status, .direction = "updown") %>%
@@ -566,7 +566,7 @@ tbl0_stat <- data.frame(
   
   # Sidst opdateret
   k_sidst_opdateret = paste0(
-    "<i>Nedenstående vises for ", unique(tbl0_join_aktuel$k_event_ping_pong_år), ".</i><br>",
+    "<i>Nedenstående vises for DM i Ping Pong ", tbl0_input$k_eventår, ".</i><br>",
     "<i class=bi-arrow-repeat>&nbsp;Sidst opdateret ",
     format(floor_date(Sys.time(), "30 minutes"), "%d.%m.%Y kl. %H:%M."), "</i>"),
   
@@ -696,6 +696,9 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
     "Pct."      = k_præmiepenge_pct,
     "k_rank"    = k_rank)
 
+if(nrow(tbl1_præmier_penge) == 0) {
+  kbl1_præmier_penge <- data.frame() %>% kbl()
+} else {
 kbl1_præmier_penge <- tbl1_præmier_penge %>%
   kbl(col.names = NA, align = "lrrrr", escape = F,
       caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
@@ -716,6 +719,7 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
     general_title = "", escape = F) %>%
   remove_column(5) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+}
 kbl1_præmier_penge
 
 #' ## Gaver
@@ -728,6 +732,10 @@ tbl1_præmier_yngst_ældst <- tbl0_join_aktuel %>% filter(
   select(
     "Navn"  = k_navn_billettype,
     "Født"  = k_født)
+
+if(nrow(tbl1_præmier_yngst_ældst) == 0) {
+  kbl1_præmier_yngst_ældst <- data.frame() %>% kbl()
+} else {
 kbl1_præmier_yngst_ældst <- tbl1_præmier_yngst_ældst %>%
   kbl(col.names = NA, align = "lc", escape = F,
       caption = paste0(
@@ -737,6 +745,7 @@ kbl1_præmier_yngst_ældst <- tbl1_præmier_yngst_ældst %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+}
 kbl1_præmier_yngst_ældst
 
 #' # Deltagere
@@ -755,6 +764,10 @@ tbl2_deltagere_foreløbig <- tbl0_join_aktuel %>%
     Nr.,
     "Navn" = k_navn_billettype,
     k_status)
+
+if(nrow(tbl2_deltagere_foreløbig) == 0) {
+  kbl2_deltagere_foreløbig <- data.frame() %>% kbl()
+} else {
 kbl2_deltagere_foreløbig <- tbl2_deltagere_foreløbig %>%
   kbl(col.names = NA, align = "cl", escape = F, caption = "Foreløbige deltagere") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
@@ -767,6 +780,7 @@ kbl2_deltagere_foreløbig <- tbl2_deltagere_foreløbig %>%
            strikeout = T, italic = T, color = "var_start_var.farve_1_var_slut") %>%
   remove_column(3) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+}
 kbl2_deltagere_foreløbig
 
 #' ## Puljer
@@ -782,22 +796,27 @@ tbl2_deltagere_puljer <- tbl0_join_aktuel %>%
     k_rang3,
     k_deltager_id) %>%
   add_row(k_deltager_id = rep(
-    NA, tbl0_stat$k_int_antal_puljer*unique(tbl0_join_aktuel$k_puljeantal)-
-      tbl0_stat$k_int_billetantal_ping_pong+tbl0_stat$k_int_antal_puljer)) %>%
+    NA, ifelse(nrow(tbl0_join_aktuel) == 0, 1,
+    tbl0_stat$k_int_antal_puljer*unique(tbl0_join_aktuel$k_puljeantal)-
+      tbl0_stat$k_int_billetantal_ping_pong+tbl0_stat$k_int_antal_puljer))) %>%
   mutate(Seedningslag = ceiling(row_number()/tbl0_stat$k_int_antal_puljer)) %>%
   group_by(Seedningslag) %>%
   mutate(Puljenr. = case_when(
-    Seedningslag %% 2 == 1 ~ row_number(),
+    Seedningslag %% 2 == 1 ~ order(row_number(), decreasing = F),
     Seedningslag %% 1 == 0 ~ order(row_number(), decreasing = T))) %>%
   ungroup() %>%
   mutate(Nr. = row_number()) %>%
   arrange(Puljenr.) %>%
-  filter(!is.na(k_deltager_id)) %>%
+  filter(!is.na(k_status)) %>%
   select(
     Nr.,
     "Navn"   = k_navn_billettype,
     "Rating" = k_rating,
     Seedningslag)
+
+if(nrow(tbl2_deltagere_puljer) == 0) {
+  kbl2_deltagere_puljer <- data.frame() %>% kbl()
+} else {
 kbl2_deltagere_puljer <- tbl2_deltagere_puljer %>%
   kbl(col.names = NA, align = "clr", escape = F,
       caption = paste0(unique(tbl0_join_aktuel$k_puljeantal), "-mandspuljer efter snake-system")) %>%
@@ -811,6 +830,7 @@ kbl2_deltagere_puljer <- tbl2_deltagere_puljer %>%
            extra_css = "border:hidden;border-top:0.7px solid #111111") %>%
   remove_column(4) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+}
 kbl2_deltagere_puljer
 
 #' ## Kun til festen inkl. afbud
@@ -847,8 +867,8 @@ kbl2_deltagere_andet <- tbl2_deltagere_andet %>%
            strikeout = T, italic = T, color = "var_start_var.farve_1_var_slut") %>%
   remove_column(3) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
-kbl2_deltagere_andet
 }
+kbl2_deltagere_andet
 
 #' # Resultater
 # Resultater #######################################################################################
@@ -864,6 +884,9 @@ tbl3_dm_resultater <- tbl0_join_alle %>%
     "År"   = k_eventår,
     "Navn" = k_navn_klub)
 
+if(nrow(tbl3_dm_resultater) == 0) {
+  kbl3_dm_resultater <- data.frame() %>% kbl()
+} else {
 kbl3_dm_resultater <- tbl3_dm_resultater %>%
   kbl(col.names = NA, align = "cl", escape = F,
       caption = "<i class=bi-trophy></i>&nbsp;DM-vindere statistik") %>%
@@ -871,6 +894,7 @@ kbl3_dm_resultater <- tbl3_dm_resultater %>%
   row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
   row_spec(which(tbl3_dm_resultater$År == "2020"),
            strikeout = T, italic = T, color = "#5D6D7E")
+}
 kbl3_dm_resultater
 
 #' ## Resultater sidste DM
@@ -897,8 +921,8 @@ kbl3_resultater_sidste_dm <- tbl3_resultater_sidste_dm %>%
   row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
   remove_column(c(3, 4)) %>%
   pack_rows(index = table(as.character(tbl3_resultater_sidste_dm$k_slutspil)))
-kbl3_resultater_sidste_dm
 }
+kbl3_resultater_sidste_dm
 
 #' # Dashboards
 # Dashboards #######################################################################################
@@ -907,7 +931,6 @@ kbl3_resultater_sidste_dm
 #+ eval=F, warning=F, message=F
 
 graf1_tilmeldingstype <- tbl0_join_aktuel %>%
-  filter(!is.na(k_deltager_id)) %>%
   ggplot(mapping = aes(y = fct_rev(k_billettype), fill = k_tilmeldingstype)) +
   geom_bar(position = position_stack(reverse = T)) +
   geom_text(aes(label = after_stat(count)), stat = "count", position = position_stack(reverse = T),
@@ -991,6 +1014,9 @@ graf3_klubber
 #' ## Deltagere fordelt på Danmarkskort
 #+ eval=F, warning=F, message=F
 
+if(nrow(tbl0_join_aktuel) == 0) {
+  graf4_DK <- data.frame() %>% kbl()
+} else {
 graf4_DK <- tbl0_join_aktuel %>% filter(
   grepl("Tilmeldt", k_status) &
     !grepl("Ingen klub", k_klub)) %>%
@@ -1011,6 +1037,7 @@ graf4_DK <- tbl0_join_aktuel %>% filter(
     show_borders = F,
     interactive  = F,
     titel        = "Deltagere fordelt på Danmarkskort")
+}
 graf4_DK
 
 #' # TRUE/FALSE
