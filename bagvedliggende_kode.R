@@ -943,7 +943,6 @@ graf1_tilmeldingstype <- tbl0_join_aktuel %>%
        subtitle = paste0(tbl0_stat$k_deltagerantal_total)) +
   guides(fill = guide_legend(title = element_blank())) +
   xlab(element_blank()) + ylab(element_blank()) +
-  theme() +
   theme(legend.position      = "right",
         legend.direction     = "vertical",
         plot.title           = element_text(hjust = 0.5),
@@ -969,7 +968,6 @@ graf2_gentilmelding <- tbl0_join_aktuel %>%
        subtitle = paste0(tbl0_stat$k_deltagerantal_gentilmelding)) +
   guides(fill = guide_legend(title = element_blank())) +
   xlab(element_blank()) + ylab(element_blank()) +
-  theme() +
   theme(legend.position      = "right",
         legend.direction     = "vertical",
         plot.title           = element_text(hjust = 0.5),
@@ -998,7 +996,6 @@ graf3_klubber <- tbl0_join_aktuel %>%
        subtitle = paste0(tbl0_stat$k_klubantal)) +
   guides(fill = guide_legend(title = element_blank())) +
   xlab(element_blank()) + ylab(element_blank()) +
-  theme() +
   theme(legend.position      = "right",
         legend.direction     = "vertical",
         plot.title           = element_text(hjust = 0.5),
@@ -1039,6 +1036,35 @@ graf4_DK <- tbl0_join_aktuel %>% filter(
     titel        = "Deltagere fordelt på Danmarkskort")
 }
 graf4_DK
+
+#' ## Ping Pong deltagere fordelt årligt
+#+ eval=F, warning=F, message=F
+graf5 <- tbl0_join_alle %>%
+  filter(grepl("Tilmeldt", k_status) &
+           grepl("Ping Pong", k_billettype) &
+           k_2021_eller_senere == T) %>%
+  count(k_eventår) %>%
+  ggplot(aes(x = k_eventår, y = n)) +
+  geom_line(color = "#398FCC", size = 2) +
+  geom_text(aes(label = n), vjust = -1, hjust = 0.4, size = 4) +
+  geom_label(aes(label = k_eventår), vjust = 0.6, hjust = 0.5, size = 3,
+             fill = "#398FCC",  colour = "#FFFFFF", label.size = NA,
+             label.r = unit(0.5, "lines"), label.padding = unit(0.25, "lines")) +
+  scale_y_continuous(expand = c(0, 20)) +
+  labs(title = "🏓 Ping Pong deltagere fordelt årligt") +
+  xlab(element_blank()) + ylab(element_blank()) +
+  theme(legend.position      = "right",
+        legend.direction     = "vertical",
+        plot.title           = element_text(hjust = 0.5),
+        plot.subtitle        = element_text(hjust = 0.5),
+        axis.text.x          = element_blank(),
+        axis.text.y          = element_blank(),
+        axis.ticks.x         = element_blank(),
+        axis.ticks.y         = element_blank(),
+        panel.background     = element_blank(),
+        panel.grid.major     = element_blank(),
+        panel.grid.minor     = element_blank())
+graf5
 
 #' # TRUE/FALSE
 # TRUE/FALSE #######################################################################################
@@ -1136,7 +1162,7 @@ if(tbl0_input$k_plakat_png_T_F == T) {
 
 if(tbl0_input$k_webscraping_rating_T_F == T) {
   tbl4_webscraping_rating <- data.frame()
-  url_1 <- ifelse(
+  url1 <- ifelse(
     nrow(rbind(tbl4_webscraping_rating, data.frame(
       "k_deltager_id" = read_html(
         paste0("https://bordtennisportalen.dk/DBTU/Ranglister/Udskriv/?params=,59,4",
@@ -1152,15 +1178,15 @@ if(tbl0_input$k_webscraping_rating_T_F == T) {
            format(unique(tbl0_join_aktuel$k_ratingopdatering), "%m/%d/%Y")))
   
   for (side in seq(from = 1, to = 50, by = 1)) {
-  url_2 <- paste0(url_1, ",,,,True,,,,,", side-1, ",,,0,,,,,")
+  url2 <- paste0(url1, ",,,,True,,,,,", side-1, ",,,0,,,,,")
   
   tbl4_webscraping_rating <- rbind(tbl4_webscraping_rating, data.frame(
-    "Plac"          = read_html(url_2) %>% html_nodes(".rank")                        %>% html_text(),
-    "k_deltager_id" = read_html(url_2) %>% html_nodes(".playerid")                    %>% html_text(),
-    "Navn"          = read_html(url_2) %>% html_nodes(".name")                        %>% html_text(),
-    "Rating"        = read_html(url_2) %>% html_nodes(".name+ .pointsw")              %>% html_text(),
-    "Plus_minus"    = read_html(url_2) %>% html_nodes(".pointsw:nth-child(5)")        %>% html_text(),
-    "Kampe"         = read_html(url_2) %>% html_nodes(".pointsw~ .pointsw+ .pointsw") %>% html_text(),
+    "Plac"          = read_html(url2) %>% html_nodes(".rank")                        %>% html_text(),
+    "k_deltager_id" = read_html(url2) %>% html_nodes(".playerid")                    %>% html_text(),
+    "Navn"          = read_html(url2) %>% html_nodes(".name")                        %>% html_text(),
+    "Rating"        = read_html(url2) %>% html_nodes(".name+ .pointsw")              %>% html_text(),
+    "Plus_minus"    = read_html(url2) %>% html_nodes(".pointsw:nth-child(5)")        %>% html_text(),
+    "Kampe"         = read_html(url2) %>% html_nodes(".pointsw~ .pointsw+ .pointsw") %>% html_text(),
     stringsAsFactors = FALSE)) %>% filter(k_deltager_id != "Spiller-Id") %>%
     mutate_at(c("Plac", "Rating", "Plus_minus", "Kampe"), as.numeric)
   print(paste("Side", side))

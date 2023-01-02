@@ -19,6 +19,11 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 `r "[https://observablehq.com/@d3/horizontal-bar-chart](https://observablehq.com/@d3/horizontal-bar-chart){target=_blank}"`
 
 ```{r}
+#| fig-height: 3
+graf5
+```
+
+```{r}
 ojs_define(tbl0_join_alle)
 ```
 
