@@ -137,7 +137,7 @@ Resultaterne fra DM danner grundlag for international udtagelse. Normalvis er de
 -   Der er også en gave til den **yngste**- og **ældste** Ping Pong deltager for at hylde mangfoldigheden.
 -   Diplomer uddeles til alle gave-/præmietagere.
 -   Af spillergebyret på kr. 125 går kr. 100 til præmiepenge og kr. 25 til stævnearrangøren.
--   Potentiel præmiesum på RETTES fordeles på seks placeringer som følger:
+-   Potentiel præmiesum på kr. 9.600 fordeles på seks placeringer som følger:
 
 ```{r}
 library(kableExtra)

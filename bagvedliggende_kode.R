@@ -711,7 +711,7 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
            background = "var_start_var.farve_2_var_slut") %>%
   column_spec(c(3, 4), italic = T, color = "var_start_var.farve_1_var_slut") %>%
   footnote(paste0(
-    "<i style=font-size:80%>Foreløbig = ",
+    "<i style=font-size:80%>Aktuel = ",
     tbl0_stat$k_int_billetantal_ping_pong, " deltagere x kr. ",
     tbl0_stat$k_num_præmiepenge_pr_deltager, " (maks. ",
     tbl0_stat$k_int_billetantal_ping_pong_maks, " deltagere).<br>",
@@ -915,12 +915,14 @@ if(nrow(tbl3_resultater_sidste_dm) == 0) {
   kbl3_resultater_sidste_dm <- data.frame() %>% kbl()
 } else {
 kbl3_resultater_sidste_dm <- tbl3_resultater_sidste_dm %>%
-  kbl(col.names = NA, align = "cl", escape = F,
-      caption = paste("<i class=bi-trophy></i>&nbsp;Resultater sidste DM", unique(tbl3_resultater_sidste_dm$k_eventår))) %>%
+  kbl(col.names = NA, align = "ll", escape = F,
+      caption = paste(
+        "<i class=bi-trophy></i>&nbsp;Resultater sidste DM",
+        unique(tbl3_resultater_sidste_dm$k_eventår))) %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  row_spec(0, background = "#1C2833", color = "#FFFFFF") %>%
   remove_column(c(3, 4)) %>%
-  pack_rows(index = table(as.character(tbl3_resultater_sidste_dm$k_slutspil)))
+  pack_rows(index = table(as.character(tbl3_resultater_sidste_dm$k_slutspil))) %>%
+  gsub("<thead>.*</thead>", "", .)
 }
 kbl3_resultater_sidste_dm
 
@@ -1046,10 +1048,10 @@ graf5 <- tbl0_join_alle %>%
   count(k_eventår) %>%
   ggplot(aes(x = k_eventår, y = n)) +
   geom_line(color = "#398FCC", size = 2) +
-  geom_text(aes(label = n), vjust = -1, hjust = 0.4, size = 4) +
-  geom_label(aes(label = k_eventår), vjust = 0.6, hjust = 0.5, size = 3,
+  geom_text(aes(label = n), vjust = -1, hjust = 0.4, size = 5) +
+  geom_label(aes(label = k_eventår), vjust = 0.6, hjust = 0.5, size = 4,
              fill = "#398FCC",  colour = "#FFFFFF", label.size = NA,
-             label.r = unit(0.5, "lines"), label.padding = unit(0.25, "lines")) +
+             label.r = unit(0.5, "lines"), label.padding = unit(0.4, "lines")) +
   scale_y_continuous(expand = c(0, 20)) +
   labs(title = "🏓 Ping Pong deltagere fordelt årligt") +
   xlab(element_blank()) + ylab(element_blank()) +
