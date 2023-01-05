@@ -5,7 +5,7 @@
 
 #+ eval=F, warning=F, message=F
 # Kopier/indsæt for offentliggørelse af hjemmeside via Terminal (Alt+Shift+M) =>
-# quarto publish quarto-pub --no-prompt --no-browse
+# quarto publish quarto-pub --no-prompt --no-browser
 
 # setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 tbl0_input <- data.frame(
