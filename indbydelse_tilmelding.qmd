@@ -63,14 +63,14 @@ data.frame(
   kbl(col.names = NA, align = "l", escape = F,
       caption = "<i class=bi-hourglass></i>&nbsp;Tidsplan") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   footnote(
     "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere.", general_title = "", escape = F) %>%
-  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   row_spec(c(1, 6), bold = T, background = "var_start_var.farve_2_var_slut") %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
-## DM i Ping Pong 2023
+## DM i Ping Pong
 
 ### Afviklingsform
 

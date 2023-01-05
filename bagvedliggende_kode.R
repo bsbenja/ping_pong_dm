@@ -575,10 +575,10 @@ tbl0_stat <- data.frame(
     "<img src=Filer/Forside.jpg style=width:30em;max-width:100%;border-radius:5px>"
   } else if(tbl0_input$k_status_1_2_3_4 == 2) {
     paste0(
-      "![[<i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i>]",
-      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}]",
-      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png)",
-      "{width=30em}")
+      "![](Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png){width=30em}",
+      "<br>",
+      "[<i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i>]",
+      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}")
   } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
     paste0(
       "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
@@ -586,10 +586,10 @@ tbl0_stat <- data.frame(
       "text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>",
       "&nbsp;Tilmeld<br><i style=font-weight:normal;font-size:60%>ALLE kan deltage</i></a>",
       "<br><br>",
-      "![[<i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i>]",
-      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}]",
-      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png)",
-      "{width=30em}")
+      "![](Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png){width=30em}",
+      "<br>",
+      "[<i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i>]",
+      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}")
   },
   
   # Status forside DM
@@ -1048,7 +1048,7 @@ graf5 <- tbl0_join_alle %>%
            k_2021_eller_senere == T) %>%
   count(k_eventår) %>%
   ggplot(aes(x = k_eventår, y = n)) +
-  geom_line(color = "#398FCC", size = 2) +
+  geom_line(color = "#398FCC", linewidth = 2) +
   geom_text(aes(label = n), vjust = -1, hjust = 0.4, size = 5) +
   geom_label(aes(label = k_eventår), vjust = 0.6, hjust = 0.5, size = 4,
              fill = "#398FCC",  colour = "#FFFFFF", label.size = NA,
