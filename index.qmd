@@ -27,7 +27,7 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 -   `r tbl0_stat$k_status_forside_facebook`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Køb bat hos BTEX</b>](https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html){target=_blank}:&nbsp;<i>De officielle Sanwei WCPP Sandpapirsbat kan købes hos Bordtennisexperterne (BTEX) til eget brug.</i>"`
 -   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>Matchroom Live</b>](https://matchroom.live/sports/ping_pong){target=_blank}:&nbsp;<i>Tidligere videoer fra WCPP kan ses på Matchroom Live.</i>"`
--   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>World Ping Pong</b>](https://classichardbat.com){target=_blank}:&nbsp;<i>Fællesskab for Ping Pong, hardbat og træbat med bl.a. events og rating inden for disse discipliner.</i>"`
+-   `r "<i class=bi-box-arrow-up-right></i>&nbsp;[<b>World Ping Pong</b>](https://classichardbat.com/home){target=_blank}:&nbsp;<i>Fællesskab for Ping Pong, hardbat og træbat med bl.a. events og rating inden for disse discipliner.</i>"`
 
 ```{=html}
 <a href="https://www.facebook.com/{{< var var.facebook_side >}}" target="_blank"><b>Facebook</b></a><br><iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/{{< var var.facebook_side >}}&tabs=timeline,events,messages&width=320&" width="100%" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay;clipboard-write;encrypted-media;picture-in-picture;web-share"></iframe>

@@ -70,7 +70,7 @@ data.frame(
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
-## DM i Ping Pong
+## DM i Ping Pong 2023
 
 ### Afviklingsform
 

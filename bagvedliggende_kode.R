@@ -639,7 +639,7 @@ tbl0_stat <- data.frame(
 
 tbl1_præmier_penge <- tbl0_join_alle %>% filter(
   grepl("Ping Pong", k_billettype) &
-  (!is.na(k_slutspil) | !is.na(k_placering) | !is.na(k_præmiepenge))) %>%
+    !is.na(k_slutspil) & !is.na(k_placering) & !is.na(k_præmiepenge) & !is.na(k_præmiepenge_pct)) %>%
   select(
     k_event_år_billettype,
     k_eventår,
@@ -690,6 +690,7 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
   
   filter(k_eventår == tbl0_input$k_eventår) %>%
   select(
+    "k_eventår" = k_eventår,
     " "         = k_placering,
     "Aktuel"    = k_aktuel_præmiepenge,
     "Potentiel" = k_præmiepenge,
@@ -699,8 +700,8 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
 if(nrow(tbl1_præmier_penge) == 0) {
   kbl1_præmier_penge <- data.frame() %>% kbl()
 } else {
-kbl1_præmier_penge <- tbl1_præmier_penge %>%
-  kbl(col.names = NA, align = "lrrrr", escape = F,
+ kbl1_præmier_penge <- tbl1_præmier_penge %>%
+  kbl(col.names = NA, align = "llrrrr", escape = F,
       caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
   kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
   add_indent(which(tbl1_præmier_penge$k_rank == "3")) %>%
@@ -717,7 +718,7 @@ kbl1_præmier_penge <- tbl1_præmier_penge %>%
     tbl0_stat$k_int_billetantal_ping_pong_maks, " deltagere).<br>",
     "Diplomer uddeles til alle gave-/præmietagere.</i>"),
     general_title = "", escape = F) %>%
-  remove_column(5) %>%
+  remove_column(c(1, 6)) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 }
 kbl1_præmier_penge

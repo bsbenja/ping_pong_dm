@@ -27,11 +27,11 @@ website:
     style: docked
     background: light
     contents:
-      # - section: "DM i Ping Pong {{< var var.event_år >}}"
-        # contents:
-        # - href: "indbydelse_tilmelding.qmd"
-        # - href: "præmier_deltagere.qmd"
-      # - text: "---"
+      - section: "DM i Ping Pong {{< var var.event_år >}}"
+        contents:
+        - href: "indbydelse_tilmelding.qmd"
+        - href: "præmier_deltagere.qmd"
+      - text: "---"
       - section: "Generelt om Ping Pong"
         contents:
         - href: "regler.qmd"
@@ -43,7 +43,7 @@ website:
         - text: "<a class=bi-box-arrow-up-right href=https://www.facebook.com/events/{{< var var.facebook_event >}} target=_blank>&nbsp;Facebook</a>"
         - text: "<a class=bi-box-arrow-up-right href=https://www.btex.dk/sanwei-wcpp-sandpapirsbat.html target=_blank>&nbsp;Køb bat hos BTEX</a>"
         - text: "<a class=bi-box-arrow-up-right href=https://matchroom.live/sports/ping_pong target=_blank>&nbsp;Matchroom Live</a>"
-        - text: "<a class=bi-box-arrow-up-right href=https://classichardbat.com target=_blank>&nbsp;World Ping Pong</a>"
+        - text: "<a class=bi-box-arrow-up-right href=https://classichardbat.com/home target=_blank>&nbsp;World Ping Pong</a>"
   page-footer:
     background: light
     center:
