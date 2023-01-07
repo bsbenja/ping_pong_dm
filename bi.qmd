@@ -34,63 +34,63 @@ data_bi = transpose(tbl0_join_alle)
 ```{ojs}
 //| panel: input
 viewof k_event_ping_pong_år = Inputs.checkbox(
-  ["DM i Ping Pong 2022", "DM i Ping Pong 2021"], 
-  {value: ["DM i Ping Pong 2022"], label: "🎫 Event & år"}
+  data_bi.map(d => d.k_event_ping_pong_år), {sort: true, unique: true,
+  label: ["🎫 Event & år"], value: ["DM i Ping Pong 2022"]}
 )
 
 viewof k_tilmeldingstype = Inputs.checkbox(
-  ["🎫 Ordinær", "🏃 Drive-in", "❌ Afbud"], 
-  {value: ["🎫 Ordinær", "🏃 Drive-in"], label: " 🎫 Tilmeldingstype"}
+  data_bi.map(d => d.k_tilmeldingstype), {sort: true, unique: true,
+  label: ["🎫 Tilmeldingstype"], value: ["🎫 Ordinær", "🏃 Drive-in"]}
 )
 
 viewof k_billettype = Inputs.checkbox(
-  ["🏓 DM i Ping Pong", "🥳 Fest om aftenen", "🍴 Restaurant Flammen", "🎉 The Old Irish Pub", "🥪 Frokost"], 
-  {value: ["🏓 DM i Ping Pong", "🥳 Fest om aftenen", "🍴 Restaurant Flammen", "🎉 The Old Irish Pub", "🥪 Frokost"], label: "🎫 Billettype"}
+  data_bi.map(d => d.k_billettype), {sort: true, unique: true,
+  label: ["🎫 Billettype"], value: ["🏓 DM i Ping Pong", "🥳 Fest om aftenen", "🎉 The Old Irish Pub", "🥪 Frokost"]}
 )
 
 viewof k_billetsalg_pr_tilmelding = Inputs.checkbox(
-  ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg", "❌ Afbud"], 
-  {value: ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg"], label: "🎫 Billetsalg pr. tilmelding"}
+  data_bi.map(d => d.k_billetsalg_pr_tilmelding), {sort: true, unique: true,
+  label: ["🎫 Billetsalg pr. tilmelding"], value: ["1 stk. billetsalg", "2 stk. billetsalg", "3 stk. billetsalg", "4 stk. billetsalg"]}
 )
 
 viewof k_gentilmelding = Inputs.checkbox(
-  ["Debutant", "Gentilmelding", "❌ Afbud"], 
-  {value: ["Debutant", "Gentilmelding"], label: "🔃 Gentilmeldinger"}
+  data_bi.map(d => d.k_gentilmelding), {sort: true, unique: true,
+  label: ["🔃 Gentilmeldinger"], value: ["Debutant", "Gentilmelding"]}
 )
 
 viewof k_klokkeslætsinterval = Inputs.checkbox(
-  ["[>=18] Aften", "[>=00] Øvrig"], 
-  {value: ["[>=18] Aften", "[>=00] Øvrig"], label: "🎫 Klokkeslætsinterval"}
+  data_bi.map(d => d.k_klokkeslætsinterval), {sort: true, unique: true,
+  label: ["🎫 Klokkeslætsinterval"], value: ["[>=18] Aften", "[>=00] Øvrig"]}
 )
 
 viewof k_køn = Inputs.checkbox(
-  ["♂️ Herre", "♀️ Dame"],
-  {value: ["♂️ Herre", "♀️ Dame"], label: "👤 Køn"}
+  data_bi.map(d => d.k_køn), {sort: true, unique: true,
+  label: ["👤 Køn"], value: ["♂️ Herre", "♀️ Dame"]}
 )
 
 viewof k_spillertype = Inputs.checkbox(
-  ["🏓 Bordtennisspiller", "👤 Ikke-bordtennisspiller"],
-  {value: ["🏓 Bordtennisspiller", "👤 Ikke-bordtennisspiller"], label: "👤 Spillertype"}
+  data_bi.map(d => d.k_spillertype), {sort: true, unique: true,
+  label: ["👤 Spillertype"], value: ["🏓 Bordtennisspiller", "👤 Ikke-bordtennisspiller"]}
 )
 
 viewof k_aldersgruppe = Inputs.checkbox(
-  ["Ungdom", "Senior", "Veteran"], 
-  {value: ["Ungdom", "Senior", "Veteran"], label: "📅 Aldersgruppe"}
+  data_bi.map(d => d.k_aldersgruppe), {sort: true, unique: true,
+  label: ["📅 Aldersgruppe"], value: ["Ungdom", "Senior", "Veteran"]}
 )
 
 viewof k_ratinggruppe = Inputs.checkbox(
-  ["Elite", "Amatør"], 
-  {value: ["Elite", "Amatør"], label: "💪 Ratinggruppe"}
+  data_bi.map(d => d.k_ratinggruppe), {sort: true, unique: true,
+  label: ["💪 Ratinggruppe"], value: ["Elite", "Amatør"]}
 )
 
 viewof k_landsdel = Inputs.checkbox(
-  ["Jylland", "Fyn", "Sjælland", "Bornholm", "(Ukendt landsdel)"], 
-  {value: ["Jylland", "Fyn", "Sjælland", "Bornholm", "(Ukendt landsdel)"], label: "🏛️ Landsdel"}
+  data_bi.map(d => d.k_landsdel), {sort: true, unique: true,
+  label: ["🏛️ Landsde"], value: ["Jylland", "Fyn", "Sjælland", "Bornholm", "(Ukendt landsdel)"]}
 )
 
 viewof k_region = Inputs.checkbox(
-  ["Nordjylland", "Midtjylland", "Syddanmark", "Sjælland", "Hovedstaden", "(Ukendt region)"], 
-  {value: ["Nordjylland", "Midtjylland", "Syddanmark", "Sjælland", "Hovedstaden", "(Ukendt region)"], label: "🏛️ Region"}
+  data_bi.map(d => d.k_region), {sort: true, unique: true,
+  label: ["🏛️ Region"], value: ["Nordjylland", "Midtjylland", "Syddanmark", "Sjælland", "Hovedstaden", "(Ukendt region)"]}
 )
 ```
 
@@ -230,7 +230,7 @@ Plot.plot({
   marks: [
     Plot.barX(data_filter,
     Plot.groupY({x: "count"},
-    {y: "k_klub", fill: "k_billettype"}
+    {y: "k_klub", fill: "k_billettype", sort: {y: "x", reverse: true}}
     )
     )
   ]

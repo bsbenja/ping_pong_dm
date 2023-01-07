@@ -116,7 +116,6 @@ tbl0_join_alle <- read_excel(
   mutate(across("k_billettype", .fns = factor, levels = c(
     "🏓 DM i Ping Pong",
     "🥳 Fest om aftenen",
-    "🍴 Restaurant Flammen",
     "🎉 The Old Irish Pub",
     "🥪 Frokost"), ordered = T)) %>%
   
@@ -205,7 +204,7 @@ tbl0_join_alle <- read_excel(
   mutate(across("k_tilmeldingstype", .fns = factor, levels = c(
     "🎫 Ordinær",
     "🏃 Drive-in",
-    "❌ Afbud"), ordered = T)) %>%
+    "❌ Afbud"), ordered = T))  %>%
   
   # Landsdel
   mutate(k_landsdel = case_when(
@@ -252,8 +251,6 @@ tbl0_join_alle <- read_excel(
     grepl("Tilmeldt", k_status) ~ paste0(cumsum(!duplicated(year(k_ordredato))), ". gang"),
     TRUE ~ as.character(k_status))) %>%
   ungroup() %>%
-  mutate(k_antal_gentilmelding = ifelse(
-    k_2021_eller_senere == T, k_antal_gentilmelding, NA_character_)) %>%
   mutate(across("k_antal_gentilmelding", .fns = factor, ordered = T)) %>%
   
   # k_gentilmelding
@@ -282,19 +279,21 @@ tbl0_join_alle <- read_excel(
     "Amatør"), ordered = T)) %>%
   
   # k_født
-  mutate(k_født = as_date(if_else(
-    substr(k_deltager_id, 5, 6) <= substr(year(Sys.time()), 3, 4),
+  mutate(k_født = if_else(
+    substr(k_deltager_id, 5, 6) <= substr(year(k_eventdato), 3, 4),
     paste0(
-      substr(year(Sys.time()), 1, 2), substr(k_deltager_id, 5, 6), "-",
+      substr(year(k_eventdato), 1, 2), substr(k_deltager_id, 5, 6), "-",
       substr(k_deltager_id, 3, 4), "-",
       substr(k_deltager_id, 1, 2)),
     paste0(
-      as.numeric(substr(year(Sys.time()), 1, 2))-1, substr(k_deltager_id, 5, 6), "-",
+      as.numeric(substr(year(k_eventdato), 1, 2))-1, substr(k_deltager_id, 5, 6), "-",
       substr(k_deltager_id, 3, 4), "-",
-      substr(k_deltager_id, 1, 2))))) %>%
+      substr(k_deltager_id, 1, 2)))) %>%
+  mutate(k_født = ifelse(!is.na(k_født), k_født, format(Sys.time(), "%Y-%m-%d"))) %>%
+  mutate(across("k_født", as_date)) %>%
   
   # k_alder
-  mutate(k_alder = trunc((k_født %--% as_date(k_eventdato)) / years(1))) %>%
+  mutate(k_alder = trunc((k_født %--% k_eventdato) / years(1))) %>%
   mutate(across("k_alder", as.integer)) %>%
   
   # k_aldersgruppe
@@ -320,7 +319,7 @@ tbl0_join_alle <- read_excel(
             name = "k_billetantal_billettype_status") %>%
   group_by(k_event_år_billettype, k_billettype, k_status) %>%
   mutate(k_billetantal_billettype_status = case_when(
-    !is.na(k_status) ~ k_billetantal_billettype_status)) %>%
+    !is.na(k_deltager_id) ~ k_billetantal_billettype_status)) %>%
   ungroup() %>%
   group_by(k_event_år_billettype) %>%
   fill(k_billetantal_billettype_status, .direction = "updown") %>%
@@ -380,7 +379,7 @@ tbl0_stat <- data.frame(
     tbl0_join_aktuel %>%
       distinct(k_deltager_id, k_status, .keep_all = T) %>%
       add_count(k_deltager_id) %>%
-      filter((grepl("Tilmeldt", k_status) | n == 1) & !is.na(k_status)) %>%
+      filter((grepl("Tilmeldt", k_status) | n == 1) & !is.na(k_deltager_id)) %>%
       count(k_status) %>%
       mutate(k_status = case_when(
         grepl("Tilmeldt", k_status) ~ "Tilmeldt",
@@ -577,19 +576,24 @@ tbl0_stat <- data.frame(
     paste0(
       "![](Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png){width=30em}",
       "<br>",
+      "<figcaption>",
       "[<i style=font-size:80%>[Klik her for teaserplakat som PDF til udskrift]</i>]",
-      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}")
+      "(Filer/Teaserplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}",
+      "</figcaption><p><p>")
   } else if(tbl0_input$k_status_1_2_3_4 == 3 | tbl0_input$k_status_1_2_3_4 == 4) {
     paste0(
-      "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;text-align:center;font-weight:bold;",
-      "font-size:150%;width:20em;max-width:100%;line-height:20px;border-radius:40px;padding:10px;",
+      "<a style=display:inline-block;background:#398FCC;color:#FFFFFF;",
+      "text-align:center;font-weight:bold;","font-size:150%;width:20em;",
+      "max-width:100%;line-height:20px;border-radius:40px;padding:10px;",
       "text-decoration:none href=indbydelse_tilmelding.qmd#tilmelding class=bi-tags-fill>",
       "&nbsp;Tilmeld<br><i style=font-weight:normal;font-size:60%>ALLE kan deltage</i></a>",
       "<br><br>",
       "![](Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.png){width=30em}",
       "<br>",
+      "<figcaption>",
       "[<i style=font-size:80%>[Klik her for indbydelesplakat som PDF til udskrift]</i>]",
-      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}")
+      "(Filer/Indbydelsesplakat-DM-i-Ping-Pong-{{< var var.event_år >}}.pdf){target=_blank}",
+      "</figcaption><p><p>")
   },
   
   # Status forside DM
@@ -700,26 +704,26 @@ tbl1_præmier_penge <- tbl0_join_alle %>% filter(
 if(nrow(tbl1_præmier_penge) == 0) {
   kbl1_præmier_penge <- data.frame() %>% kbl()
 } else {
- kbl1_præmier_penge <- tbl1_præmier_penge %>%
-  kbl(col.names = NA, align = "llrrrr", escape = F,
-      caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
-  kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
-  add_indent(which(tbl1_præmier_penge$k_rank == "3")) %>%
-  row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
-  row_spec(which(tbl1_præmier_penge$k_rank == "1"),
-           bold = T, background = "var_start_var.farve_2_var_slut") %>%
-  row_spec(which(tbl1_præmier_penge$k_rank == "2"),
-           background = "var_start_var.farve_2_var_slut") %>%
-  column_spec(c(3, 4), italic = T, color = "var_start_var.farve_1_var_slut") %>%
-  footnote(paste0(
-    "<i style=font-size:80%>Aktuel = ",
-    tbl0_stat$k_int_billetantal_ping_pong, " deltagere x kr. ",
-    tbl0_stat$k_num_præmiepenge_pr_deltager, " (maks. ",
-    tbl0_stat$k_int_billetantal_ping_pong_maks, " deltagere).<br>",
-    "Diplomer uddeles til alle gave-/præmietagere.</i>"),
-    general_title = "", escape = F) %>%
-  remove_column(c(1, 6)) %>%
-  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+  kbl1_præmier_penge <- tbl1_præmier_penge %>%
+    kbl(col.names = NA, align = "llrrrr", escape = F,
+        caption = "<i class=bi-cash-stack style=font-size:90%>&nbsp;<b>Præmiepenge</b> (afrundet)</i>") %>%
+    kable_classic(position = "l", full_width = F, html_font = "verdana") %>%
+    add_indent(which(tbl1_præmier_penge$k_rank == "3")) %>%
+    row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+    row_spec(which(tbl1_præmier_penge$k_rank == "1"),
+             bold = T, background = "var_start_var.farve_2_var_slut") %>%
+    row_spec(which(tbl1_præmier_penge$k_rank == "2"),
+             background = "var_start_var.farve_2_var_slut") %>%
+    column_spec(c(3, 4), italic = T, color = "var_start_var.farve_1_var_slut") %>%
+    footnote(paste0(
+      "<i style=font-size:80%>Aktuel = ",
+      tbl0_stat$k_int_billetantal_ping_pong, " deltagere x kr. ",
+      tbl0_stat$k_num_præmiepenge_pr_deltager, " (maks. ",
+      tbl0_stat$k_int_billetantal_ping_pong_maks, " deltagere).<br>",
+      "Diplomer uddeles til alle gave-/præmietagere.</i>"),
+      general_title = "", escape = F) %>%
+    remove_column(c(1, 6)) %>%
+    gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 }
 kbl1_præmier_penge
 
@@ -808,7 +812,7 @@ tbl2_deltagere_puljer <- tbl0_join_aktuel %>%
   ungroup() %>%
   mutate(Nr. = row_number()) %>%
   arrange(Puljenr.) %>%
-  filter(!is.na(k_status)) %>%
+  filter(!is.na(k_deltager_id)) %>%
   select(
     Nr.,
     "Navn"   = k_navn_billettype,
