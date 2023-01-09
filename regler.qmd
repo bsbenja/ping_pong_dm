@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-`r "![](Filer/WCPP-finale 2020.jpg){width=40em}<br><figcaption><i style=font-size:80%>Billede fra WCPP-finalen 2020</i></figcaption><p><p>"`
+`r "![](Filer/WCPP-finale-2020.jpg){width=40em}<br><figcaption><i style=font-size:80%>Billede fra WCPP-finalen 2020</i></figcaption><p><p>"`
 
 *I Ping Pong tages det bedste fra fortidens- og nutidens bordtennis og kan sammenlignes med ordsproget "gammel vin på nye flasker". Ping Pong skal i denne sammenhæng ikke sammenlignes med det, hvor man spiller bolden ned i egen bordhalvdel, men derimod spilles der med samme type bat, som giver lige vilkår for alle deltagere. Nedenstående regler adskiller Ping Pong fra bordtennis, hvor der både er nogle generelle regler samt ekstra regler til "Final 4".*
 

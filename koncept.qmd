@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-`r "![](Filer/WCPP-finale 2019.jpg){width=40em}<br><figcaption><i style=font-size:80%>Billede fra WCPP-finalen 2019</i></figcaption><p><p>"`
+`r "![](Filer/WCPP-finale-2019.jpg){width=40em}<br><figcaption><i style=font-size:80%>Billede fra WCPP-finalen 2019</i></figcaption><p><p>"`
 
 ## Indledning
 

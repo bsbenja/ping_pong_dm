@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-arrow-repeat style=font-size:1em></i>&nbsp;Præmier & deltagere"
-subtitle: "DM i Ping Pong {{< var var.event_år >}}<br><i class=small> {{< var var.event_dag_måned >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
+subtitle: "DM i Ping Pong {{< var var.event_år >}}<br><i class=small> {{< var var.event_dag_måned >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_url >}}){target=_blank}</i>"
 editor_options:
   chunk_output_type: console
 ---
@@ -13,6 +13,12 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 
 `r tbl0_stat$k_sidst_opdateret`
 
+::: callout-tip
+## Tip
+
+`r "<i class=bi-tags-fill>&nbsp;Indbydelse, tidsplan og praktisk info til DM i Ping Pong {{< var var.event_år >}} ses [<b>HER</b>](indbydelse_tilmelding.qmd).</i>"`
+:::
+
 ## Præmier
 
 ```{r}
@@ -22,7 +28,11 @@ kbl1_præmier_yngst_ældst
 
 ## Deltagere
 
+::: callout-note
+## Statistik
+
 `r paste0("<i style=font-size:80%>", tbl0_stat$k_billetantal_billettype, "<br>", tbl0_stat$k_klubantal, "<br>", tbl0_stat$k_deltagerantal_gentilmelding, "<br>", tbl0_stat$k_deltagerantal_køn, "<br>", tbl0_stat$k_deltagerantal_aldersgruppe, "<br>", tbl0_stat$k_alder, "</i>")`
+:::
 
 ```{r}
 if(tbl0_input$k_status_1_2_3_4 == 3) { kbl2_deltagere_foreløbig }
@@ -47,4 +57,8 @@ graf3_klubber
 graf4_DK
 ```
 
+::: callout-note
+## Statistik
+
 `r paste0("<i style=font-size:80%>", tbl0_stat$k_deltagerantal_landsdel, "<br>", tbl0_stat$k_deltagerantal_region, "<br>", tbl0_stat$k_deltagerantal_ingen_klub, "</i>")`
+:::

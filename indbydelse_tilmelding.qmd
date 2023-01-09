@@ -1,6 +1,6 @@
 ---
 title: "<i class=bi-tags-fill style=font-size:1em></i>&nbsp;Indbydelse & tilmelding"
-subtitle: "DM i Ping Pong {{< var var.event_år >}}<br><i class=small> {{< var var.event_dag_måned >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_link >}}){target=_blank}</i>"
+subtitle: "DM i Ping Pong {{< var var.event_år >}}<br><i class=small> {{< var var.event_dag_måned >}} i [{{< var var.lokation_sted >}}]({{< var var.lokation_url >}}){target=_blank}</i>"
 editor_options: 
   chunk_output_type: console
 ---
@@ -11,7 +11,13 @@ source(file = "input_dm_ping_pong.R", local = knitr::knit_global())
 
 `r tbl0_stat$k_status_cta_plakat`
 
-*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG `r "{{< var var.event_år >}}"` (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag `r paste("{{< var var.event_dag_måned >}}", "{{< var var.event_år >}}", "i", "[{{< var var.lokation_sted >}}]({{< var var.lokation_link >}})")`. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1].\
+::: callout-tip
+## Tip
+
+`r "<i class=bi-arrow-repeat>&nbsp;Præmier og deltagere opdateres løbende [<b>HER</b>](præmier_deltagere.qmd).</i>"`
+:::
+
+*`r paste("<i>[Hørning Bordtennisklub](http://hoerningbtk.dk){target=_blank},", "i samarbejde med [Bordtennis Danmark](https://bordtennisdanmark.dk){target=_blank} og [DGI](https://www.dgi.dk/bordtennis){target=_blank},</i>")` indbyder til det 9. DANSKE MESTERSKABER I PING PONG `r "{{< var var.event_år >}}"` (bordtennis på lige vilkår med sandpapirsbat) samt efterfølgende FEST OM AFTENEN lørdag `r paste("{{< var var.event_dag_måned >}}", "{{< var var.event_år >}}", "i", "[{{< var var.lokation_sted >}}]({{< var var.lokation_url >}})")`. ALLE kan deltage (uanset alder, køn, niveau eller licens)*[^1].\
 Eventet er før sommerferien og som noget af det sidste af indeværende bordtennissæson, da det ligger i uge 24.\
 Der er lagt op til en masse fede kampe på lige vilkår i sandpapirsdisciplinen med stemningsmusik og/eller et brag af en fest om aftenen, som alt sammen fås til en overkommelig pris.
 
@@ -37,10 +43,11 @@ data.frame(
     "<i style=font-size:80%>Mikrogebyrer pålægges alle priser.</i>",
     general_title = "", escape = F) %>%
   row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
+  column_spec(1, bold = T) %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
-## Tidsplan
+## Praktisk
 
 ```{r}
 library(kableExtra)
@@ -67,6 +74,73 @@ data.frame(
   footnote(
     "<i style=font-size:80%>Tidsplan kan ændres en smule alt efter antal deltagere.", general_title = "", escape = F) %>%
   row_spec(c(1, 6), bold = T, background = "var_start_var.farve_2_var_slut") %>%
+  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
+```
+
+::: {.callout-caution icon="false"}
+## 🥳 Fest om aftenen
+
+Traditionen tro vil der være fest om aftenen/natten, da DM i Ping Pong konceptet hylder fællesskabet og mangfoldigheden ved at være en heldagsbegivenhed.
+
+-   Fra kl. 19 er der lagt op til en stor fest i `r "{{< var var.lokation_sted >}}"`, hvor burger og fri bar i 3 timer er inkluderet i prisen. Der vil være en masse forskellige øl, cider, sodavand, snacks mv. til fri konsumering, og der vil naturligvis også være musikanlæg til at sætte gang i en festlig stemning.
+
+*Aldersgrænsen for festen er 16 år (bytur 18 år).\
+Hvis man er 16 eller 17 år, udleveres kun alkohol med en skriftlig tilladelse fra forældre/værge, som enten kan sendes til kontaktpersonen eller medbringes på selve dagen.*
+:::
+
+::: callout-note
+## Praktisk udspecificeret
+
+-   **Medbring**: Til DM i Ping Pong medbringes kun sportstøj og indendørssko. Der skal ikke medbringes bat, da stævnearrangøren udleverer bat til opvarmning og kampe på selve stævnedagen. Hvis man skal med til festen medbringes outfit hertil, og der er også mulighed for at tage bad i hallen.
+
+-   **Offentlig transport**: Der er gode tog- og busforbindelser til Hørning (10 min. med tog fra Aarhus Hovedbanegård). Hørning station ligger kun 1,5 km fra `r "{{< var var.lokation_sted >}}"`. Se muligheder for offentlig transport på Rejseplanen `r "<b>[HER](https://rejseplanen.dk){target=_blank}</b>"`.
+
+-   **Parkering**: Gratis parkering ved `r "{{< var var.lokation_sted >}}"`.
+
+-   **Overnatning**: Gode muligheder for at booke overnatning, hvis man fx kommer langvejsfra. Man kan evt. gå sammen nogle stykker og booke på CABINN Hotel Aarhus, som nok er det bedste valg pris- og belliggenhedsmæssigt, da det ligger ned til åen i midten af Aarhus byliv, hvilket kan bookes `r "<b>[HER](https://www.cabinn.com/hotel/cabinn-aarhus){target=_blank}</b>"`. Skal man være en del af festen, er det naturligvis også en mulighed at tage et morgentog eller lignende hjem søndag, hvis man kan holde sig i gang til et godt stykke ud på natten, hvilket tidligere er set.
+
+-   **Refusion**: Tilmelding er ikke bindende, hvorfor evt. refusion er muligt ved henvendelse til kontaktpersonen. Ønskes alle billetter refunderet, vil refusion ske hurtigst muligt. Hvis der ønskes refusion af enkeltbilletter, vil refusion ske umiddelbart efter eventet. Mikrogebyrer refunderes ikke.
+:::
+
+```{r}
+#| layout-ncol: 3
+library(kableExtra)
+data.frame(
+  "1" = "<img src=Filer/Kontaktperson.png height=65 style=border-radius:10px>",
+  "2" = paste0(
+    "<i class=bi-person></i>&nbsp;Benjamin Sørensen<br>",
+    "<i class=bi-envelope></i>&nbsp;<a href=mailto:bsbenja@gmail.com target=_blank>bsbenja@gmail.com</a><br>",
+    "<i class=bi-telephone></i>&nbsp;<a href=tel:28722894 target=_blank>28722894</a>"),
+  check.names = F) %>%
+  kbl(col.names = NULL, align = "l", escape = F,
+      caption = "<b class=bi-person-lines-fill>&nbsp;Kontaktperson</b><br><i>Evt. spørgsmål til kontaktperson</i>") %>%
+  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
+  column_spec(1, width = "5em")
+
+data.frame(
+  "1" = "<img src=Filer/Stævneleder.png height=65 style=border-radius:10px>",
+  "2" = paste0(
+    "<i class=bi-person></i>&nbsp;Ole Munck Christensen<br>",
+    "<i class=bi-envelope></i>&nbsp;<a href=mailto:ole@compurevision.dk target=_blank>ole@compurevision.dk</a><br>",
+    "<i class=bi-telephone></i>&nbsp;<a href=tel:23674387 target=_blank>23674387</a>"),
+  check.names = F) %>%
+  kbl(col.names = NULL, align = "l", escape = F,
+      caption = "<b class=bi-person-lines-fill>&nbsp;Stævneleder</b><br><i>Ansvarlig på stævnedagen</i>") %>%
+  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
+  column_spec(1, width = "5em")
+
+data.frame(
+  "1" = "<img src=Filer/Lokation.png height=65 style=border-radius:10px>",
+  "2" = paste0(
+    "<a href=var_start_var.lokation_url_var_slut target=_blank>",
+    "var_start_var.lokation_sted_var_slut<br>",
+    "var_start_var.lokation_gade_var_slut<br>",
+    "var_start_var.lokation_postnr_by_var_slut</a>"),
+  check.names = F) %>%
+  kbl(col.names = NULL, align = "l", escape = F,
+      caption = "<b class=bi-geo-alt-fill>&nbsp;Lokation</b><br><i>Geografisk placering</i>") %>%
+  kable_styling(position = "l", full_width = F, html_font = "verdana", ) %>%
+  column_spec(1, width = "5em") %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
@@ -181,7 +255,7 @@ data.frame(
   row_spec(0, background = "var_start_var.farve_1_var_slut", color = "#FFFFFF") %>%
   row_spec(1, bold = T, background = "var_start_var.farve_2_var_slut") %>%
   row_spec(c(2, 7), background = "var_start_var.farve_2_var_slut") %>%
-  column_spec(c(3), italic = T, color = "var_start_var.farve_1_var_slut") %>%
+  column_spec(3, italic = T, color = "var_start_var.farve_1_var_slut") %>%
   gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
 ```
 
@@ -190,72 +264,15 @@ data.frame(
 -   Der er mulighed for at købe øl, sodavand, snacks mv. under hele stævnet.
 -   Frokost/mad under stævnet står man selv for at medbringe.
 
-## Fest om aftenen
-
-`r "<i class=bi-music-note-beamed></i>"` Traditionen tro vil der være fest om aftenen/natten, da DM i Ping Pong konceptet hylder fællesskabet og mangfoldigheden ved at være en heldagsbegivenhed.
-
--   Fra kl. 19 er der lagt op til en stor fest i `r "{{< var var.lokation_sted >}}"`, hvor burger og fri bar i 3 timer er inkluderet i prisen. Der vil være en masse forskellige øl, cider, sodavand, snacks mv. til fri konsumering, og der vil naturligvis også være musikanlæg til at sætte gang i en festlig stemning.
-
-*Aldersgrænsen for festen er 16 år (bytur 18 år).\
-Hvis man er 16 eller 17 år, udleveres kun alkohol med en skriftlig tilladelse fra forældre/værge, som enten kan sendes til kontaktpersonen eller medbringes på selve dagen.*
-
-## Praktisk
-
--   **Offentlig transport**: Der er gode tog- og busforbindelser til Hørning (10 min. med tog fra Aarhus Hovedbanegård). Hørning station ligger kun 1,5 km fra `r "{{< var var.lokation_sted >}}"`. Se muligheder for offentlig transport på Rejseplanen `r "<b>[HER](https://rejseplanen.dk){target=_blank}</b>"`.
-
--   **Parkering**: Gratis parkering ved `r "{{< var var.lokation_sted >}}"`.
-
--   **Overnatning**: Gode muligheder for at booke overnatning, hvis man fx kommer langvejsfra. Man kan evt. gå sammen nogle stykker og booke på CABINN Hotel Aarhus, som nok er det bedste valg pris- og belliggenhedsmæssigt, da det ligger ned til åen i midten af Aarhus byliv, hvilket kan bookes `r "<b>[HER](https://www.cabinn.com/hotel/cabinn-aarhus){target=_blank}</b>"`. Skal man være en del af festen, er det naturligvis også en mulighed at tage et morgentog eller lignende hjem søndag, hvis man kan holde sig i gang til et godt stykke ud på natten, hvilket tidligere er set.
-
--   **Badefaciliteter**: Der er mulighed for at tage bad i hallen efter endt spil.
-
--   **Refusion**: Tilmelding er ikke bindende, hvorfor evt. refusion er muligt ved henvendelse til kontaktpersonen. Ønskes alle billetter refunderet, vil refusion ske hurtigst muligt. Hvis der ønskes refusion af enkeltbilletter, vil refusion ske umiddelbart efter begivenheden. Mikrogebyrer refunderes ikke.
-
-```{r}
-#| layout-ncol: 3
-library(kableExtra)
-data.frame(
-  "1" = "<img src=Filer/Kontaktperson.png height=65 style=border-radius:10px>",
-  "2" = paste0(
-    "<i class=bi-person></i>&nbsp;Benjamin Sørensen<br>",
-    "<i class=bi-envelope></i>&nbsp;<a href=mailto:bsbenja@gmail.com target=_blank>bsbenja@gmail.com</a><br>",
-    "<i class=bi-telephone></i>&nbsp;<a href=tel:28722894 target=_blank>28722894</a>"),
-  check.names = F) %>%
-  kbl(col.names = NULL, align = "l", escape = F,
-      caption = "<b class=bi-person-lines-fill>&nbsp;Kontaktperson</b><br><i>Evt. spørgsmål til kontaktperson</i>") %>%
-  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
-  column_spec(1, width = "5em")
-
-data.frame(
-  "1" = "<img src=Filer/Stævneleder.png height=65 style=border-radius:10px>",
-  "2" = paste0(
-    "<i class=bi-person></i>&nbsp;Ole Munck Christensen<br>",
-    "<i class=bi-envelope></i>&nbsp;<a href=mailto:ole@compurevision.dk target=_blank>ole@compurevision.dk</a><br>",
-    "<i class=bi-telephone></i>&nbsp;<a href=tel:23674387 target=_blank>23674387</a>"),
-  check.names = F) %>%
-  kbl(col.names = NULL, align = "l", escape = F,
-      caption = "<b class=bi-person-lines-fill>&nbsp;Stævneleder</b><br><i>Ansvarlig på stævnedagen</i>") %>%
-  kable_styling(position = "l", full_width = F, html_font = "verdana") %>%
-  column_spec(1, width = "5em")
-
-data.frame(
-  "1" = "<img src=Filer/Lokation.png height=65 style=border-radius:10px>",
-  "2" = paste0(
-    "<a href=var_start_var.lokation_link_var_slut target=_blank>",
-    "var_start_var.lokation_sted_var_slut<br>",
-    "var_start_var.lokation_gade_var_slut<br>",
-    "var_start_var.lokation_postnr_by_var_slut</a>"),
-  check.names = F) %>%
-  kbl(col.names = NULL, align = "l", escape = F,
-      caption = "<b class=bi-geo-alt-fill>&nbsp;Lokation</b><br><i>Geografisk placering</i>") %>%
-  kable_styling(position = "l", full_width = F, html_font = "verdana", ) %>%
-  column_spec(1, width = "5em") %>%
-  gsub("var_start_", "{{< var ", .) %>% gsub("_var_slut", " >}}", .)
-```
-
 ## Tilmelding
 
-*`r paste("ALLE kan deltage. Tilmeldingsfristen er {{< var var.event_frist_dag_måned >}}. Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt). Tilmelding foregår herunder <i class=bi-tags-fill></i>")`*
+`r "<i class=bi-tags-fill></i>&nbsp;Tilmelding foregår herunder."`
+
+::: callout-note
+## Tilmelding
+
+ALLE kan deltage. Tilmeldingsfristen er {{< var var.event_frist_dag_måned >}}. Først til mølle-princip. Ved tilmelding modtages bekræftelsesmail (tilmelding er ikke bindende, hvorfor evt. refusion er muligt).
+:::
 
 ```{=html}
 <div class="ticketbutler-iframe" data-type="EVENT" data-domain="billetfix.dk" data-slug="dm-i-ping-pong-2023"></div><script type="text/javascript" src="https://unpkg.com/@ticketbutler/event-embedder@latest/dist/index.js"></script>
